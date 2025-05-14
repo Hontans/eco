@@ -35,7 +35,7 @@
       v-model="drawerRight"
       show-if-above
       bordered
-      :width="200"
+      :width="300"
       :breakpoint="500"
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >

@@ -19,10 +19,32 @@
 
         <div class="q-gutter-sm">
           <q-btn round color="white" text-color="black" icon="person" />
-          <q-btn cont round color="white" text-color="black" icon="shopping_cart" />
+          <q-btn
+            round
+            color="white"
+            text-color="black"
+            icon="shopping_cart"
+            @click="drawerRight = !drawerRight"
+          />
         </div>
       </q-toolbar>
     </q-header>
+
+    <q-drawer
+      side="right"
+      v-model="drawerRight"
+      show-if-above
+      bordered
+      :width="200"
+      :breakpoint="500"
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+    >
+      <q-scroll-area class="fit">
+        <div class="q-pa-sm">
+          <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
+        </div>
+      </q-scroll-area>
+    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -33,4 +55,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 const text = ref('');
+const drawerRight = ref(false);
 </script>

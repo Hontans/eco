@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
     <q-header>
       <q-toolbar>
-        <q-avatar size="125px">
+        <q-avatar size="125px" @click="$router.push('/')" class="cursor-pointer">
           <img
             src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
           />
@@ -18,7 +18,7 @@
         </q-input>
 
         <div class="q-gutter-sm">
-          <q-btn round color="white" text-color="black" icon="person" />
+          <q-btn round color="white" text-color="black" icon="person" to="auth" />
           <q-btn
             round
             color="white"

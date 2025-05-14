@@ -8,7 +8,7 @@
           />
         </q-avatar>
 
-        <q-input class="search-bar" rounded standout v-model="text" label="rechercher un produit">
+        <q-input class="q-mx-auto" rounded standout v-model="text" label="rechercher un produit">
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
@@ -18,8 +18,8 @@
         </q-input>
 
         <div class="q-gutter-sm">
-          <q-avatar color="black" text-color="pink" icon="person" />
-          <q-avatar color="black" text-color="pink" icon="shopping_cart" />
+          <q-avatar color="white" text-color="black" icon="person" />
+          <q-avatar color="white" text-color="black" icon="shopping_cart" />
         </div>
       </q-toolbar>
     </q-header>
@@ -34,10 +34,3 @@
 import { ref } from 'vue';
 const text = ref('');
 </script>
-
-<style>
-.search-bar {
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>

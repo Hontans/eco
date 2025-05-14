@@ -18,8 +18,8 @@
         </q-input>
 
         <div class="q-gutter-sm">
-          <q-avatar color="white" text-color="black" icon="person" />
-          <q-avatar color="white" text-color="black" icon="shopping_cart" />
+          <q-btn round color="white" text-color="black" icon="person" />
+          <q-btn cont round color="white" text-color="black" icon="shopping_cart" />
         </div>
       </q-toolbar>
     </q-header>

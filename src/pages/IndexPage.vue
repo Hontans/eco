@@ -1,7 +1,22 @@
 <template>
   <q-page>
     <ToDayCardComponent></ToDayCardComponent>
-    <ProductCardComponent></ProductCardComponent>
+    <div class="row">
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+      <ProductCardComponent class="col-2"></ProductCardComponent>
+    </div>
   </q-page>
 </template>
 

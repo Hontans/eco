@@ -16,6 +16,7 @@
             <q-icon name="close" @click="text = ''" class="cursor-pointer" />
           </template>
         </q-input>
+
         <div class="q-gutter-sm">
           <q-avatar color="black" text-color="pink" icon="person" />
           <q-avatar color="black" text-color="pink" icon="shopping_cart" />

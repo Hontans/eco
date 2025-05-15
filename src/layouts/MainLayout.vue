@@ -25,7 +25,9 @@
             text-color="black"
             icon="shopping_cart"
             @click="drawerRight = !drawerRight"
-          />
+          >
+          <q-badge color="red" rounded floating>4</q-badge>
+          </q-btn>
         </div>
       </q-toolbar>
     </q-header>
@@ -40,9 +42,7 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >
       <q-scroll-area class="fit">
-        <div class="q-pa-sm">
-          <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
-        </div>
+        <q-btn color="secondary" label="Acheter" style="width: 150px" />
       </q-scroll-area>
     </q-drawer>
 

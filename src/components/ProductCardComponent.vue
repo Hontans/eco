@@ -4,8 +4,8 @@
       src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
     >
       <div class="absolute-bottom">
-        <div class="text-h6">Nom du produi</div>
-        <div class="text-subtitle2">prix</div>
+        <div class="text-h6">{{ props.product.name }}</div>
+        <div class="text-subtitle2">{{ props.product.price }}€</div>
       </div>
     </q-img>
 
@@ -17,3 +17,11 @@
     </q-card-actions>
   </q-card>
 </template>
+
+<script setup lang="ts">
+import type { Product } from '../js/types';
+
+const props = defineProps<{
+  product: Product;
+}>();
+</script>

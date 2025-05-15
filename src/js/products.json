@@ -1,5 +1,5 @@
 [
-  { "id": 1, "name": "clavier", "price": 89 },
+  { "id": 1, "name": "clavier", "price": 89, "image" : "https://unsplash.com/fr/photos/clavier-dordinateur-argent-et-blanc-PXaQXThG1FY"},
   { "id": 2, "name": "souris", "price": 49 },
   { "id": 3, "name": "écran", "price": 320 },
   { "id": 4, "name": "imprimante", "price": 215 },

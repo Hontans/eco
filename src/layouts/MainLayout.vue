@@ -43,12 +43,34 @@
     >
       <q-scroll-area class="fit">
         <template v-for="product in store.items" :key="product.id">
-          <div>
-            {{ product.name }}
-            <q-btn @click="store.deleteProduct(product)">X</q-btn>
+          <div class="q-ma-md">
+            <q-card style="width: 100%; max-width: 175px" class="q-mx-xl">
+              <q-card-section class="q-pt-none">
+                <div class="text-h6">{{ product.name }}</div>
+                <div class="text-subtitle2">{{ product.price }}€</div>
+                <div class="row items-center">
+                  <img
+                    style="max-width: 100px"
+                    src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                    alt="place_older"
+                  >
+                  <q-btn
+                    class="q-ml-sm"
+                    @click="store.deleteProduct(product)"
+                    icon="cancel"
+                    flat
+                    round
+                    size="sm"
+                  />
+                </div>
+              </q-card-section>
+            </q-card>
           </div>
         </template>
-        <q-btn color="secondary" label="Acheter" style="width: 150px" />
+        <div class="row justify-center q-mt-md">
+            <div class="text-subtitle2 q-mr-md">Total : {{ store.totalPrice }}</div>
+            <q-btn color="secondary" label="Acheter" style="width: 150px" />
+        </div>
       </q-scroll-area>
     </q-drawer>
 

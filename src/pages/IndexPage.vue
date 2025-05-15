@@ -17,15 +17,13 @@ import { ref, computed } from 'vue';
 import ToDayCardComponent from 'components/ToDayCardComponent.vue';
 import ProductCardComponent from 'components/ProductCardComponent.vue';
 import productDb from '../js/products.json';
-import type { Product } from '../js/types';
 
 
 //#region  declarations
 const search   = ref("")
-const products = ref<Product[]>(productDb);
 
 const results = computed(() => {
-  return products.value.filter((product => product.name?.includes(search.value)));
+  return productDb.filter((product => product.name?.includes(search.value)));
 });
 //#endregion
 </script>

@@ -11,7 +11,7 @@
 
     <q-card-actions>
       <div class="q-mx-auto">
-        <q-btn flat class="q-mr-lg">+ Panier</q-btn>
+        <q-btn flat class="q-mr-lg" @click="addToBasket">+ Panier</q-btn>
         <q-btn flat class="q-ml-lg">Acheter</q-btn>
       </div>
     </q-card-actions>
@@ -20,8 +20,15 @@
 
 <script setup lang="ts">
 import type { Product } from '../js/types';
+import { cartStore } from '../stores/cart-store'
+
+const store = cartStore();
 
 const props = defineProps<{
   product: Product;
 }>();
+
+const addToBasket = () => {
+  store.addToCart(props.product);
+};
 </script>

@@ -26,7 +26,7 @@
             icon="shopping_cart"
             @click="drawerRight = !drawerRight"
           >
-          <q-badge color="red" rounded floating>4</q-badge>
+          <q-badge color="red" rounded floating>{{ store.itemCount }}</q-badge>
           </q-btn>
         </div>
       </q-toolbar>
@@ -42,6 +42,12 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >
       <q-scroll-area class="fit">
+        <template v-for="product in store.items" :key="product.id">
+          <div>
+            {{ product.name }}
+            <q-btn @click="store.deleteProduct(product)">X</q-btn>
+          </div>
+        </template>
         <q-btn color="secondary" label="Acheter" style="width: 150px" />
       </q-scroll-area>
     </q-drawer>
@@ -54,6 +60,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { cartStore } from '../stores/cart-store'
+
+const store = cartStore();
+
 const text = ref('');
 const drawerRight = ref(false);
 </script>

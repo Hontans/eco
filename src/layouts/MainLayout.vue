@@ -1,23 +1,28 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header>
-      <q-toolbar>
-        <q-avatar size="125px" @click="$router.push('/')" class="cursor-pointer">
-          <img
-            src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
-          />
-        </q-avatar>
-        <q-input class="q-mx-auto" rounded standout v-model="store.searchTerm" label="rechercher un produit">
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click="store.searchTerm = ''" class="cursor-pointer" />
-          </template>
-        </q-input>
+      <q-toolbar class="row">
+        <div class="col-2 flex justify-end items-center">
+          <q-avatar size="125px" @click="$router.push('/')" class="cursor-pointer">
+            <img
+              src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
+            />
+          </q-avatar>
+        </div>
 
-        <div class="q-gutter-sm">
-          <q-btn round color="white" text-color="black" icon="person" to="auth" />
+        <div class="col-8 flex justify-center items-center">
+          <q-input class="col-grow" style="max-width: 500px" rounded standout v-model="store.searchTerm" label="Rechercher un produit">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-slot:append>
+              <q-icon name="close" @click="store.searchTerm = ''" class="cursor-pointer" />
+            </template>
+          </q-input>
+        </div>
+
+        <div class="col-2 flex justify-start items-center q-pl-xs">
+          <q-btn round color="white" text-color="black" icon="person" to="auth" class="q-mr-md" />
           <q-btn
             round
             color="white"
@@ -66,9 +71,9 @@
             </q-card>
           </div>
         </template>
-        <div class="row justify-center q-mt-md">
-            <div class="text-subtitle2 q-mr-md">Total : {{ store.totalPrice }}</div>
-            <q-btn color="secondary" label="Acheter" style="width: 150px" />
+        <div class="column items-center q-mt-md q-mb-xl">
+            <div class="text-h6 q-mb-md">Total à payer : {{ store.totalPrice }}€</div>
+            <q-btn color="secondary" label="Acheter" size="lg" style="width: 200px" />
         </div>
       </q-scroll-area>
     </q-drawer>

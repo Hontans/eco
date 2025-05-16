@@ -7,9 +7,9 @@
     />
 
     <q-card-section>
-      <div class="row items-center">
-        <div class="text-h6 q-mr-md">Nom du produi</div>
-        <div class="text-subtitle2 q-mr-md">Prix du produi</div>
+      <div class="row justify-center items-center q-px-md q-gutter-x-md">
+        <div class="text-h5">Nom du produit</div>
+        <div class="text-subtitle1">Prix du produit</div>
         <div class="text-body2">{{ lorem }}</div>
       </div>
     </q-card-section>

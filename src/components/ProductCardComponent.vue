@@ -1,8 +1,7 @@
 <template>
   <q-card class="q-ma-md" style="max-width: 250px">
     <q-img
-      src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-    >
+      src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg">
       <div class="absolute-bottom">
         <div class="text-h6">{{ props.product.name }}</div>
         <div class="text-subtitle2">{{ props.product.price }}€</div>
@@ -20,9 +19,9 @@
 
 <script setup lang="ts">
 import type { Product } from '../js/types';
-import { cartStore } from '../stores/cart-store'
+import { dataStore } from '../stores/data-store'
 
-const store = cartStore();
+const store = dataStore();
 
 const props = defineProps<{
   product: Product;

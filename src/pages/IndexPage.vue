@@ -1,8 +1,10 @@
 <template>
   <q-page>
-    <ToDayCardComponent></ToDayCardComponent>
+    <ToDayCardComponent
+    @test-envoi="kiwi"
+    ></ToDayCardComponent>
     <div class="row justify-center">
-      <template v-for="product in store.searchItems" :key="product.id">
+      <template v-for="product in results" :key="product.id">
         <ProductCardComponent
           :product="product"
         ></ProductCardComponent>
@@ -12,20 +14,25 @@
 </template>
 
 <script setup lang="ts">
-// import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import ToDayCardComponent from 'components/ToDayCardComponent.vue';
 import ProductCardComponent from 'components/ProductCardComponent.vue';
-// import productDb from '../js/products.json';
-import { cartStore } from '../stores/cart-store'
+import productDb from '../js/products.json';
+import { dataStore } from '../stores/data-store'
 
 
 //#region  declarations
-const store = cartStore();
+const store = dataStore();
 
-// const results = computed(() => {
-//   return productDb.filter((product => product.name?.includes(search.value)));
-// });
+const results = computed(() => {
+  return productDb.filter((product => product.name?.includes(store.searchTerm)));
+});
 //#endregion
+function kiwi()
+{
+  alert('oui')
+}
+
 </script>
 
 <style lang="scss" scoped></style>

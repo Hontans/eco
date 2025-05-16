@@ -30,7 +30,7 @@
             icon="shopping_cart"
             @click="drawerRight = !drawerRight"
           >
-          <q-badge color="red" rounded floating>{{ store.itemCount }}</q-badge>
+          <q-badge color="red" rounded floating>{{ store.basketCount }}</q-badge>
           </q-btn>
         </div>
       </q-toolbar>
@@ -46,7 +46,7 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     >
       <q-scroll-area class="fit">
-        <template v-for="product in store.items" :key="product.id">
+        <template v-for="product in store.basket" :key="product.id">
           <div class="q-ma-md">
             <q-card style="width: 100%; max-width: 175px" class="q-mx-xl">
               <q-card-section class="q-pt-none">
@@ -72,7 +72,7 @@
           </div>
         </template>
         <div class="column items-center q-mt-md q-mb-xl">
-            <div class="text-h6 q-mb-md">Total à payer : {{ store.totalPrice }}€</div>
+            <div class="text-h6 q-mb-md">Total à payer : {{ store.basketPrice }}€</div>
             <q-btn color="secondary" label="Acheter" size="lg" style="width: 200px" />
         </div>
       </q-scroll-area>
@@ -86,9 +86,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { cartStore } from '../stores/cart-store'
+import { dataStore } from '../stores/data-store'
 
-const store = cartStore();
+const store = dataStore();
 
 const drawerRight = ref(false);
 </script>

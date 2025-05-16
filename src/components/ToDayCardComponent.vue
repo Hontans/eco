@@ -4,7 +4,7 @@
       class="full-width"
       style="height: 200px; object-fit: cover"
       src="https://www.interprint-services.co.uk/wp-content/uploads/2019/04/placeholder-banner.png"
-    />
+      />
 
     <q-card-section>
       <div class="row justify-center items-center q-px-md q-gutter-x-md">

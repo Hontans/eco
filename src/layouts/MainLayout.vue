@@ -7,13 +7,12 @@
             src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
           />
         </q-avatar>
-
-        <q-input class="q-mx-auto" rounded standout v-model="text" label="rechercher un produit">
+        <q-input class="q-mx-auto" rounded standout v-model="store.searchTerm" label="rechercher un produit">
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
           <template v-slot:append>
-            <q-icon name="close" @click="text = ''" class="cursor-pointer" />
+            <q-icon name="close" @click="store.searchTerm = ''" class="cursor-pointer" />
           </template>
         </q-input>
 
@@ -86,6 +85,5 @@ import { cartStore } from '../stores/cart-store'
 
 const store = cartStore();
 
-const text = ref('');
 const drawerRight = ref(false);
 </script>

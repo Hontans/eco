@@ -1,44 +1,65 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import type { Product } from '../js/types'
+import { useLocalStorage } from '@vueuse/core'
+import type { Product, User } from '../js/types';
+import users from '../js/user.json';
 
+const dataDefaults = {
+  basket       : [] as Product[],
+  searchTerm   : '',
+  selectedItem : null as Product | null,
+  currentUser  : null as User | null,
+};
 
 export const dataStore = defineStore('dataStore', {
   state: () => ({
-    basket: [] as Product[],
-    searchTerm: '',
-    selectedItem: null as Product | null,
+    data: useLocalStorage('data', dataDefaults)
   }),
 
   getters: {
-    basketCount: (state) => state.basket.length,
-    basketPrice: (state) => state.basket.reduce((total, item) => total + (item.price??0), 0)
+    basketCount: (state) => state.data.basket.length,
+    basketPrice: (state) => state.data.basket.reduce((total, item) => total + (item.price??0), 0),
+    isLoggedIn: (state) => state.data.currentUser !== null,
+    userName: (state) => state.data.currentUser?.name || 'Invité',
   },
 
   actions: {
-    // searchItems(search: string) {
-    //   return this.items.filter(item => item.name?.toLowerCase().includes(search.toLowerCase()));
-    // },
-
-    // searchItems(search: string) {
-    //   this.searchTerm = search;
-    //   return this.items.filter(item => item.name?.toLowerCase().includes(search.toLowerCase()));
-    // },
-
     addToCart(product: Product) {
-      this.basket.push(product);
+      this.data.basket.push(product);
     },
 
     selectItem(product: Product) {
-      this.selectedItem = product;
+      this.data.selectedItem = product;
     },
 
     deleteProduct(product: Product) {
-      const index = this.basket.findIndex((item) => item.id === product.id);
+      const index = this.data.basket.findIndex((item) => item.id === product.id);
       if (index !== -1) {
-        this.basket.splice(index, 1);
+        this.data.basket.splice(index, 1);
       }
-    }
+    },
+
+    login(emailOrName: string, password: string) {
+      const user = users.find(u =>
+        (u.email === emailOrName || u.name === emailOrName) &&
+        u.password === password
+      );
+
+      if (user) {
+        this.data.currentUser = user;
+        return true;
+      }
+
+      return false;
+    },
+
+    logout() {
+      this.data = dataDefaults;
+    },
   },
+
+  hydrate(state) {
+    state.data = useLocalStorage('data', state.data).value;
+  }
 });
 
 if (import.meta.hot) {

@@ -1,30 +1,31 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
+    <h5 class="q-my-md text-center">Connexion</h5>
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         filled
-        v-model="name"
-        label="eco@gmail.com"
-        hint="email"
+        v-model="emailOrName"
+        label="Email ou nom d'utilisateur"
+        hint="Entrez votre email ou nom d'utilisateur"
         lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'obligatoire']"
+        :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
       />
 
       <q-input
         filled
         type="password"
-        v-model="age"
+        v-model="password"
         label="Mot de passe"
-        hint="Mot de passe"
+        hint="Entrez votre mot de passe"
         lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'obligatoire']"
+        :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
       />
 
-      <q-toggle v-model="accept" label="I accept the license and terms" />
+      <q-toggle v-model="accept" label="Se souvenir de moi" />
 
-      <div>
-        <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+      <div class="flex justify-center q-mt-md">
+        <q-btn label="Connexion" type="submit" color="primary" />
+        <q-btn label="Réinitialiser" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
   </div>
@@ -33,33 +34,42 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { dataStore } from '../stores/data-store';
 
 const $q = useQuasar();
-const name = ref(null);
-const age = ref(null);
+const router = useRouter();
+const store = dataStore();
+
+const emailOrName = ref('');
+const password = ref('');
 const accept = ref(false);
 
-const onSubmit = () => {
-  if (accept.value !== true) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'You need to accept the license and terms first',
-    });
-  } else {
+const onSubmit = async () => {
+  const success = store.login(emailOrName.value, password.value);
+
+  if (success) {
     $q.notify({
       color: 'green-4',
       textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Submitted',
+      icon: 'check_circle',
+      message: `Bienvenue ${store.userName}!`,
+    });
+
+    await router.push('/');
+  } else {
+    $q.notify({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'error',
+      message: 'Identifiants incorrects',
     });
   }
 };
 
 const onReset = () => {
-  name.value = null;
-  age.value = null;
+  emailOrName.value = '';
+  password.value = '';
   accept.value = false;
 };
 </script>

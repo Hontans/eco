@@ -21,13 +21,12 @@ import productDb from '../js/products.json';
 import { dataStore } from '../stores/data-store'
 
 
-//#region  declarations
 const store = dataStore();
 
 const results = computed(() => {
-  return productDb.filter((product => product.name?.includes(store.searchTerm)));
+  return productDb.filter((product => product.name?.includes(store.data.searchTerm)));
 });
-//#endregion
+
 function kiwi()
 {
   alert('oui')

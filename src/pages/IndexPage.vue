@@ -1,8 +1,6 @@
 <template>
   <q-page>
-    <ToDayCardComponent
-    @test-envoi="kiwi"
-    ></ToDayCardComponent>
+    <ToDayCardComponent></ToDayCardComponent>
     <div class="row justify-center">
       <template v-for="product in results" :key="product.id">
         <ProductCardComponent
@@ -26,11 +24,6 @@ const store = dataStore();
 const results = computed(() => {
   return productDb.filter((product => product.name?.includes(store.data.searchTerm)));
 });
-
-function kiwi()
-{
-  alert('oui')
-}
 
 </script>
 

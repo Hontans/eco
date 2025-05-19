@@ -1,3 +1,4 @@
 <template>
-  <button>oui</button>
+  <button>oui
+  </button>
 </template>

@@ -22,7 +22,7 @@
         </div>
           <div class="col-2 flex justify-start items-center q-pl-xs">
             <template v-if="store.isLoggedIn">
-              <q-btn-dropdown color="white" text-color="black" :label="`Bonjour, ${store.userName}`" class="q-mr-md">
+              <q-btn-dropdown glossy icon="person" color="white" text-color="black" :label="`${store.userName}`" class="q-mr-md">
                 <q-list>
                   <q-item clickable @click="logout">
                     <q-item-section>

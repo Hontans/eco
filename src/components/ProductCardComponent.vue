@@ -19,13 +19,15 @@
 
 <script setup lang="ts">
 import type { Product } from '../js/types';
-import { addItemToBasket } from '../js/api'
+import { useApi } from '../js/api'
+
+const api = useApi()
 
 const props = defineProps<{
   product: Product;
 }>();
 
 const addToBasket = () => {
-  addItemToBasket(props.product)
+  api.addItemToBasket(props.product)
 };
 </script>

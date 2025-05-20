@@ -54,11 +54,14 @@
 
 
 <script setup lang="ts">
-import { ref, useTemplateRef } from 'vue'
+import { ref, useTemplateRef, onMounted } from 'vue'
 import type { QStepper } from 'quasar'
+import { useApi } from '../js/api'
 
 const stepperRef = useTemplateRef<QStepper>('stepper')
 const step = ref(1)
+
+const api = useApi();
 
 
 function nextStep()
@@ -70,6 +73,14 @@ function previousStep()
 {
   stepperRef.value?.previous()
 }
+
+onMounted(async () => {
+  const users = await api.getUsers()
+  console.log(users);
+
+  const user = await api.getUserByEmail("marie@test.com");
+  console.log(user);
+})
 </script>
 
 <style>.q-stepper, .q-step-title, .q-step-subtitle, .q-btn {

@@ -13,24 +13,13 @@ const routes: RouteRecordRaw[] = [
         path     : 'auth',
         component: () => import('pages/AutentificationPage.vue')
       },
-      {
-        path     : 'checkout',
-        component: () => import('pages/CheckoutPage.vue'),
-        meta: { requiresAuth: true },
-      },
     ],
   },
 
   {
     path: '/checkout',
-    component: () => import('layouts/CheckoutLayout.vue'),
+    component: () => import('pages/CheckoutPage.vue'),
     meta: { requiresAuth: true },
-    children: [
-      {
-        path: '',
-        component: () => import('pages/CheckoutPage.vue')
-      },
-    ]
   },
 
   // Always leave this as last one,

@@ -19,15 +19,13 @@
 
 <script setup lang="ts">
 import type { Product } from '../js/types';
-import { dataStore } from '../stores/data-store'
-
-const store = dataStore();
+import { addItemToBasket } from '../js/api'
 
 const props = defineProps<{
   product: Product;
 }>();
 
 const addToBasket = () => {
-  store.addToCart(props.product);
+  addItemToBasket(props.product)
 };
 </script>

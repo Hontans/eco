@@ -1,4 +1,22 @@
+<template>
+  <q-layout view="hHh lpR fFf">
+    {{ props.id }}
+    /
+    {{ productId }}
+    <q-card class="my-card">
+      <img src="https://cdn.quasar.dev/img/mountains.jpg">
 
+      <q-card-section>
+        <div class="text-h6">{{ product?.name }}</div>
+        <div class="text-subtitle2">by John Doe</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        {{ lorem }}
+      </q-card-section>
+    </q-card>
+  </q-layout>
+</template>
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'

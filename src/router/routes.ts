@@ -17,7 +17,11 @@ const routes: RouteRecordRaw[] = [
         path: '/product/:id', // ':id' est le paramètre dynamique
         name: 'ProductPage',
         component: () => import('pages/ProductPage.vue'),
-        props: true // Important pour passer les params de la route comme props au composant
+        props: route => {
+          return {
+            id: route.params.id // On passe l'id du produit comme prop au composant
+          }
+        } // Important pour passer les params de la route comme props au composant
       }
     ],
   },

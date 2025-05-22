@@ -25,9 +25,9 @@ import { useRouter } from 'vue-router';
 const api = useApi()
 const router = useRouter();
 
-const goToProductPage = () => {
-    void router.push({ name: 'ProductPage', params: { id: props.product.id } });
-  }
+const goToProductPage = async () => {
+  await router.push({ name: 'ProductPage', params: { id: props.product.id } });
+}
 
 const props = defineProps<{
   product: Product;

@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core'
 import type { Product, User } from '../js/types';
 import users from '../js/user.json';
+import products from '../js/products.json';
 
 const dataDefaults = {
   basket       : [] as Product[],
@@ -25,6 +26,10 @@ export const dataStore = defineStore('dataStore', {
   actions: {
     addToCart(product: Product) {
       this.data.basket.push(product);
+    },
+
+    getProductById(id: number): Product | undefined {
+      return products.find((item) => item.id === id);
     },
 
     selectItem(product: Product) {

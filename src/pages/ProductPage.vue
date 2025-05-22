@@ -1,8 +1,5 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    {{ props.id }}
-    /
-    {{ productId }}
     <q-card class="my-card">
       <img src="https://cdn.quasar.dev/img/mountains.jpg">
 
@@ -21,20 +18,19 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { dataStore } from '../stores/data-store';
-import type { Product } from '../js/types';
 
 const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 const store = dataStore();
 const props = defineProps({
-  id: String
+  id: Number
 })
 const productId = ref(props.id);
-const product = ref<Product | undefined>()
+const product = ref()
 
 function loadProduct()
 {
   if (productId.value) {
-    product.value = store.getProductById(parseInt(productId.value, 10))
+    product.value = store.getProductById((productId.value))
   }
 }
 

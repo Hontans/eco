@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/ProductPage.vue'),
         props: route => {
           return {
-            id: route.params.id // On passe l'id du produit comme prop au composant
+            id: parseInt(route.params.id as string, 10) // On passe l'id du produit comme prop au composant
           }
         } // Important pour passer les params de la route comme props au composant
       }

@@ -1,47 +1,5 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-white text-black q-pa-sm row items-center">
-      <div class="col-auto">
-          <q-avatar size="100px" @click="$router.push('/')" class="cursor-pointer q-mr-md">
-            <img
-              src="https://www.adaptivewfs.com/wp-content/uploads/2020/07/logo-placeholder-image.png"
-              alt="Logo"
-            />
-          </q-avatar>
-      </div>
-      <div class="col">
-        <q-stepper
-          v-model="step"
-          ref="stepperRef"
-          color="primary"
-          animated
-          flat
-          header-nav
-          class="bg-transparent no-shadow full-width"
-        >
-          <q-step
-            :name="1"
-            title="Panier"
-            icon="shopping_cart"
-            :done="step > 1"
-            class="text-black"
-          >
-            <!-- Le contenu est dans q-page-container -->
-          </q-step>
-
-          <q-step
-            :name="2"
-            title="Livraison et paiement"
-            icon="local_shipping"
-            :done="step > 2"
-            class="text-black"
-          >
-            <!-- Le contenu est dans q-page-container -->
-          </q-step>
-        </q-stepper>
-      </div>
-    </q-header>
-
     <q-page-container>
       <q-page padding>
         <div class="row q-col-gutter-x-lg">
@@ -145,22 +103,4 @@ onMounted(async () => {
 })
 </script>
 
-<style>
-
-.q-page-container {
-  color: black; /* Assure que le texte par défaut dans la page est noir si non spécifié autrement */
-}
-
-.sticky-top-card {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 20px; /* Ajustez le décalage du haut selon vos besoins */
-}
-
-.ellipsis-2-lines {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
+<style></style>

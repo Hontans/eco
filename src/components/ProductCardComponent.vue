@@ -11,7 +11,7 @@
     <q-card-actions>
       <div class="q-mx-auto">
         <q-btn flat class="q-mr-lg" @click="addToBasket">+ Panier</q-btn>
-        <q-btn flat class="q-ml-lg">Acheter</q-btn>
+        <q-btn flat class="q-ml-lg" @click="goToProductPage">Voir plus</q-btn>
       </div>
     </q-card-actions>
   </q-card>
@@ -20,8 +20,14 @@
 <script setup lang="ts">
 import type { Product } from '../js/types';
 import { useApi } from '../js/api'
+import { useRouter } from 'vue-router';
 
 const api = useApi()
+const router = useRouter();
+
+const goToProductPage = () => {
+    void router.push({ name: 'ProductPage', params: { id: props.product.id } });
+  }
 
 const props = defineProps<{
   product: Product;

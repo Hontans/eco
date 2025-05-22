@@ -12,7 +12,7 @@
             v-for="category in uniqueCategories"
             :key="category"
             :name="category"
-            :label="category.charAt(0).toUpperCase() + category.slice(1)"
+            :label="category.toUpperCase()"
           />
         </q-tabs>
     </div>
@@ -37,6 +37,8 @@ import { dataStore } from '../stores/data-store'
 const tab = ref('all');
 const store = dataStore();
 
+
+// a midifier
 const uniqueCategories = computed(() => {
   if (!productDb || !Array.isArray(productDb)) {
     return [];
@@ -44,6 +46,8 @@ const uniqueCategories = computed(() => {
   const categories = new Set(productDb.map(product => product.category).filter(Boolean)); // filter(Boolean) pour retirer les catégories undefined/null/vides
   return Array.from(categories).sort(); // Trie les catégories par ordre alphabétique
 });
+// a midifier
+
 
 const results = computed(() => {
   let filteredProducts = productDb;

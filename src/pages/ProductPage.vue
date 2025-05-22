@@ -8,7 +8,7 @@
 
       <q-card-section>
         <div class="text-h6">{{ product?.name }}</div>
-        <div class="text-subtitle2">by John Doe</div>
+        <div class="text-subtitle2">{{ product?.price }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">

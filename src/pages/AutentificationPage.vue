@@ -21,8 +21,6 @@
         :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
       />
 
-      <q-toggle v-model="accept" label="Se souvenir de moi" />
-
       <div class="flex justify-center q-mt-md">
         <q-btn label="Connexion" type="submit" color="primary" />
         <q-btn label="Réinitialiser" type="reset" color="primary" flat class="q-ml-sm" />

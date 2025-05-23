@@ -47,7 +47,6 @@ const accept = ref(false);
 
 const onSubmit = async () => {
   const user = await api.login(emailOrName.value, password.value);
-  console.log(user)
   if (user) {
     $q.notify({
       color: 'green-4',

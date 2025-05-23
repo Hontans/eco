@@ -24,6 +24,12 @@ export function useApi() {
     return product;
   }
 
+  const deleteProduct = (product: Product): boolean => {
+    store.deleteProduct(product);
+    return true;
+  }
+
+
   const logout = (): boolean => {
     store.logout();
     return true;
@@ -66,6 +72,7 @@ export function useApi() {
     addItemToBasket,
     getProducts,
     getProductById,
+    deleteProduct,
     logout,
     login,
     getUsers,

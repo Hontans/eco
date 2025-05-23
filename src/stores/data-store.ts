@@ -1,7 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core'
 import type { Product, User } from '../js/types';
-import users from '../../public/users.json';
 import products from '../../public/products.json';
 
 const dataDefaults = {
@@ -36,20 +35,6 @@ export const dataStore = defineStore('dataStore', {
       if (index !== -1) {
         this.data.basket.splice(index, 1);
       }
-    },
-
-    login(emailOrName: string, password: string) {
-      const user = users.find(u =>
-        (u.email === emailOrName || u.name === emailOrName) &&
-        u.password === password
-      );
-
-      if (user) {
-        this.data.currentUser = user;
-        return true;
-      }
-
-      return false;
     },
 
     logout() {

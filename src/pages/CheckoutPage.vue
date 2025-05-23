@@ -63,7 +63,7 @@
                     </q-card-section>
                     <q-card-section class="column items-end justify-between q-py-sm q-px-md" style="min-width: 80px;">
                       <div class="text-subtitle1 q-mb-xs">{{product.price}}</div>
-                      <q-btn class="q-ml-sm" @click="store.deleteProduct(product)" icon="cancel" flat round size="sm"/>
+                      <q-btn class="q-ml-sm" @click="api.deleteProduct(product)" icon="cancel" flat round size="sm"/>
                     </q-card-section>
                   </q-card-section>
                 </q-card>
@@ -108,18 +108,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue' // Removed useTemplateRef as ref="stepperRef" is used directly
+import { ref } from 'vue' // Removed useTemplateRef as ref="stepperRef" is used directly
 import type { QStepper } from 'quasar'
 import { useApi } from '../js/api'
 import { dataStore } from '../stores/data-store'
 
 
 const store = dataStore();
-
+const api = useApi()
 const stepperRef = ref<QStepper | null>(null) // Correctly typed for template ref
 const step = ref(1)
 
-const api = useApi();
 
 const address = ref('');
 const paymentInfo = ref('');
@@ -135,14 +134,6 @@ function handleMainAction() {
     console.log('Informations de paiement:', paymentInfo.value);
   }
 }
-
-onMounted(async () => {
-  const users = await api.getUsers()
-  console.log(users);
-
-  const user = await api.getUserByEmail("marie@test.com");
-  console.log(user);
-})
 </script>
 
 <style>

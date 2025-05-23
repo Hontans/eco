@@ -1,8 +1,8 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core'
 import type { Product, User } from '../js/types';
-import users from '../js/user.json';
-import products from '../js/products.json';
+import users from '../../public/users.json';
+import products from '../../public/products.json';
 
 const dataDefaults = {
   basket       : [] as Product[],

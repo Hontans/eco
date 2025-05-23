@@ -43,7 +43,7 @@ export function useApi() {
   }
   // Vous pouvez ajouter d'autres fonctions API ici
   const getUsers = async (): Promise<User[]> => {
-    const users = await fetch('/test.json')
+    const users = await fetch('/users.json')
                   .then((response) => response.json());
 
     return users as User[];

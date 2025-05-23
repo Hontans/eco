@@ -26,7 +26,7 @@
             v-for="category in uniqueCategories"
             :key="category"
             :name="category"
-            :label="category.toUpperCase()"
+            :label="category?.toUpperCase()"
           />
         </q-tabs>
     </div>
@@ -41,38 +41,52 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import ProductCardComponent from 'components/ProductCardComponent.vue';
-import productDb from '../js/products.json';
 import { dataStore } from '../stores/data-store'
+import { useApi } from '../js/api'
+import type { Product } from '../js/types'
 
 const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const tab = ref('all');
 const store = dataStore();
-
+const api = useApi()
+const products = ref<Product[]>();
 
 // a midifier
 const uniqueCategories = computed(() => {
-  if (!productDb || !Array.isArray(productDb)) {
-    return [];
+  if (!products.value || !Array.isArray(products.value)) {
+    return ['all'];
   }
-  const categories = new Set(productDb.map(product => product.category).filter(Boolean)); // filter(Boolean) pour retirer les catégories undefined/null/vides
-  return Array.from(categories).sort(); // Trie les catégories par ordre alphabétique
+
+  // Convert categories to strings and filter out any falsy values
+  const categories = new Set(
+    products.value
+      .map(product => product.category)
+      .filter(Boolean)
+      .map(category => String(category))
+  );
+
+  if (categories.size === 0) {
+    return ['all'];
+  }
+
+  return Array.from(categories).sort();
 });
 // a midifier
 
 
 const results = computed(() => {
-  let filteredProducts = productDb;
+  let filteredProducts = products.value;
 
   // Filtrer par catégorie si une catégorie autre que 'all' est sélectionnée
   if (tab.value !== 'all') {
-    filteredProducts = filteredProducts.filter(product => product.category === tab.value);
+    filteredProducts = filteredProducts?.filter(product => product.category === tab.value);
   }
 
   // Filtrer par terme de recherche
   if (store.data.searchTerm) {
-    filteredProducts = filteredProducts.filter(product =>
+    filteredProducts = filteredProducts?.filter(product =>
       product.name?.toLowerCase().includes(store.data.searchTerm.toLowerCase())
     );
   }
@@ -80,6 +94,10 @@ const results = computed(() => {
   return filteredProducts;
 });
 
+onMounted(async () =>
+{
+  products.value = await api.getProducts()
+})
 </script>
 
 <style lang="scss" scoped></style>

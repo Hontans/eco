@@ -7,7 +7,6 @@ import products from '../js/products.json';
 const dataDefaults = {
   basket       : [] as Product[],
   searchTerm   : '',
-  selectedItem : null as Product | null,
   currentUser  : null as User | null,
 };
 
@@ -24,16 +23,12 @@ export const dataStore = defineStore('dataStore', {
   },
 
   actions: {
-    addToCart(product: Product) {
+    addItemToBasket(product: Product) {
       this.data.basket.push(product);
     },
 
     getProductById(id: number): Product | undefined {
       return products.find((item) => item.id === id);
-    },
-
-    selectItem(product: Product) {
-      this.data.selectedItem = product;
     },
 
     deleteProduct(product: Product) {

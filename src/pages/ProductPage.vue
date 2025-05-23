@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { dataStore } from '../stores/data-store';
 import type { Product } from '../js/types';
 import { useApi } from '../js/api'
 
@@ -54,16 +53,15 @@ const api = useApi()
 const lorem =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const slide = ref(1);
-const store = dataStore();
 const props = defineProps<{
   id: number;
 }>();
 const productId = ref(props.id);
 const product = ref<Product>();
 
-function loadProduct() {
+async function loadProduct() {
   if (productId.value) {
-    product.value = store.getProductById(productId.value);
+    product.value = await api.getProductById(productId.value);
   }
 }
 
@@ -71,13 +69,17 @@ watch(
   () => props.id,
   (newId) => {
     productId.value = newId;
-    loadProduct();
+    loadProduct().catch((error) => {
+      console.log(error)
+    });
   },
   { immediate: true }
 );
 
 onMounted(() => {
-  loadProduct();
+  loadProduct().catch((error) => {
+      console.log(error)
+    });
 });
 
 const addToBasket = () => {

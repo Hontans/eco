@@ -101,14 +101,16 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { dataStore } from '../stores/data-store';
+import { useApi } from '../js/api'
 
 const store = dataStore();
 const router = useRouter();
 const $q = useQuasar();
 const drawerRight = ref(false);
+const api = useApi()
 
 const logout = async () => {
-  store.logout();
+  api.logout();
   $q.notify({
     color: 'info',
     message: 'Vous êtes déconnecté',

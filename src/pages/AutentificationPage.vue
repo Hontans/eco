@@ -35,25 +35,25 @@
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { dataStore } from '../stores/data-store';
+import { useApi } from '../js/api'
 
+const api = useApi()
 const $q = useQuasar();
 const router = useRouter();
-const store = dataStore();
 
 const emailOrName = ref('');
 const password = ref('');
 const accept = ref(false);
 
 const onSubmit = async () => {
-  const success = store.login(emailOrName.value, password.value);
-
-  if (success) {
+  const user = await api.login(emailOrName.value, password.value);
+  console.log(user)
+  if (user) {
     $q.notify({
       color: 'green-4',
       textColor: 'white',
       icon: 'check_circle',
-      message: `Bienvenue ${store.userName}!`,
+      message: `Bienvenue ${user.name}!`,
     });
 
     await router.push('/');

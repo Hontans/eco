@@ -1,26 +1,58 @@
-import type { Product, ListeUtilisateurs, Utilisateur } from './types';
+import type { Product, User } from './types';
 import { dataStore } from '../stores/data-store'
 
 export function useApi() {
   const store = dataStore();
 
   const addItemToBasket = (item: Product): boolean => {
-    store.addToCart(item);
+    store.addItemToBasket(item);
     return true;
   }
 
+  const getProducts = async (): Promise<Product[]> => {
+    const products = await fetch('/products.json')
+                  .then((response) => response.json());
+    return products as Product[];
+  }
+
+  const getProductById = async (id: number): Promise<Product | undefined> => {
+    const products = await getProducts();
+    const product = products.find((item) => item.id === id);
+    if (!product) {
+      throw new Error('Produit non trouvé');
+    }
+    return product;
+  }
+
+  const logout = (): boolean => {
+    store.logout();
+    return true;
+  }
+
+  const login = async (emailOrName: string, password: string): Promise<User | null> => {
+    const users = await getUsers();
+    const user = users.find(u =>
+      (u.email === emailOrName || u.name === emailOrName) &&
+      u.password === password
+    );
+    if (user) {
+      store.data.currentUser = user;
+      return user;
+    }
+    return null;
+  }
   // Vous pouvez ajouter d'autres fonctions API ici
-  const getUsers = async (): Promise<ListeUtilisateurs> => {
+  const getUsers = async (): Promise<User[]> => {
     const users = await fetch('/test.json')
                   .then((response) => response.json());
 
-    return users as ListeUtilisateurs;
+    return users as User[];
   }
 
-  const getUserByEmail = async (email: string): Promise<Utilisateur> => {
+  const getUserByEmail = async (email: string): Promise<User> => {
     const users = await getUsers();
 
-    const user = users.find((user) => user.email.toLocaleLowerCase() == email.toLocaleLowerCase()) as Utilisateur
+    const user = users.find((user) => user.email.toLocaleLowerCase() == email.toLocaleLowerCase());
 
     if (!user) {
       throw new Error('Utilisateur non trouvé');
@@ -32,6 +64,10 @@ export function useApi() {
   // Exposer toutes les fonctions API
   return {
     addItemToBasket,
+    getProducts,
+    getProductById,
+    logout,
+    login,
     getUsers,
     getUserByEmail
   }

@@ -1,32 +1,82 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <h5 class="q-my-md text-center">Connexion</h5>
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-input
-        filled
-        v-model="emailOrName"
-        label="Email ou nom d'utilisateur"
-        hint="Entrez votre email ou nom d'utilisateur"
-        lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
-      />
+  <q-page class="flex flex-center">
+    <q-card class="auth-card q-pa-lg">
+      <q-card-section class="text-center q-pt-none">
+        <h4 class="q-my-md">Connexion</h4>
+      </q-card-section>
 
-      <q-input
-        filled
-        type="password"
-        v-model="password"
-        label="Mot de passe"
-        hint="Entrez votre mot de passe"
-        lazy-rules
-        :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
-      />
+      <q-card-section>
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+          <q-input
+            outlined
+            v-model="emailOrName"
+            label="Email ou nom d'utilisateur"
+            class="auth-input"
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
+          >
+            <template v-slot:prepend>
+              <q-icon name="person" />
+            </template>
+          </q-input>
 
-      <div class="flex justify-center q-mt-md">
-        <q-btn label="Connexion" type="submit" color="primary" />
-        <q-btn label="Réinitialiser" type="reset" color="primary" flat class="q-ml-sm" />
-      </div>
-    </q-form>
-  </div>
+          <q-input
+            outlined
+            :type="isPwd ? 'password' : 'text'"
+            v-model="password"
+            label="Mot de passe"
+            class="auth-input"
+            lazy-rules
+            :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
+          >
+            <template v-slot:prepend>
+              <q-icon name="lock" />
+            </template>
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+
+          <div class="row justify-end q-mt-sm">
+            <q-btn flat dense color="primary" label="Mot de passe oublié?" size="sm" to="/forgot-password" />
+          </div>
+
+          <div class="row justify-between q-mt-md">
+            <q-btn
+              :loading="loading"
+              label="Connexion"
+              type="submit"
+              color="primary"
+              class="full-width"
+            >
+              <template v-slot:loading>
+                <q-spinner-dots color="white" />
+              </template>
+            </q-btn>
+          </div>
+
+          <div class="row justify-between q-mt-sm">
+            <q-btn
+              label="Réinitialiser"
+              type="reset"
+              color="grey-7"
+              flat
+              class="full-width"
+            />
+          </div>
+
+          <div class="text-center q-mt-md text-grey-8">
+            <p class="q-mb-xs">Pas encore de compte?</p>
+            <q-btn flat color="primary" label="S'inscrire" to="/register" />
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-page>
 </template>
 
 <script setup lang="ts">
@@ -41,32 +91,67 @@ const router = useRouter();
 
 const emailOrName = ref('');
 const password = ref('');
-const accept = ref(false);
+const isPwd = ref(true);
+const loading = ref(false);
 
 const onSubmit = async () => {
-  const user = await api.login(emailOrName.value, password.value);
-  if (user) {
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'check_circle',
-      message: `Bienvenue ${user.name}!`,
-    });
+  loading.value = true;
+  try {
+    const user = await api.login(emailOrName.value, password.value);
+    if (user) {
+      $q.notify({
+        color: 'positive',
+        textColor: 'white',
+        icon: 'check_circle',
+        message: `Bienvenue ${user.name}!`,
+        timeout: 2000,
+        position: 'top'
+      });
 
-    await router.push('/');
-  } else {
+      await router.push('/');
+    } else {
+      $q.notify({
+        color: 'negative',
+        textColor: 'white',
+        icon: 'error',
+        message: 'Identifiants incorrects',
+        timeout: 2000,
+        position: 'top'
+      });
+    }
+  } catch {
     $q.notify({
-      color: 'red-5',
+      color: 'negative',
       textColor: 'white',
-      icon: 'error',
-      message: 'Identifiants incorrects',
+      icon: 'warning',
+      message: 'Erreur de connexion. Veuillez réessayer.',
+      timeout: 2000,
+      position: 'top'
     });
+  } finally {
+    loading.value = false;
   }
 };
 
 const onReset = () => {
   emailOrName.value = '';
   password.value = '';
-  accept.value = false;
 };
 </script>
+
+<style lang="scss" scoped>
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-input {
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+</style>

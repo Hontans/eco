@@ -6,30 +6,35 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path     : '',
+        path: '',
         component: () => import('pages/IndexPage.vue'),
       },
       {
-        path     : 'auth',
-        component: () => import('pages/AutentificationPage.vue')
+        path: 'auth',
+        component: () => import('pages/AutentificationPage.vue'),
       },
       {
-        path     : 'forgot-password',
-        component: () => import('pages/ForgotPassewordPage.vue')
+        path: 'forgot-password',
+        component: () => import('pages/ForgotPassewordPage.vue'),
       },
       {
-        path     : 'register',
-        component: () => import('pages/RegisterPage.vue')
+        path: 'register',
+        component: () => import('pages/RegisterPage.vue'),
+      },
+      {
+        path: 'profile',
+        component: () => import('pages/ProfilePage.vue'),
+        meta: { requiresAuth: true }, // Cette route nécessite une authentification
       },
       {
         path: '/product/:id',
         component: () => import('pages/ProductPage.vue'),
-        props: route => {
+        props: (route) => {
           return {
-            id: parseInt(route.params.id as string, 10) // On passe l'id du produit comme prop au composant
-          }
-        } // Important pour passer les params de la route comme props au composant
-      }
+            id: parseInt(route.params.id as string, 10), // On passe l'id du produit comme prop au composant
+          };
+        }, // Important pour passer les params de la route comme props au composant
+      },
     ],
   },
 

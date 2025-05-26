@@ -9,9 +9,15 @@
             />
           </q-avatar>
         </div>
-
         <div class="col-8 flex justify-center items-center">
-          <q-input class="col-grow" style="max-width: 500px" rounded standout v-model="store.data.searchTerm" label="Rechercher un produit">
+          <q-input
+            class="col-grow"
+            style="max-width: 500px"
+            rounded
+            standout
+            v-model="store.data.searchTerm"
+            label="Rechercher un produit"
+          >
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
@@ -20,31 +26,43 @@
             </template>
           </q-input>
         </div>
-          <div class="col-2 flex justify-start items-center q-pl-xs">
-            <template v-if="store.isLoggedIn">
-              <q-btn-dropdown glossy icon="person" color="white" text-color="black" :label="`${store.userName}`" class="q-mr-md">
-                <q-list>
-                  <q-item clickable @click="logout">
-                    <q-item-section>
-                      <q-item-label>Déconnexion</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-            </template>
-            <template v-else>
-              <q-btn round color="white" text-color="black" icon="person" to="auth" class="q-mr-md" />
-            </template>
-            <q-btn
-              round
+        <div class="col-2 flex justify-start items-center q-pl-xs">
+          <template v-if="store.isLoggedIn">
+            <q-btn-dropdown
+              q-btn-dropdown
+              icon="person"
               color="white"
               text-color="black"
-              icon="shopping_cart"
-              @click="drawerRight = !drawerRight"
+              :label="`${store.userName}`"
+              class="q-mr-md"
             >
-              <q-badge color="red" rounded floating>{{ store.basketCount }}</q-badge>
-            </q-btn>
-          </div>
+              <q-list>
+                <q-item clickable v-close-popup to="/profile">
+                  <q-item-section>
+                    <q-item-label>Profil</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup @click="logout">
+                  <q-item-section>
+                    <q-item-label>Déconnexion</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </template>
+          <template v-else>
+            <q-btn round color="white" text-color="black" icon="person" to="auth" class="q-mr-md" />
+          </template>
+          <q-btn
+            round
+            color="white"
+            text-color="black"
+            icon="shopping_cart"
+            @click="drawerRight = !drawerRight"
+          >
+            <q-badge color="red" rounded floating>{{ store.basketCount }}</q-badge>
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -69,7 +87,7 @@
                     style="max-width: 100px"
                     src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
                     alt="place_older"
-                  >
+                  />
                   <q-btn
                     class="q-ml-sm"
                     @click="store.deleteProduct(product)"
@@ -84,13 +102,18 @@
           </div>
         </template>
         <div class="column items-center q-mt-md q-mb-xl">
-            <div class="text-h6 q-mb-md">Total à payer : {{ store.basketPrice }}€</div>
-            <q-btn color="secondary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
+          <div class="text-h6 q-mb-md">Total à payer : {{ store.basketPrice }}€</div>
+          <q-btn
+            color="secondary"
+            label="Acheter"
+            @click="router.push('/checkout')"
+            size="lg"
+            style="width: 200px"
+          />
         </div>
       </q-scroll-area>
     </q-drawer>
     <q-page-container>
-
       <router-view />
     </q-page-container>
   </q-layout>
@@ -101,13 +124,13 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { dataStore } from '../stores/data-store';
-import { useApi } from '../js/api'
+import { useApi } from '../js/api';
 
 const store = dataStore();
 const router = useRouter();
 const $q = useQuasar();
 const drawerRight = ref(false);
-const api = useApi()
+const api = useApi();
 
 const logout = () => {
   const result = api.logout();
@@ -116,10 +139,8 @@ const logout = () => {
   $q.notify({
     color: 'info',
     message: 'Vous êtes déconnecté',
-    icon: 'logout'
+    icon: 'logout',
   });
   //await router.push('/');
 };
-
-
 </script>

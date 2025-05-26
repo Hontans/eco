@@ -1,4 +1,24 @@
 [
-    {"name": "test", "email": "test@gmail.com", "password": "123"},
-    {"name": "sylvain", "email": "sylvain@gmail.com", "password": "sylvain"}
+  {
+    "name": "test",
+    "email": "test@gmail.com",
+    "password": "123",
+    "numero de la carte": "1234567890123456",
+    "date d'expiration": "12/25",
+    "cryptogramme": "123",
+    "Pays": "France",
+    "ville": "Paris",
+    "code postal": "75001"
+  },
+  {
+    "name": "sylvain",
+    "email": "sylvain@gmail.com",
+    "password": "sylvain",
+    "numero de la carte": "1234567890123456",
+    "date d'expiration": "12/25",
+    "cryptogramme": "123",
+    "Pays": "France",
+    "ville": "Paris",
+    "code postal": "75001"
+  }
 ]

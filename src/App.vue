@@ -13,7 +13,7 @@ const router = useRouter();
 router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
     if (!store.data.currentUser) {
-      return router.push('auth');
+      return '/auth';
     }
   }
 });

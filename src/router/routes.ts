@@ -14,8 +14,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/AutentificationPage.vue')
       },
       {
-        path: '/product/:id', // ':id' est le paramètre dynamique
-        name: 'ProductPage',
+        path     : 'forgot-password',
+        component: () => import('pages/ForgotPassewordPage.vue')
+      },
+      {
+        path     : 'register',
+        component: () => import('pages/RegisterPage.vue')
+      },
+      {
+        path: '/product/:id',
         component: () => import('pages/ProductPage.vue'),
         props: route => {
           return {

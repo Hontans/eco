@@ -2,15 +2,15 @@
   <q-page class="flex flex-center">
     <q-card class="auth-card q-pa-lg">
       <q-card-section class="text-center q-pt-none">
-        <h4 class="q-my-md">Connexion</h4>
+        <h4 class="q-my-md">Mot de passe oublié</h4>
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit="onSubmit" class="q-gutter-md">
+        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
             outlined
             v-model="emailOrName"
-            label="Email ou nom d'utilisateur"
+            label="Email"
             class="auth-input"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
@@ -20,35 +20,10 @@
             </template>
           </q-input>
 
-          <q-input
-            outlined
-            :type="isPwd ? 'password' : 'text'"
-            v-model="password"
-            label="Mot de passe"
-            class="auth-input"
-            lazy-rules
-            :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
-          >
-            <template v-slot:prepend>
-              <q-icon name="lock" />
-            </template>
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              />
-            </template>
-          </q-input>
-
-          <div class="row justify-end q-mt-sm">
-            <q-btn flat dense color="primary" label="Mot de passe oublié?" size="sm" to="/forgot-password" />
-          </div>
-
           <div class="row justify-between q-mt-md">
             <q-btn
               :loading="loading"
-              label="Connexion"
+              label="Envoyer"
               type="submit"
               color="primary"
               class="full-width"
@@ -58,11 +33,11 @@
               </template>
             </q-btn>
           </div>
-        </q-form>
-        <div class="text-center q-mt-md text-grey-8">
-            <p class="q-mb-xs">Pas encore de compte?</p>
-            <q-btn flat color="primary" label="S'inscrire" @click="router.push('/register')" />
+
+          <div class="text-center q-mt-md text-grey-8">
+            <q-btn flat color="primary" label="anuler" to="/auth" />
           </div>
+        </q-form>
       </q-card-section>
     </q-card>
   </q-page>
@@ -80,7 +55,6 @@ const router = useRouter();
 
 const emailOrName = ref('');
 const password = ref('');
-const isPwd = ref(true);
 const loading = ref(false);
 
 const onSubmit = async () => {
@@ -120,6 +94,11 @@ const onSubmit = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const onReset = () => {
+  emailOrName.value = '';
+  password.value = '';
 };
 </script>
 

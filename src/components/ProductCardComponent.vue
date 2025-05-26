@@ -26,7 +26,7 @@ const api = useApi()
 const router = useRouter();
 
 const goToProductPage = async () => {
-  await router.push({ name: 'ProductPage', params: { id: props.product.id } });
+  await router.push(`/product/${props.product.id}`);
 }
 
 const props = defineProps<{

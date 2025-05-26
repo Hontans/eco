@@ -22,22 +22,31 @@
           <q-step
             :name="1"
             title="Panier"
-            icon="shopping_cart"
+            icon="basket"
             :done="step > 1"
             class="text-black"
-          >
-            <!-- Le contenu est dans q-page-container -->
-          </q-step>
-
+          />
           <q-step
             :name="2"
-            title="Livraison et paiement"
+            title="Livraison"
             icon="local_shipping"
             :done="step > 2"
             class="text-black"
-          >
-            <!-- Le contenu est dans q-page-container -->
-          </q-step>
+          />
+          <q-step
+            :name="3"
+            title="Paiement"
+            icon="credit_card"
+            :done="step > 3"
+            class="text-black"
+          />
+          <q-step
+            :name="4"
+            title="Récapitulatif"
+            icon="receipt"
+            :done="step > 4"
+            class="text-black"
+          />
         </q-stepper>
       </div>
     </q-header>

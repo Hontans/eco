@@ -37,8 +37,10 @@ export const dataStore = defineStore('dataStore', {
       }
     },
 
-    logout() {
-      this.data = dataDefaults;
+    logout() : boolean {
+      this.data.currentUser = null;
+      this.data.basket = [];
+      return true;
     },
   },
 

@@ -31,8 +31,7 @@ export function useApi() {
 
 
   const logout = (): boolean => {
-    store.logout();
-    return true;
+    return store.logout();
   }
 
   const login = async (emailOrName: string, password: string): Promise<User | null> => {

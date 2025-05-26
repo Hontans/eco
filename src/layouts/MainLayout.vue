@@ -109,14 +109,16 @@ const $q = useQuasar();
 const drawerRight = ref(false);
 const api = useApi()
 
-const logout = async () => {
-  api.logout();
+const logout = () => {
+  const result = api.logout();
+  console.log(result);
+
   $q.notify({
     color: 'info',
     message: 'Vous êtes déconnecté',
     icon: 'logout'
   });
-  await router.push('/');
+  //await router.push('/');
 };
 
 

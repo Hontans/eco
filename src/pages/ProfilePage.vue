@@ -48,44 +48,116 @@
       <div v-if="activeSection === 'coordonnees'">
         <div class="text-h5 text-center q-mb-lg">Coordonnées</div>
         <div class="q-mx-auto" style="max-width: 400px">
-          <q-input v-model="userName" label="Identifiant :" outlined class="q-mb-md" />
-          <q-input v-model="userEmail" label="Mail :" outlined type="email" class="q-mb-md" />
-          <q-input
-            v-model="userPassword"
-            label="Mots de passe"
-            outlined
-            type="password"
-            class="q-mb-md"
-          />
-          <div class="text-center q-mt-lg">
-            <q-btn label="Valider" color="primary" @click="saveUserData" />
+          <div class="row q-mb-md">
+            <q-input v-model="userName" label="Identifiant :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userName')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="userEmail" label="Mail :" outlined type="email" class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userEmail')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input
+              v-model="userPassword"
+              label="Mots de passe"
+              outlined
+              type="password"
+              class="col"
+            />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userPassword')"
+            />
           </div>
         </div>
       </div>
       <div v-else-if="activeSection === 'adresses'">
         <div class="text-h5 text-center q-mb-lg">Adresses</div>
         <div class="q-mx-auto" style="max-width: 400px">
-          <q-input v-model="userCountry" label="Pays :" outlined class="q-mb-md" />
-          <q-input v-model="userCity" label="Ville :" outlined class="q-mb-md" />
-          <q-input v-model="userPostalCode" label="Code postal :" outlined class="q-mb-md" />
-          <div class="text-center q-mt-lg">
-            <q-btn label="Valider" color="primary" @click="saveUserData" />
+          <div class="row q-mb-md">
+            <q-input v-model="userCountry" label="Pays :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userCountry')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="userCity" label="Ville :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userCity')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="userPostalCode" label="Code postal :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userPostalCode')"
+            />
           </div>
         </div>
       </div>
       <div v-else-if="activeSection === 'paiement'">
         <div class="text-h5 text-center q-mb-lg">Paiement</div>
         <div class="q-mx-auto" style="max-width: 400px">
-          <q-input v-model="userCardNumber" label="Numéro de carte :" outlined class="q-mb-md" />
-          <q-input
-            v-model="userExpirationDate"
-            label="Date d'expiration :"
-            outlined
-            class="q-mb-md"
-          />
-          <q-input v-model="userCryptogram" label="Cryptogramme :" outlined class="q-mb-md" />
-          <div class="text-center q-mt-lg">
-            <q-btn label="Valider" color="primary" @click="saveUserData" />
+          <div class="row q-mb-md">
+            <q-input v-model="userCardNumber" label="Numéro de carte :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userCardNumber')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input
+              v-model="userExpirationDate"
+              label="Date d'expiration :"
+              outlined
+              class="col"
+            />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userExpirationDate')"
+            />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="userCryptogram" label="Cryptogramme :" outlined class="col" />
+            <q-btn
+              label="Valider"
+              color="primary"
+              size="sm"
+              class="q-ml-md self-center"
+              @click="saveField('userCryptogram')"
+            />
           </div>
         </div>
       </div>
@@ -111,10 +183,10 @@ const userCardNumber = ref('');
 const userExpirationDate = ref('');
 const userCryptogram = ref('');
 
-const saveUserData = () => {
-  console.log('Données sauvegardées:');
+const saveField = (fieldName: string) => {
+  console.log(`Champ ${fieldName} sauvegardé`);
   $q.notify({
-    message: 'Profil mis à jour avec succès',
+    message: `${fieldName} mis à jour avec succès`,
     color: 'positive',
     position: 'bottom',
   });

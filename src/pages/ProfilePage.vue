@@ -128,7 +128,7 @@
 
           <q-card-actions align="right">
             <q-btn flat label="Annuler" color="primary" v-close-popup />
-            <q-btn v-if="" flat label="Enregistrer" color="primary" v-close-popup />
+            <q-btn flat label="Enregistrer" color="primary" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>

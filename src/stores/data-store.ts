@@ -1,22 +1,22 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { useLocalStorage } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core';
 import type { Product, User } from '../js/types';
 import products from '../../public/products.json';
 
 const dataDefaults = {
-  basket       : [] as Product[],
-  searchTerm   : '',
-  currentUser  : null as User | null,
+  basket: [] as Product[],
+  searchTerm: '',
+  currentUser: null as User | null,
 };
 
 export const dataStore = defineStore('dataStore', {
   state: () => ({
-    data: useLocalStorage('data', dataDefaults)
+    data: useLocalStorage('data', dataDefaults),
   }),
 
   getters: {
     basketCount: (state) => state.data.basket.length,
-    basketPrice: (state) => state.data.basket.reduce((total, item) => total + (item.price??0), 0),
+    basketPrice: (state) => state.data.basket.reduce((total, item) => total + (item.price ?? 0), 0),
     isLoggedIn: (state) => state.data.currentUser !== null,
     userName: (state) => state.data.currentUser?.name || 'Invité',
   },
@@ -37,7 +37,7 @@ export const dataStore = defineStore('dataStore', {
       }
     },
 
-    logout() : boolean {
+    logout(): boolean {
       this.data.currentUser = null;
       this.data.basket = [];
       return true;
@@ -46,7 +46,7 @@ export const dataStore = defineStore('dataStore', {
 
   hydrate(state) {
     state.data = useLocalStorage('data', state.data).value;
-  }
+  },
 });
 
 if (import.meta.hot) {

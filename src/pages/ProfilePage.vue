@@ -88,7 +88,23 @@
       </div>
       <div v-else-if="activeSection === 'adresses'">
         <div class="text-h5 text-center q-mb-lg">Adresses</div>
-        <div class="q-mx-auto" style="max-width: 400px">
+        <div class="q-pa-md q-gutter-sm">
+          <q-banner inline-actions rounded class="bg-black text-white">
+            {{ userCountry }}, {{ userCity }}, {{ userPostalCode }}
+            <template v-slot:action>
+              <q-btn flat :label="showAddressForm ? 'fermer' : 'modifier'" @click="editAddress" />
+              <q-btn flat label="supprimer" @click="deleteAddress" />
+            </template>
+          </q-banner>
+          <q-btn
+            label="Ajouter une adresse"
+            color="primary"
+            icon="add"
+            @click="editAddress"
+            class="q-mt-sm"
+          />
+        </div>
+        <div v-if="showAddressForm" class="q-mx-auto" style="max-width: 400px">
           <div class="row q-mb-md">
             <q-input v-model="userCountry" label="Pays :" outlined class="col" />
             <q-btn
@@ -182,12 +198,27 @@ const userPostalCode = ref('');
 const userCardNumber = ref('');
 const userExpirationDate = ref('');
 const userCryptogram = ref('');
+const showAddressForm = ref(false);
 
 const saveField = (fieldName: string) => {
   console.log(`Champ ${fieldName} sauvegardé`);
   $q.notify({
     message: `${fieldName} mis à jour avec succès`,
     color: 'positive',
+    position: 'bottom',
+  });
+};
+
+const editAddress = () => {
+  showAddressForm.value = !showAddressForm.value;
+};
+
+// Fonction pour supprimer l'adresse
+const deleteAddress = () => {
+  // Logique de suppression à implémenter
+  $q.notify({
+    message: 'Adresse supprimée',
+    color: 'negative',
     position: 'bottom',
   });
 };

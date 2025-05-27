@@ -61,7 +61,7 @@
           <div class="row q-mb-md">
             <q-input v-model="userEmail" label="Mail :" outlined type="email" class="col" />
             <q-btn
-              label="Valider"
+              label="Valider email"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
@@ -77,7 +77,7 @@
               class="col"
             />
             <q-btn
-              label="Valider"
+              label="Valider mot de passe"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
@@ -86,64 +86,60 @@
           </div>
         </div>
       </div>
+
+      <!-- region ----------------adresse----------------- -->
       <div v-else-if="activeSection === 'adresses'">
         <div class="text-h5 text-center q-mb-lg">Adresses</div>
-        <div class="q-pa-md q-gutter-sm">
+        <div v-for="address in adresses" :key="address.city ?? ''" class="q-pa-md q-gutter-sm">
           <q-banner inline-actions rounded class="bg-black text-white">
-            {{ userCountry }}, {{ userCity }}, {{ userPostalCode }}
+            {{ address.country }}, {{ address.city }}, {{ address.postalCode }}
             <template v-slot:action>
-              <q-btn flat :label="showAddressForm ? 'fermer' : 'modifier'" @click="editAddress" />
-              <q-btn flat label="supprimer" @click="deleteAddress" />
+              <q-btn flat label="modifier" @click="editAddress(address)" />
+              <q-btn flat label="supprimer" @click="deleteAddress(address)" />
             </template>
           </q-banner>
-          <q-btn
-            label="Ajouter une adresse"
-            color="primary"
-            icon="add"
-            @click="editAddress"
-            class="q-mt-sm"
-          />
         </div>
-        <div v-if="showAddressForm" class="q-mx-auto" style="max-width: 400px">
-          <div class="row q-mb-md">
-            <q-input v-model="userCountry" label="Pays :" outlined class="col" />
-            <q-btn
-              label="Valider"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userCountry')"
-            />
-          </div>
-          <div class="row q-mb-md">
-            <q-input v-model="userCity" label="Ville :" outlined class="col" />
-            <q-btn
-              label="Valider"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userCity')"
-            />
-          </div>
-          <div class="row q-mb-md">
-            <q-input v-model="userPostalCode" label="Code postal :" outlined class="col" />
-            <q-btn
-              label="Valider"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userPostalCode')"
-            />
-          </div>
-        </div>
+        <q-btn
+          label="Ajouter une adresse"
+          color="primary"
+          icon="add"
+          @click="addAddress"
+          class="q-mt-sm q-pa-md"
+        />
       </div>
-      <div v-else-if="activeSection === 'paiement'">
+
+      <q-dialog v-model="showAddressForm">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Adresse</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <div class="row q-mb-md">
+              <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
+            </div>
+            <div class="row q-mb-md">
+              <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
+            </div>
+            <div class="row q-mb-md">
+              <input label="Code postal :" outlined class="col" />
+            </div>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Annuler" color="primary" v-close-popup />
+            <q-btn v-if="" flat label="Enregistrer" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <!-- region ----------------paiement----------------- -->
+      <div v-if="activeSection === 'paiement'">
         <div class="text-h5 text-center q-mb-lg">Paiement</div>
         <div class="q-mx-auto" style="max-width: 400px">
           <div class="row q-mb-md">
-            <q-input v-model="userCardNumber" label="Numéro de carte :" outlined class="col" />
             <q-btn
-              label="Valider"
+              label="Valider carte"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
@@ -151,14 +147,8 @@
             />
           </div>
           <div class="row q-mb-md">
-            <q-input
-              v-model="userExpirationDate"
-              label="Date d'expiration :"
-              outlined
-              class="col"
-            />
             <q-btn
-              label="Valider"
+              label="Valider date"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
@@ -166,9 +156,8 @@
             />
           </div>
           <div class="row q-mb-md">
-            <q-input v-model="userCryptogram" label="Cryptogramme :" outlined class="col" />
             <q-btn
-              label="Valider"
+              label="Valider crypto"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
@@ -185,6 +174,7 @@
 import { useApi } from '../js/api';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
+import type { Adress, BasketCard } from '../js/types';
 
 const $q = useQuasar();
 const activeSection = ref('coordonnees');
@@ -192,13 +182,14 @@ const api = useApi();
 const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
-const userCountry = ref('');
-const userCity = ref('');
-const userPostalCode = ref('');
-const userCardNumber = ref('');
-const userExpirationDate = ref('');
-const userCryptogram = ref('');
+const basketCards = ref<BasketCard[]>([]);
+const adresses = ref<Adress[]>([]);
 const showAddressForm = ref(false);
+const addNewAddress = ref(false);
+
+const editAddressCountry = ref();
+const editAddressCity = ref();
+const editAddressPostalCode = ref();
 
 const saveField = (fieldName: string) => {
   console.log(`Champ ${fieldName} sauvegardé`);
@@ -209,31 +200,55 @@ const saveField = (fieldName: string) => {
   });
 };
 
-const editAddress = () => {
+const editAddress = (addresse: Adress) => {
   showAddressForm.value = !showAddressForm.value;
+  addNewAddress.value = false;
+
+  editAddressCountry.value = addresse.country;
+  editAddressCity.value = addresse.city;
+  editAddressPostalCode.value = addresse.postalCode;
 };
 
-// Fonction pour supprimer l'adresse
-const deleteAddress = () => {
-  // Logique de suppression à implémenter
+const addAddress = () => {
+  showAddressForm.value = true;
+
+  editAddressCountry.value = '';
+  editAddressCity.value = '';
+  editAddressPostalCode.value = '';
+};
+
+const deleteAddress = (addresse: Adress) => {
+  showAddressForm.value = false;
+  addNewAddress.value = false;
   $q.notify({
     message: 'Adresse supprimée',
     color: 'negative',
     position: 'bottom',
   });
+
+  console.log(`Adresse supprimée: ${addresse.country}, ${addresse.city}, ${addresse.postalCode}`);
 };
 
 onMounted(() => {
   const conectedUser = api.getConectedUser();
   if (conectedUser) {
+    console.log('Utilisateur connecté:', conectedUser);
     userName.value = conectedUser.name;
     userEmail.value = conectedUser.email;
-    userCountry.value = conectedUser.country || '';
-    userCity.value = conectedUser.city || '';
-    userPostalCode.value = conectedUser.postalCode || '';
-    userCardNumber.value = conectedUser.cardNumber || '';
-    userExpirationDate.value = conectedUser.expirationDate || '';
-    userCryptogram.value = conectedUser.cryptogram || '';
+    adresses.value = conectedUser.adresses || [
+      {
+        country: '',
+        city: '',
+        postalCode: '',
+      },
+    ];
+    basketCards.value = conectedUser.basketCards || [
+      {
+        cardNumber: '',
+        expirationDate: '',
+        cryptogram: '',
+      },
+    ];
   } else {
     $q.notify({
       message: 'Aucun utilisateur connecté',

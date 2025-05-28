@@ -34,47 +34,6 @@
         </q-item>
       </q-list>
     </div>
-    <div v-if="activeSection === 'coordonnees'">
-      <div class="text-h5 text-center q-mb-lg">Coordonnées</div>
-      <div class="q-mx-auto" style="max-width: 400px">
-        <div class="row q-mb-md">
-          <q-input v-model="userName" label="Identifiant :" outlined class="col" />
-          <q-btn
-            label="Valider"
-            color="primary"
-            size="sm"
-            class="q-ml-md self-center"
-            @click="saveField('userName')"
-          />
-        </div>
-        <div class="row q-mb-md">
-          <q-input v-model="userEmail" label="Mail :" outlined type="email" class="col" />
-          <q-btn
-            label="Valider email"
-            color="primary"
-            size="sm"
-            class="q-ml-md self-center"
-            @click="saveField('userEmail')"
-          />
-        </div>
-        <div class="row q-mb-md">
-          <q-input
-            v-model="userPassword"
-            label="Mots de passe"
-            outlined
-            type="password"
-            class="col"
-          />
-          <q-btn
-            label="Valider mot de passe"
-            color="primary"
-            size="sm"
-            class="q-ml-md self-center"
-            @click="saveField('userPassword')"
-          />
-        </div>
-      </div>
-    </div>
     <div
       class="q-pa-md q-ml-md bg-white shadow-1"
       style="
@@ -86,42 +45,53 @@
         transform: translate(-50%, -50%);
       "
     >
-      <div v-if="activeSection === 'adresses'">
-        <AdressesBannerComponent @saveField="saveField" />
-      </div>
-      <div v-if="activeSection === 'paiement'">
-        <div class="text-h5 text-center q-mb-lg">Paiement</div>
+      <div v-if="activeSection === 'coordonnees'">
+        <div class="text-h5 text-center q-mb-lg">Coordonnées</div>
         <div class="q-mx-auto" style="max-width: 400px">
           <div class="row q-mb-md">
+            <q-input v-model="userName" label="Identifiant :" outlined class="col" />
             <q-btn
-              label="Valider carte"
+              label="Valider"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
-              @click="saveField('userCardNumber')"
+              @click="saveField('userName')"
             />
           </div>
           <div class="row q-mb-md">
+            <q-input v-model="userEmail" label="Mail :" outlined type="email" class="col" />
             <q-btn
-              label="Valider date"
+              label="Valider email"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
-              @click="saveField('userExpirationDate')"
+              @click="saveField('userEmail')"
             />
           </div>
           <div class="row q-mb-md">
+            <q-input
+              v-model="userPassword"
+              label="Mots de passe"
+              outlined
+              type="password"
+              class="col"
+            />
             <q-btn
-              label="Valider crypto"
+              label="Valider mot de passe"
               color="primary"
               size="sm"
               class="q-ml-md self-center"
-              @click="saveField('userCryptogram')"
+              @click="saveField('userPassword')"
             />
           </div>
         </div>
       </div>
     </div>
+
+    <div v-if="activeSection === 'adresses'">
+      <AdressesBannerComponent />
+    </div>
+    <div v-if="activeSection === 'paiement'"></div>
   </q-page>
 </template>
 
@@ -138,7 +108,6 @@ const api = useApi();
 const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
-
 const basketCards = ref<BasketCard[]>([]);
 
 const saveField = (fieldName: string) => {

@@ -1,71 +1,83 @@
 <template>
-  <div class="text-h5 text-center q-mb-lg">Adresses</div>
-  <div v-for="address in adresses" :key="address.city ?? ''" class="q-pa-md q-gutter-sm">
-    <q-banner inline-actions rounded class="bg-black text-white">
-      {{ address.country }}, {{ address.city }}, {{ address.postalCode }}
-      <template v-slot:action>
-        <q-btn flat label="modifier" @click="showEditAddressFormfAndValue(address)" />
-        <q-btn flat label="supprimer" @click="deleteAddress(address)" />
-      </template>
-    </q-banner>
+  <div
+    class="q-pa-md q-ml-md bg-white shadow-1"
+    style="
+      width: 80%;
+      max-width: 600px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    "
+  >
+    <div class="text-h5 text-center q-mb-lg">Adresses</div>
+    <div v-for="address in adresses" :key="address.city ?? ''" class="q-pa-md q-gutter-sm">
+      <q-banner inline-actions rounded class="bg-black text-white">
+        {{ address.country }}, {{ address.city }}, {{ address.postalCode }}
+        <template v-slot:action>
+          <q-btn flat label="modifier" @click="showEditAddressFormfAndValue(address)" />
+          <q-btn flat label="supprimer" @click="deleteAddress(address)" />
+        </template>
+      </q-banner>
+    </div>
+    <div class="text-center">
+      <q-btn
+        label="Ajouter une adresse"
+        color="primary"
+        icon="add"
+        @click="showAddAddressFormAndValue"
+        class="q-mt-sm q-pa-md"
+      />
+    </div>
+
+    <q-dialog v-model="showEditAddressForm">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Modifier l'adresse</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Annuler" color="primary" v-close-popup />
+          <q-btn flat label="Enregistrer" color="primary" v-close-popup @click="updateAddress" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="showAddAddressForm">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Ajouter une adresse</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
+          </div>
+          <div class="row q-mb-md">
+            <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Annuler" color="primary" v-close-popup />
+          <q-btn flat label="Ajouter" color="primary" v-close-popup @click="addAddress" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
-  <div class="text-center">
-    <q-btn
-      label="Ajouter une adresse"
-      color="primary"
-      icon="add"
-      @click="showAddAddressFormAndValue"
-      class="q-mt-sm q-pa-md"
-    />
-  </div>
-
-  <q-dialog v-model="showEditAddressForm">
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">Modifier l'adresse</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
-        </div>
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
-        </div>
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
-        </div>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn flat label="Annuler" color="primary" v-close-popup />
-        <q-btn flat label="Enregistrer" color="primary" v-close-popup @click="updateAddress" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <q-dialog v-model="showAddAddressForm">
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">Ajouter une adresse</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
-        </div>
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
-        </div>
-        <div class="row q-mb-md">
-          <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
-        </div>
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn flat label="Annuler" color="primary" v-close-popup />
-        <q-btn flat label="Ajouter" color="primary" v-close-popup @click="addAddress" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script setup lang="ts">

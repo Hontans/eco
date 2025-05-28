@@ -77,154 +77,91 @@ import { useApi } from '../js/api';
 
 const api = useApi();
 const $q = useQuasar();
-const editAddressCountry = ref();
+const editAddressCountry = ref('');
+const editAddressCity = ref('');
+const editAddressPostalCode = ref('');
 const showEditAddressForm = ref(false);
 const showAddAddressForm = ref(false);
-const editAddressCity = ref();
-const editAddressPostalCode = ref();
 const adresses = ref<Adress[]>([]);
 const editingAddress = ref<Adress | null>(null);
 
-const showEditAddressFormfAndValue = (addresse: Adress) => {
+const notify = (message: string, color: string) =>
+  $q.notify({ message, color, position: 'bottom' });
+
+const updateStore = () => {
+  const user = api.getConectedUser();
+  if (user) {
+    user.adresses = adresses.value;
+    dataStore().data.currentUser = user;
+  }
+};
+
+const showEditAddressFormfAndValue = (address: Adress) => {
   showEditAddressForm.value = true;
-  editingAddress.value = addresse; // Stocker l'adresse en cours de modification
-  editAddressCountry.value = addresse.country;
-  editAddressCity.value = addresse.city;
-  editAddressPostalCode.value = addresse.postalCode;
+  editingAddress.value = address;
+  editAddressCountry.value = address.country || '';
+  editAddressCity.value = address.city || '';
+  editAddressPostalCode.value = address.postalCode || '';
 };
 
 const showAddAddressFormAndValue = () => {
   showAddAddressForm.value = true;
-  editAddressCountry.value = '';
-  editAddressCity.value = '';
-  editAddressPostalCode.value = '';
+  editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
 };
 
 const updateAddress = () => {
-  const connectedUser = api.getConectedUser();
-  if (connectedUser && editingAddress.value) {
-    // Trouver l'index de l'adresse à modifier
-    const index = adresses.value.findIndex((addr) => addr === editingAddress.value);
-
-    if (index !== -1) {
-      // Mettre à jour l'adresse avec les nouvelles valeurs
-      adresses.value[index] = {
-        country: editAddressCountry.value,
-        city: editAddressCity.value,
-        postalCode: editAddressPostalCode.value,
-      };
-      connectedUser.adresses = adresses.value;
-      const store = dataStore();
-      store.data.currentUser = connectedUser;
-      $q.notify({
-        message: 'Adresse modifiée avec succès',
-        color: 'positive',
-        position: 'bottom',
-      });
-    } else {
-      $q.notify({
-        message: 'Adresse non trouvée',
-        color: 'negative',
-        position: 'bottom',
-      });
-    }
-  } else {
-    $q.notify({
-      message: 'Erreur lors de la modification',
-      color: 'negative',
-      position: 'bottom',
-    });
-  }
-};
-
-const addAddress = () => {
-  // Vérifier que tous les champs sont remplis
-  if (!editAddressCountry.value || !editAddressCity.value || !editAddressPostalCode.value) {
-    $q.notify({
-      message: 'Veuillez remplir tous les champs',
-      color: 'negative',
-      position: 'bottom',
-    });
-    return;
-  }
-
-  const connectedUser = api.getConectedUser();
-  if (connectedUser) {
-    // Créer la nouvelle adresse
-    const newAddress: Adress = {
+  const index = adresses.value.findIndex((addr) => addr === editingAddress.value);
+  if (index !== -1) {
+    adresses.value[index] = {
       country: editAddressCountry.value,
       city: editAddressCity.value,
       postalCode: editAddressPostalCode.value,
     };
-
-    // Ajouter l'adresse au tableau local
-    adresses.value.push(newAddress);
-
-    // Mettre à jour l'utilisateur connecté dans le store
-    connectedUser.adresses = adresses.value;
-    const store = dataStore();
-    store.data.currentUser = connectedUser;
-
-    $q.notify({
-      message: 'Adresse ajoutée avec succès',
-      color: 'positive',
-      position: 'bottom',
-    });
-
-    // Réinitialiser les champs
-    editAddressCountry.value = '';
-    editAddressCity.value = '';
-    editAddressPostalCode.value = '';
+    updateStore();
+    notify('Adresse modifiée avec succès', 'positive');
   } else {
-    $q.notify({
-      message: "Erreur lors de l'ajout",
-      color: 'negative',
-      position: 'bottom',
-    });
+    notify('Erreur lors de la modification', 'negative');
   }
 };
 
-const deleteAddress = (addresse: Adress) => {
-  // Supprimer l'adresse du tableau local
+const addAddress = () => {
+  if (!editAddressCountry.value || !editAddressCity.value || !editAddressPostalCode.value) {
+    notify('Veuillez remplir tous les champs', 'negative');
+    return;
+  }
+
+  adresses.value.push({
+    country: editAddressCountry.value,
+    city: editAddressCity.value,
+    postalCode: editAddressPostalCode.value,
+  });
+
+  updateStore();
+  notify('Adresse ajoutée avec succès', 'positive');
+  editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
+};
+
+const deleteAddress = (address: Adress) => {
   const index = adresses.value.findIndex(
     (addr) =>
-      addr.country === addresse.country &&
-      addr.city === addresse.city &&
-      addr.postalCode === addresse.postalCode,
+      addr.country === address.country &&
+      addr.city === address.city &&
+      addr.postalCode === address.postalCode,
   );
 
   if (index !== -1) {
     adresses.value.splice(index, 1);
-    const connectedUser = api.getConectedUser();
-    if (connectedUser) {
-      connectedUser.adresses = adresses.value;
-      const store = dataStore();
-      store.data.currentUser = connectedUser;
-    }
-    $q.notify({
-      message: 'Adresse supprimée avec succès',
-      color: 'positive',
-      position: 'bottom',
-    });
+    updateStore();
+    notify('Adresse supprimée avec succès', 'positive');
   } else {
-    $q.notify({
-      message: 'Erreur lors de la suppression',
-      color: 'negative',
-      position: 'bottom',
-    });
+    notify('Erreur lors de la suppression', 'negative');
   }
 };
 
 onMounted(() => {
-  const conectedUser = api.getConectedUser();
-  if (conectedUser) {
-    adresses.value = conectedUser.adresses || [
-      {
-        country: '',
-        city: '',
-        postalCode: '',
-      },
-    ];
+  const user = api.getConectedUser();
+  if (user) {
+    adresses.value = user.adresses || [];
   }
 });
 </script>

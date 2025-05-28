@@ -91,7 +91,9 @@
     <div v-if="activeSection === 'adresses'">
       <AdressesBannerComponent />
     </div>
-    <div v-if="activeSection === 'paiement'"></div>
+    <div v-if="activeSection === 'paiement'">
+      <PaymentBannerComponent />
+    </div>
   </q-page>
 </template>
 
@@ -100,7 +102,7 @@ import { useApi } from '../js/api';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import AdressesBannerComponent from '../components/AdressesBannerComponent.vue';
-import type { BasketCard } from '../js/types';
+import PaymentBannerComponent from '../components/PaymentBannerComponent.vue';
 
 const $q = useQuasar();
 const activeSection = ref('coordonnees');

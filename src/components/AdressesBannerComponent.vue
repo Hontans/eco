@@ -138,11 +138,50 @@ const updateAddress = () => {
 };
 
 const addAddress = () => {
-  $q.notify({
-    message: 'Adresse ajoutée avec succès',
-    color: 'positive',
-    position: 'bottom',
-  });
+  // Vérifier que tous les champs sont remplis
+  if (!editAddressCountry.value || !editAddressCity.value || !editAddressPostalCode.value) {
+    $q.notify({
+      message: 'Veuillez remplir tous les champs',
+      color: 'negative',
+      position: 'bottom',
+    });
+    return;
+  }
+
+  const connectedUser = api.getConectedUser();
+  if (connectedUser) {
+    // Créer la nouvelle adresse
+    const newAddress: Adress = {
+      country: editAddressCountry.value,
+      city: editAddressCity.value,
+      postalCode: editAddressPostalCode.value,
+    };
+
+    // Ajouter l'adresse au tableau local
+    adresses.value.push(newAddress);
+
+    // Mettre à jour l'utilisateur connecté dans le store
+    connectedUser.adresses = adresses.value;
+    const store = dataStore();
+    store.data.currentUser = connectedUser;
+
+    $q.notify({
+      message: 'Adresse ajoutée avec succès',
+      color: 'positive',
+      position: 'bottom',
+    });
+
+    // Réinitialiser les champs
+    editAddressCountry.value = '';
+    editAddressCity.value = '';
+    editAddressPostalCode.value = '';
+  } else {
+    $q.notify({
+      message: "Erreur lors de l'ajout",
+      color: 'negative',
+      position: 'bottom',
+    });
+  }
 };
 
 const deleteAddress = (addresse: Adress) => {

@@ -199,6 +199,7 @@
 import { useApi } from '../js/api';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
+import { dataStore } from '../stores/data-store';
 import type { Adress, BasketCard } from '../js/types';
 
 const $q = useQuasar();
@@ -216,9 +217,11 @@ const showEditAddressForm = ref(false);
 const showAddAddressForm = ref(false);
 const editAddressCity = ref();
 const editAddressPostalCode = ref();
+const editingAddress = ref<Adress | null>(null);
 
 const showEditAddressFormfAndValue = (addresse: Adress) => {
   showEditAddressForm.value = true;
+  editingAddress.value = addresse; // Stocker l'adresse en cours de modification
   editAddressCountry.value = addresse.country;
   editAddressCity.value = addresse.city;
   editAddressPostalCode.value = addresse.postalCode;
@@ -232,11 +235,40 @@ const showAddAddressFormAndValue = () => {
 };
 
 const updateAddress = () => {
-  $q.notify({
-    message: 'Adresse modifiée avec succès',
-    color: 'positive',
-    position: 'bottom',
-  });
+  const connectedUser = api.getConectedUser();
+  if (connectedUser && editingAddress.value) {
+    // Trouver l'index de l'adresse à modifier
+    const index = adresses.value.findIndex((addr) => addr === editingAddress.value);
+
+    if (index !== -1) {
+      // Mettre à jour l'adresse avec les nouvelles valeurs
+      adresses.value[index] = {
+        country: editAddressCountry.value,
+        city: editAddressCity.value,
+        postalCode: editAddressPostalCode.value,
+      };
+      connectedUser.adresses = adresses.value;
+      const store = dataStore();
+      store.data.currentUser = connectedUser;
+      $q.notify({
+        message: 'Adresse modifiée avec succès',
+        color: 'positive',
+        position: 'bottom',
+      });
+    } else {
+      $q.notify({
+        message: 'Adresse non trouvée',
+        color: 'negative',
+        position: 'bottom',
+      });
+    }
+  } else {
+    $q.notify({
+      message: 'Erreur lors de la modification',
+      color: 'negative',
+      position: 'bottom',
+    });
+  }
 };
 
 const addAddress = () => {
@@ -257,12 +289,34 @@ const saveField = (fieldName: string) => {
 };
 
 const deleteAddress = (addresse: Adress) => {
-  $q.notify({
-    message: 'Adresse supprimée',
-    color: 'negative',
-    position: 'bottom',
-  });
-  console.log(`Adresse supprimée: ${addresse.country}, ${addresse.city}, ${addresse.postalCode}`);
+  // Supprimer l'adresse du tableau local
+  const index = adresses.value.findIndex(
+    (addr) =>
+      addr.country === addresse.country &&
+      addr.city === addresse.city &&
+      addr.postalCode === addresse.postalCode,
+  );
+
+  if (index !== -1) {
+    adresses.value.splice(index, 1);
+    const connectedUser = api.getConectedUser();
+    if (connectedUser) {
+      connectedUser.adresses = adresses.value;
+      const store = dataStore();
+      store.data.currentUser = connectedUser;
+    }
+    $q.notify({
+      message: 'Adresse supprimée avec succès',
+      color: 'positive',
+      position: 'bottom',
+    });
+  } else {
+    $q.notify({
+      message: 'Erreur lors de la suppression',
+      color: 'negative',
+      position: 'bottom',
+    });
+  }
 };
 
 onMounted(() => {

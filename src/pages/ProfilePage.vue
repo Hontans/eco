@@ -94,24 +94,26 @@
           <q-banner inline-actions rounded class="bg-black text-white">
             {{ address.country }}, {{ address.city }}, {{ address.postalCode }}
             <template v-slot:action>
-              <q-btn flat label="modifier" @click="editAddress(address)" />
+              <q-btn flat label="modifier" @click="showEditAddressFormfAndValue(address)" />
               <q-btn flat label="supprimer" @click="deleteAddress(address)" />
             </template>
           </q-banner>
         </div>
-        <q-btn
-          label="Ajouter une adresse"
-          color="primary"
-          icon="add"
-          @click="addAddress"
-          class="q-mt-sm q-pa-md"
-        />
+        <div class="text-center">
+          <q-btn
+            label="Ajouter une adresse"
+            color="primary"
+            icon="add"
+            @click="showAddAddressFormAndValue"
+            class="q-mt-sm q-pa-md"
+          />
+        </div>
       </div>
 
-      <q-dialog v-model="showAddressForm">
+      <q-dialog v-model="showEditAddressForm">
         <q-card>
           <q-card-section>
-            <div class="text-h6">Adresse</div>
+            <div class="text-h6">Modifier l'adresse</div>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
@@ -122,13 +124,36 @@
               <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
             </div>
             <div class="row q-mb-md">
-              <input label="Code postal :" outlined class="col" />
+              <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
             </div>
           </q-card-section>
-
           <q-card-actions align="right">
             <q-btn flat label="Annuler" color="primary" v-close-popup />
             <q-btn flat label="Enregistrer" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="showAddAddressForm">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Ajouter une adresse</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <div class="row q-mb-md">
+              <q-input v-model="editAddressCountry" label="Pays :" outlined class="col" />
+            </div>
+            <div class="row q-mb-md">
+              <q-input v-model="editAddressCity" label="Ville :" outlined class="col" />
+            </div>
+            <div class="row q-mb-md">
+              <q-input v-model="editAddressPostalCode" label="Code postal :" outlined class="col" />
+            </div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Annuler" color="primary" v-close-popup />
+            <q-btn flat label="Ajouter" color="primary" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -182,14 +207,29 @@ const api = useApi();
 const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
+
 const basketCards = ref<BasketCard[]>([]);
 const adresses = ref<Adress[]>([]);
-const showAddressForm = ref(false);
-const addNewAddress = ref(false);
-
 const editAddressCountry = ref();
+const showEditAddressForm = ref(false);
+
+const showAddAddressForm = ref(false);
 const editAddressCity = ref();
 const editAddressPostalCode = ref();
+
+const showEditAddressFormfAndValue = (addresse: Adress) => {
+  showEditAddressForm.value = true;
+  editAddressCountry.value = addresse.country;
+  editAddressCity.value = addresse.city;
+  editAddressPostalCode.value = addresse.postalCode;
+};
+
+const showAddAddressFormAndValue = () => {
+  showAddAddressForm.value = true;
+  editAddressCountry.value = '';
+  editAddressCity.value = '';
+  editAddressPostalCode.value = '';
+};
 
 const saveField = (fieldName: string) => {
   console.log(`Champ ${fieldName} sauvegardé`);
@@ -200,32 +240,12 @@ const saveField = (fieldName: string) => {
   });
 };
 
-const editAddress = (addresse: Adress) => {
-  showAddressForm.value = !showAddressForm.value;
-  addNewAddress.value = false;
-
-  editAddressCountry.value = addresse.country;
-  editAddressCity.value = addresse.city;
-  editAddressPostalCode.value = addresse.postalCode;
-};
-
-const addAddress = () => {
-  showAddressForm.value = true;
-
-  editAddressCountry.value = '';
-  editAddressCity.value = '';
-  editAddressPostalCode.value = '';
-};
-
 const deleteAddress = (addresse: Adress) => {
-  showAddressForm.value = false;
-  addNewAddress.value = false;
   $q.notify({
     message: 'Adresse supprimée',
     color: 'negative',
     position: 'bottom',
   });
-
   console.log(`Adresse supprimée: ${addresse.country}, ${addresse.city}, ${addresse.postalCode}`);
 };
 

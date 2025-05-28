@@ -129,7 +129,7 @@
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="Annuler" color="primary" v-close-popup />
-            <q-btn flat label="Enregistrer" color="primary" v-close-popup />
+            <q-btn flat label="Enregistrer" color="primary" v-close-popup @click="updateAddress" />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -153,7 +153,7 @@
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="Annuler" color="primary" v-close-popup />
-            <q-btn flat label="Ajouter" color="primary" v-close-popup />
+            <q-btn flat label="Ajouter" color="primary" v-close-popup @click="addAddress" />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -229,6 +229,22 @@ const showAddAddressFormAndValue = () => {
   editAddressCountry.value = '';
   editAddressCity.value = '';
   editAddressPostalCode.value = '';
+};
+
+const updateAddress = () => {
+  $q.notify({
+    message: 'Adresse modifiée avec succès',
+    color: 'positive',
+    position: 'bottom',
+  });
+};
+
+const addAddress = () => {
+  $q.notify({
+    message: 'Adresse ajoutée avec succès',
+    color: 'positive',
+    position: 'bottom',
+  });
 };
 
 const saveField = (fieldName: string) => {

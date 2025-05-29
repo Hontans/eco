@@ -110,7 +110,6 @@ const api = useApi();
 const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
-const basketCards = ref<BasketCard[]>([]);
 
 const saveField = (fieldName: string) => {
   console.log(`Champ ${fieldName} sauvegardé`);
@@ -127,13 +126,6 @@ onMounted(() => {
     console.log('Utilisateur connecté:', conectedUser);
     userName.value = conectedUser.name;
     userEmail.value = conectedUser.email;
-    basketCards.value = conectedUser.basketCards || [
-      {
-        cardNumber: '',
-        expirationDate: '',
-        cryptogram: '',
-      },
-    ];
   } else {
     $q.notify({
       message: 'Aucun utilisateur connecté',

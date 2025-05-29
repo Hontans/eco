@@ -11,7 +11,7 @@
     "
   >
     <div class="text-h5 text-center q-mb-lg">Paiement</div>
-    <div v-for="cart in carts" :key="cart.cardNumber ?? ''" class="q-pa-md q-gutter-sm">
+    <div v-for="cart in basketCards" :key="cart.cardNumber ?? ''" class="q-pa-md q-gutter-sm">
       <q-banner inline-actions rounded class="bg-black text-white">
         **** **** **** {{ cart.cardNumber?.slice(-4) }} - {{ cart.expirationDate }}
         <template v-slot:action>
@@ -113,7 +113,7 @@ const notify = (message: string, color: string) =>
 const updateStore = () => {
   const user = api.getConectedUser();
   if (user) {
-    user.carts = basketCards.value;
+    user.basketCards = basketCards.value;
     dataStore().data.currentUser = user;
   }
 };
@@ -183,7 +183,7 @@ const deleteCart = (cart: BasketCard) => {
 onMounted(() => {
   const user = api.getConectedUser();
   if (user) {
-    basketCards.value = user.carts || [];
+    basketCards.value = user.basketCards || [];
   }
 });
 </script>

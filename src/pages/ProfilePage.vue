@@ -35,7 +35,7 @@
       </q-list>
     </div>
     <div
-      class="q-pa-md q-ml-md bg-white shadow-1"
+      class="q-pa-md q-ml-md bg-white shadow-2 rounded-borders"
       style="
         width: 80%;
         max-width: 600px;
@@ -43,47 +43,116 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+        border-radius: 12px;
       "
     >
       <div v-if="activeSection === 'coordonnees'">
-        <div class="text-h5 text-center q-mb-lg">Coordonnées</div>
-        <div class="q-mx-auto" style="max-width: 400px">
-          <div class="row q-mb-md">
-            <q-input v-model="userName" label="Identifiant :" outlined class="col" />
-            <q-btn
-              label="Valider"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userName')"
-            />
-          </div>
-          <div class="row q-mb-md">
-            <q-input v-model="userEmail" label="Mail :" outlined type="email" class="col" />
-            <q-btn
-              label="Valider email"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userEmail')"
-            />
-          </div>
-          <div class="row q-mb-md">
-            <q-input
-              v-model="userPassword"
-              label="Mots de passe"
-              outlined
-              type="password"
-              class="col"
-            />
-            <q-btn
-              label="Valider mot de passe"
-              color="primary"
-              size="sm"
-              class="q-ml-md self-center"
-              @click="saveField('userPassword')"
-            />
-          </div>
+        <div class="text-h5 text-weight-bold text-primary text-center q-mb-xl">Mes Coordonnées</div>
+        <div class="q-mx-auto" style="max-width: 500px">
+          <q-card flat bordered class="q-mb-md">
+            <q-card-section>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-12 col-sm-8">
+                  <q-input
+                    v-model="userName"
+                    label="Identifiant"
+                    outlined
+                    class="full-width"
+                    bg-color="white"
+                    dense
+                    hide-bottom-space
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="person" color="primary" />
+                    </template>
+                  </q-input>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <q-btn
+                    label="Valider"
+                    color="primary"
+                    class="full-width"
+                    icon="check"
+                    @click="saveField('userName')"
+                    unelevated
+                  />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+
+          <q-card flat bordered class="q-mb-md">
+            <q-card-section>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-12 col-sm-8">
+                  <q-input
+                    v-model="userEmail"
+                    label="Email"
+                    outlined
+                    type="email"
+                    class="full-width"
+                    bg-color="white"
+                    dense
+                    hide-bottom-space
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="email" color="primary" />
+                    </template>
+                  </q-input>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <q-btn
+                    label="Valider"
+                    color="primary"
+                    class="full-width"
+                    icon="check"
+                    @click="saveField('userEmail')"
+                    unelevated
+                  />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+
+          <q-card flat bordered>
+            <q-card-section>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-12 col-sm-8">
+                  <q-input
+                    v-model="userPassword"
+                    label="Mot de passe"
+                    outlined
+                    class="full-width"
+                    bg-color="white"
+                    dense
+                    hide-bottom-space
+                    :type="isPwd ? 'password' : 'text'"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="lock" color="primary" />
+                    </template>
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
+                      />
+                    </template>
+                  </q-input>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <q-btn
+                    label="Valider"
+                    color="primary"
+                    class="full-width"
+                    icon="check"
+                    @click="saveField('userPassword')"
+                    unelevated
+                  />
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
     </div>
@@ -110,6 +179,7 @@ const api = useApi();
 const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
+const isPwd = ref(true);
 
 const saveField = (fieldName: string) => {
   console.log(`Champ ${fieldName} sauvegardé`);

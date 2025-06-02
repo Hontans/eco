@@ -1,35 +1,41 @@
 <template>
   <q-page class="flex">
     <div class="q-pa-md" style="max-width: 180px; width: 100%">
-      <q-list bordered separator class="rounded-borders">
+      <q-list bordered separator class="rounded-borders shadow-2">
         <q-item
           clickable
           v-ripple
           @click="activeSection = 'coordonnees'"
-          :class="activeSection === 'coordonnees' ? 'bg-grey-2' : ''"
+          :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'bg-white'"
+          class="transition-all"
         >
           <q-item-section class="text-center">
-            <q-item-label>Coordonnées</q-item-label>
+            <q-icon name="person" size="sm" class="q-mb-xs" />
+            <q-item-label class="text-weight-medium">Coordonnées</q-item-label>
           </q-item-section>
         </q-item>
         <q-item
           clickable
           v-ripple
           @click="activeSection = 'adresses'"
-          :class="activeSection === 'adresses' ? 'bg-grey-2' : ''"
+          :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'bg-white'"
+          class="transition-all"
         >
           <q-item-section class="text-center">
-            <q-item-label>Adresses</q-item-label>
+            <q-icon name="location_on" size="sm" class="q-mb-xs" />
+            <q-item-label class="text-weight-medium">Adresses</q-item-label>
           </q-item-section>
         </q-item>
         <q-item
           clickable
           v-ripple
           @click="activeSection = 'paiement'"
-          :class="activeSection === 'paiement' ? 'bg-grey-2' : ''"
+          :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'bg-white'"
+          class="transition-all"
         >
           <q-item-section class="text-center">
-            <q-item-label>Paiement</q-item-label>
+            <q-icon name="payment" size="sm" class="q-mb-xs" />
+            <q-item-label class="text-weight-medium">Paiement</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

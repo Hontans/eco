@@ -41,97 +41,120 @@
       </q-list>
     </div>
     <div
-      class="q-pa-md q-ml-md bg-white shadow-2 rounded-borders"
+      class="q-pa-lg bg-white shadow-4 rounded-borders"
       style="
-        width: 80%;
-        max-width: 600px;
+        width: 85%;
+        max-width: 700px;
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        border-radius: 12px;
+        border-radius: 16px;
       "
     >
       <div v-if="activeSection === 'coordonnees'">
-        <div class="text-h5 text-weight-bold text-primary text-center q-mb-xl">Mes Coordonnées</div>
-        <div class="q-mx-auto" style="max-width: 500px">
-          <q-card flat bordered class="q-mb-md">
-            <q-card-section>
-              <div class="row items-center q-col-gutter-md">
-                <div class="col-12 col-sm-8">
+        <div class="text-h4 text-weight-bold text-primary text-center q-mb-xl">
+          <q-icon name="person_outline" size="md" class="q-mr-sm" />
+          Mes Coordonnées
+        </div>
+
+        <div class="q-mx-auto" style="max-width: 600px">
+          <!-- Nom/Identifiant -->
+          <q-card flat bordered class="q-mb-lg profile-card">
+            <q-card-section class="q-pa-lg">
+              <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
+                <q-icon name="badge" class="q-mr-sm" />
+                Identifiant
+              </div>
+              <div class="row items-end q-col-gutter-md">
+                <div class="col-12 col-md-8">
                   <q-input
                     v-model="userName"
-                    label="Identifiant"
                     outlined
-                    class="full-width"
-                    bg-color="white"
+                    class="full-width modern-input"
+                    bg-color="grey-1"
                     dense
                     hide-bottom-space
+                    placeholder="Votre identifiant"
                   >
                     <template v-slot:prepend>
                       <q-icon name="person" color="primary" />
                     </template>
                   </q-input>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-md-4">
                   <q-btn
-                    label="Valider"
+                    label="Sauvegarder"
                     color="primary"
                     class="full-width"
-                    icon="check"
-                    @click="saveField('userName')"
+                    icon="save"
+                    @click="saveField('Identifiant')"
                     unelevated
+                    rounded
+                    size="md"
                   />
                 </div>
               </div>
             </q-card-section>
           </q-card>
 
-          <q-card flat bordered class="q-mb-md">
-            <q-card-section>
-              <div class="row items-center q-col-gutter-md">
-                <div class="col-12 col-sm-8">
+          <!-- Email -->
+          <q-card flat bordered class="q-mb-lg profile-card">
+            <q-card-section class="q-pa-lg">
+              <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
+                <q-icon name="alternate_email" class="q-mr-sm" />
+                Adresse email
+              </div>
+              <div class="row items-end q-col-gutter-md">
+                <div class="col-12 col-md-8">
                   <q-input
                     v-model="userEmail"
-                    label="Email"
                     outlined
                     type="email"
-                    class="full-width"
-                    bg-color="white"
+                    class="full-width modern-input"
+                    bg-color="grey-1"
                     dense
                     hide-bottom-space
+                    placeholder="votre@email.com"
                   >
                     <template v-slot:prepend>
                       <q-icon name="email" color="primary" />
                     </template>
                   </q-input>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-md-4">
                   <q-btn
-                    label="Valider"
+                    label="Sauvegarder"
                     color="primary"
                     class="full-width"
-                    icon="check"
-                    @click="saveField('userEmail')"
+                    icon="save"
+                    @click="saveField('Email')"
                     unelevated
+                    rounded
+                    size="md"
                   />
                 </div>
               </div>
             </q-card-section>
           </q-card>
 
-          <q-card flat bordered>
-            <q-card-section>
-              <div class="row items-center q-col-gutter-md">
-                <div class="col-12 col-sm-8">
+          <!-- Mot de passe -->
+          <q-card flat bordered class="profile-card">
+            <q-card-section class="q-pa-lg">
+              <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
+                <q-icon name="security" class="q-mr-sm" />
+                Mot de passe
+              </div>
+              <div class="row items-end q-col-gutter-md">
+                <div class="col-12 col-md-8">
                   <q-input
                     v-model="userPassword"
-                    label="Mot de passe"
                     outlined
-                    class="full-width"
-                    bg-color="white"
+                    class="full-width modern-input"
+                    bg-color="grey-1"
                     dense
                     hide-bottom-space
+                    placeholder="Votre mot de passe"
                     :type="isPwd ? 'password' : 'text'"
                   >
                     <template v-slot:prepend>
@@ -140,20 +163,23 @@
                     <template v-slot:append>
                       <q-icon
                         :name="isPwd ? 'visibility_off' : 'visibility'"
-                        class="cursor-pointer"
+                        class="cursor-pointer text-grey-6"
                         @click="isPwd = !isPwd"
+                        size="sm"
                       />
                     </template>
                   </q-input>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-md-4">
                   <q-btn
-                    label="Valider"
+                    label="Sauvegarder"
                     color="primary"
                     class="full-width"
-                    icon="check"
-                    @click="saveField('userPassword')"
+                    icon="save"
+                    @click="saveField('Mot de passe')"
                     unelevated
+                    rounded
+                    size="md"
                   />
                 </div>
               </div>
@@ -211,3 +237,24 @@ onMounted(() => {
   }
 });
 </script>
+
+<style scoped>
+.profile-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.modern-input :deep(.q-field__control) {
+  border-radius: 8px;
+}
+
+.modern-input :deep(.q-field__native) {
+  font-weight: 500;
+}
+</style>

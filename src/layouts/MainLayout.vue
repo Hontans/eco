@@ -72,7 +72,7 @@
     <!-- #endregion Header -->
 
     <!-- #region Cart Drawer -->
-    <q-drawer side="right" v-model="drawerRight" show-if-above bordered :width="300" :breakpoint="500" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'">
+    <q-drawer side="right" v-model="drawerRight" show-if-above bordered :width="300" :breakpoint="500" class="'bg-red-9'">
       <q-scroll-area class="fit">
         <!-- #region Cart Items -->
         <template v-for="product in store.data.basket" :key="product.id">

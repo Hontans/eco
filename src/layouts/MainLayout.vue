@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- #region Header -->
-    <q-header elevated class="bg-gradient">
+    <q-header class="bg-gradient">
       <q-toolbar class="row items-center q-py-sm" style="min-height: 70px">
         <!-- #region Logo Section -->
         <div class="col-2 flex justify-center items-center">
@@ -143,10 +143,12 @@ const logout = () =>
 </script>
 
 <style scoped>
+
 /* #region Background and Layout Styles */
 .bg-gradient
 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
 }
 /* #endregion Background and Layout Styles */
 
@@ -159,7 +161,6 @@ const logout = () =>
 .logo-hover:hover
 {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 /* #endregion Logo Styles */
 
@@ -167,13 +168,11 @@ const logout = () =>
 .search-bar
 {
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .search-bar:focus-within
 {
   transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .hover-icon
@@ -203,7 +202,6 @@ const logout = () =>
 {
   background-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 /* #endregion Button Styles */
 
@@ -212,7 +210,6 @@ const logout = () =>
 {
   min-width: 200px;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .menu-item
@@ -251,46 +248,4 @@ const logout = () =>
   }
 }
 /* #endregion Cart Badge and Animations */
-
-/* #region Responsive Design */
-@media (max-width: 768px)
-{
-  .user-btn .q-btn__content .q-btn__content--visible,
-  .auth-btn .q-btn__content .q-btn__content--visible
-  {
-    display: none;
-  }
-
-  .search-bar
-  {
-    max-width: 300px !important;
-  }
-
-  .col-2
-  {
-    flex: 0 0 auto;
-    width: auto;
-  }
-
-  .col-8
-  {
-    flex: 1;
-  }
-}
-
-@media (max-width: 600px)
-{
-  .q-toolbar
-  {
-    padding: 8px 16px;
-    min-height: 60px !important;
-  }
-
-  .logo-hover
-  {
-    width: 50px !important;
-    height: 50px !important;
-  }
-}
-/* #endregion Responsive Design */
 </style>

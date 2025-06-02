@@ -1,6 +1,6 @@
 <template>
   <q-page>
-      <q-card class="my-card full-width no-border-radius">
+      <!-- <q-card class="my-card full-width no-border-radius">
         <img
           class="full-width"
           style="height: 200px; object-fit: cover"
@@ -14,12 +14,12 @@
             <div class="text-body2">{{ lorem }}</div>
           </div>
         </q-card-section>
-      </q-card>
-    <div>
+      </q-card> -->
+    <div class="sticky-tabs">
         <q-tabs
           v-model="tab"
           dense
-          class="bg-orange text-white shadow-2"
+          class="text-white bg-gradient"
         >
           <q-tab name="all" label="Tous les produits" />
           <q-tab
@@ -30,7 +30,7 @@
           />
         </q-tabs>
     </div>
-    <div class="row justify-center">
+    <div class="row justify-center content-with-padding">
       <template v-for="product in results" :key="product.id">
         <ProductCardComponent
           :product="product"
@@ -47,7 +47,7 @@ import { dataStore } from '../stores/data-store'
 import { useApi } from '../js/api'
 import type { Product } from '../js/types'
 
-const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+// const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const tab = ref('all');
 const store = dataStore();
 const api = useApi()
@@ -100,4 +100,20 @@ onMounted(async () =>
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sticky-tabs {
+  position: sticky;
+  top: 86px;
+  z-index: 1000;
+  max-width: 1400px; // Limite la largeur de la barre d'onglets
+  margin: 0 auto; // Centre la barre d'onglets
+  padding: 0 20px; // Espacement latéral pour correspondre aux cartes
+}
+
+.bg-gradient {
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 8px;
+}
+</style>

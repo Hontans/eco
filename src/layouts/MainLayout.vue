@@ -72,7 +72,7 @@
     <!-- #endregion Header -->
 
     <!-- #region Cart Drawer -->
-    <q-drawer side="right" v-model="drawerRight" show-if-above bordered :width="300" :breakpoint="500" class="'bg-red-9'">
+    <q-drawer side="right" v-model="drawerRight" show-if-above :width="300" :breakpoint="500">
       <q-scroll-area class="fit">
         <!-- #region Cart Items -->
         <template v-for="product in store.data.basket" :key="product.id">
@@ -94,7 +94,7 @@
         <!-- #region Cart Total and Checkout -->
         <div class="column items-center q-mt-md q-mb-xl">
           <div class="text-h6 q-mb-md">Total à payer : {{ store.basketPrice }}€</div>
-          <q-btn color="secondary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
+            <q-btn color="primary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
         </div>
         <!-- #endregion Cart Total and Checkout -->
       </q-scroll-area>
@@ -248,4 +248,7 @@ const logout = () =>
   }
 }
 /* #endregion Cart Badge and Animations */
+
+
 </style>
+

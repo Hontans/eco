@@ -3,19 +3,19 @@
     <!-- #region Sidebar Navigation -->
     <div class="q-pa-md" style="max-width: 180px; width: 100%">
       <q-list separator>
-        <q-item clickable v-ripple @click="activeSection = 'coordonnees'" :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
+        <q-item clickable v-ripple @click="activeSection = 'coordonnees'" :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'text-primary'" class="glow transition-all">
           <q-item-section class="text-center">
             <q-icon name="person" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Coordonnées</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple @click="activeSection = 'adresses'" :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
+        <q-item clickable v-ripple @click="activeSection = 'adresses'" :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'text-primary'" class="glow transition-all">
           <q-item-section class="text-center">
             <q-icon name="location_on" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Adresses</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple @click="activeSection = 'paiement'" :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
+        <q-item clickable v-ripple @click="activeSection = 'paiement'" :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'text-primary'" class="glow transition-all">
           <q-item-section class="text-center">
             <q-icon name="payment" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Paiement</q-item-label>
@@ -293,4 +293,12 @@ onMounted(() =>
 }
 /* #endregion Typography Styles */
 
+/* #region Title Highlight Styles */
+.text-h4,.text-subtitle1,.glow
+{
+  text-shadow:0 0 10px rgba(25, 118, 210, 0.5),
+              0 0 20px rgba(25, 118, 210, 0.3),
+              0 0 30px rgba(25, 118, 210, 0.2);
+}
+/* #endregion Title Highlight Styles */
 </style>

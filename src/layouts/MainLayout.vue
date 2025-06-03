@@ -29,25 +29,25 @@
           <!-- #region User Menu (Logged In) -->
           <template v-if="store.isLoggedIn">
             <q-btn-dropdown flat rounded icon="person" color="white" :label="store.userName" class="user-btn" dropdown-icon="expand_more">
-              <q-list class="user-menu">
+                <q-list class="user-menu">
                 <q-item clickable v-close-popup to="/profile" class="menu-item">
                   <q-item-section avatar>
-                    <q-icon name="account_circle" color="primary" />
+                  <q-icon name="account_circle" color="primary" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>Mon Profil</q-item-label>
+                  <q-item-label class="text-white">Mon Profil</q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item clickable v-close-popup @click="logout" class="menu-item">
                   <q-item-section avatar>
-                    <q-icon name="logout" color="negative" />
+                  <q-icon name="logout" color="negative" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>Déconnexion</q-item-label>
+                  <q-item-label class="text-white">Déconnexion</q-item-label>
                   </q-item-section>
                 </q-item>
-              </q-list>
+                </q-list>
             </q-btn-dropdown>
           </template>
           <!-- #endregion User Menu (Logged In) -->
@@ -81,10 +81,10 @@
           <q-card-section class="q-pt-none">
           <div class="text-h6 text-white">{{ product.name }}</div>
           <div class="text-subtitle2 text-white">{{ product.price }}€</div>
-          <div class="row items-center">
-            <img style="max-width: 100px" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="place_older" />
+            <div class="row items-center">
+            <img style="max-width: 100px; cursor: pointer" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="place_older" @click="router.push(`/product/${product.id}`)" />
             <q-btn class="q-ml-sm" @click="store.deleteProduct(product)" icon="cancel" flat round size="sm" color="red" />
-          </div>
+            </div>
           </q-card-section>
         </q-card>
         </div>

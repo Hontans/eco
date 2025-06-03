@@ -26,7 +26,7 @@
     <!-- #endregion Sidebar Navigation -->
 
     <!-- #region Main Content -->
-    <div class="q-pa-lg bg-white shadow-4 rounded-borders" style="width: 85%; max-width: 700px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 16px;">
+    <div class="q-pa-lg bg-white rounded-borders" style="width: 85%; max-width: 700px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 16px;">
       <!-- #region Coordonnées Section -->
       <div v-if="activeSection === 'coordonnees'">
         <div class="text-h4 text-weight-bold text-primary text-center q-mb-xl">
@@ -109,17 +109,20 @@
         </div>
       </div>
       <!-- #endregion Coordonnées Section -->
+
+      <!-- #region Adresses Section -->
+      <div v-if="activeSection === 'adresses'">
+        <AdressesBannerComponent />
+      </div>
+      <!-- #endregion Adresses Section -->
+
+      <!-- #region Paiement Section -->
+      <div v-if="activeSection === 'paiement'">
+        <PaymentBannerComponent />
+      </div>
+      <!-- #endregion Paiement Section -->
     </div>
     <!-- #endregion Main Content -->
-
-    <!-- #region Other Sections -->
-    <div v-if="activeSection === 'adresses'">
-      <AdressesBannerComponent />
-    </div>
-    <div v-if="activeSection === 'paiement'">
-      <PaymentBannerComponent />
-    </div>
-    <!-- #endregion Other Sections -->
   </q-page>
 </template>
 
@@ -187,7 +190,6 @@ onMounted(() =>
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.03) !important;
 }
 
 .profile-card:hover
@@ -217,7 +219,6 @@ onMounted(() =>
 .modern-input :deep(.q-field__control):hover
 {
   background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .modern-input :deep(.q-field__control):focus-within
@@ -248,8 +249,6 @@ onMounted(() =>
 .q-item.bg-primary
 {
   background: rgba(25, 118, 210, 0.2) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
 }
 /* #endregion List Item Styles */
 

@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex">
     <div class="q-pa-md" style="max-width: 180px; width: 100%">
-      <q-list bordered separator class="rounded-borders shadow-2">
+      <q-list separator >
         <q-item
           clickable
           v-ripple
           @click="activeSection = 'coordonnees'"
-          :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'bg-white'"
+          :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'text-primary'"
           class="transition-all"
         >
           <q-item-section class="text-center">
@@ -18,7 +18,7 @@
           clickable
           v-ripple
           @click="activeSection = 'adresses'"
-          :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'bg-white'"
+          :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'text-primary'"
           class="transition-all"
         >
           <q-item-section class="text-center">
@@ -30,7 +30,7 @@
           clickable
           v-ripple
           @click="activeSection = 'paiement'"
-          :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'bg-white'"
+          :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'text-primary'"
           class="transition-all"
         >
           <q-item-section class="text-center">
@@ -278,14 +278,6 @@ onMounted(() => {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Effet glassmorphisme pour la sidebar */
-.q-list {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
 .q-item {
   background: rgba(255, 255, 255, 0.05) !important;
   backdrop-filter: blur(10px);
@@ -317,16 +309,17 @@ onMounted(() => {
 
 /* Effet glassmorphisme pour les boutons */
 .q-btn {
-  background: rgba(25, 118, 210, 0.15) !important;
+  background: rgba(25, 118, 210, 0.9) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  color: white !important;
 }
 
 .q-btn:hover {
-  background: rgba(25, 118, 210, 0.25) !important;
+  background: rgba(25, 118, 210, 1) !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.2);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
 
 /* Style pour le titre principal - sans cadre */

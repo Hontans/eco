@@ -240,21 +240,102 @@ onMounted(() => {
 
 <style scoped>
 .profile-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 16px;
   transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.01) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03) !important;
 }
 
 .profile-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .modern-input :deep(.q-field__control) {
-  border-radius: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .modern-input :deep(.q-field__native) {
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.modern-input :deep(.q-field__control):hover {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modern-input :deep(.q-field__control):focus-within {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Effet glassmorphisme pour la sidebar */
+.q-list {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.q-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin: 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.q-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.q-item.bg-primary {
+  background: rgba(25, 118, 210, 0.2) !important;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* Effet glassmorphisme pour le conteneur principal */
+.q-page > div:nth-child(2) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet glassmorphisme pour les boutons */
+.q-btn {
+  background: rgba(25, 118, 210, 0.15) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.q-btn:hover {
+  background: rgba(25, 118, 210, 0.25) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.2);
+}
+
+/* Style pour le titre principal - sans cadre */
+.text-h4 {
+  padding: 16px;
+}
+
+/* Titres des sections d'inputs en bleu */
+.text-subtitle1 {
+  color: #1976d2 !important;
 }
 </style>

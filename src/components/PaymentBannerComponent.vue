@@ -275,7 +275,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.address-card {
+.payment-card {
   border-radius: 16px;
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.01) !important;
@@ -283,7 +283,7 @@ onMounted(() => {
   -webkit-backdrop-filter: blur(20px);
 }
 
-.address-card-hover:hover {
+.payment-card-hover:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.02) !important;
 }

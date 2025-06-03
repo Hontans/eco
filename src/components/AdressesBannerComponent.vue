@@ -1,16 +1,4 @@
 <template>
-  <div
-    class="q-pa-lg bg-white shadow-2 rounded-borders"
-    style="
-      width: 85%;
-      max-width: 700px;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 16px;
-    "
-  >
     <!-- En-tête avec icône -->
     <div class="text-center q-mb-lg">
       <div class="text-h4 text-primary q-mb-sm">
@@ -175,7 +163,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -278,16 +265,59 @@ onMounted(() => {
 
 <style scoped>
 .address-card {
+  border-radius: 16px;
   transition: all 0.3s ease;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.01) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .address-card-hover:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .rounded-borders {
   border-radius: 12px;
+}
+
+/* Glassmorphisme Effects for dialogs */
+.q-dialog .q-card {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+/* Input Styles */
+.q-input :deep(.q-field__control) {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.q-input :deep(.q-field__native) {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.q-input :deep(.q-field__control):hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.q-input :deep(.q-field__control):focus-within {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.q-card
+{
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 16px;
+}
+
+/* Changer les textes primaires en blanc */
+.text-primary {
+  color: white !important;
 }
 </style>

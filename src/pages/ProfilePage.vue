@@ -1,38 +1,21 @@
 <template>
   <q-page class="flex">
+    <!-- #region Sidebar Navigation -->
     <div class="q-pa-md" style="max-width: 180px; width: 100%">
-      <q-list separator >
-        <q-item
-          clickable
-          v-ripple
-          @click="activeSection = 'coordonnees'"
-          :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'text-primary'"
-          class="transition-all"
-        >
+      <q-list separator>
+        <q-item clickable v-ripple @click="activeSection = 'coordonnees'" :class="activeSection === 'coordonnees' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
           <q-item-section class="text-center">
             <q-icon name="person" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Coordonnées</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          v-ripple
-          @click="activeSection = 'adresses'"
-          :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'text-primary'"
-          class="transition-all"
-        >
+        <q-item clickable v-ripple @click="activeSection = 'adresses'" :class="activeSection === 'adresses' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
           <q-item-section class="text-center">
             <q-icon name="location_on" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Adresses</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          v-ripple
-          @click="activeSection = 'paiement'"
-          :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'text-primary'"
-          class="transition-all"
-        >
+        <q-item clickable v-ripple @click="activeSection = 'paiement'" :class="activeSection === 'paiement' ? 'bg-primary text-white' : 'text-primary'" class="transition-all">
           <q-item-section class="text-center">
             <q-icon name="payment" size="sm" class="q-mb-xs" />
             <q-item-label class="text-weight-medium">Paiement</q-item-label>
@@ -40,18 +23,11 @@
         </q-item>
       </q-list>
     </div>
-    <div
-      class="q-pa-lg bg-white shadow-4 rounded-borders"
-      style="
-        width: 85%;
-        max-width: 700px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 16px;
-      "
-    >
+    <!-- #endregion Sidebar Navigation -->
+
+    <!-- #region Main Content -->
+    <div class="q-pa-lg bg-white shadow-4 rounded-borders" style="width: 85%; max-width: 700px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 16px;">
+      <!-- #region Coordonnées Section -->
       <div v-if="activeSection === 'coordonnees'">
         <div class="text-h4 text-weight-bold text-primary text-center q-mb-xl">
           <q-icon name="person_outline" size="md" class="q-mr-sm" />
@@ -59,7 +35,7 @@
         </div>
 
         <div class="q-mx-auto" style="max-width: 600px">
-          <!-- Nom/Identifiant -->
+          <!-- #region Identifiant -->
           <q-card flat bordered class="q-mb-lg profile-card">
             <q-card-section class="q-pa-lg">
               <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
@@ -68,37 +44,21 @@
               </div>
               <div class="row items-end q-col-gutter-md">
                 <div class="col-12 col-md-8">
-                  <q-input
-                    v-model="userName"
-                    outlined
-                    class="full-width modern-input"
-                    bg-color="grey-1"
-                    dense
-                    hide-bottom-space
-                    placeholder="Votre identifiant"
-                  >
+                  <q-input v-model="userName" outlined class="full-width modern-input" bg-color="grey-1" dense hide-bottom-space placeholder="Votre identifiant">
                     <template v-slot:prepend>
                       <q-icon name="person" color="primary" />
                     </template>
                   </q-input>
                 </div>
                 <div class="col-12 col-md-4">
-                  <q-btn
-                    label="Sauvegarder"
-                    color="primary"
-                    class="full-width"
-                    icon="save"
-                    @click="saveField('Identifiant')"
-                    unelevated
-                    rounded
-                    size="md"
-                  />
+                  <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Identifiant')" unelevated rounded size="md" />
                 </div>
               </div>
             </q-card-section>
           </q-card>
+          <!-- #endregion Identifiant -->
 
-          <!-- Email -->
+          <!-- #region Email -->
           <q-card flat bordered class="q-mb-lg profile-card">
             <q-card-section class="q-pa-lg">
               <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
@@ -107,38 +67,21 @@
               </div>
               <div class="row items-end q-col-gutter-md">
                 <div class="col-12 col-md-8">
-                  <q-input
-                    v-model="userEmail"
-                    outlined
-                    type="email"
-                    class="full-width modern-input"
-                    bg-color="grey-1"
-                    dense
-                    hide-bottom-space
-                    placeholder="votre@email.com"
-                  >
+                  <q-input v-model="userEmail" outlined type="email" class="full-width modern-input" bg-color="grey-1" dense hide-bottom-space placeholder="votre@email.com">
                     <template v-slot:prepend>
                       <q-icon name="email" color="primary" />
                     </template>
                   </q-input>
                 </div>
                 <div class="col-12 col-md-4">
-                  <q-btn
-                    label="Sauvegarder"
-                    color="primary"
-                    class="full-width"
-                    icon="save"
-                    @click="saveField('Email')"
-                    unelevated
-                    rounded
-                    size="md"
-                  />
+                  <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Email')" unelevated rounded size="md" />
                 </div>
               </div>
             </q-card-section>
           </q-card>
+          <!-- #endregion Email -->
 
-          <!-- Mot de passe -->
+          <!-- #region Password -->
           <q-card flat bordered class="profile-card">
             <q-card-section class="q-pa-lg">
               <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-md">
@@ -147,64 +90,49 @@
               </div>
               <div class="row items-end q-col-gutter-md">
                 <div class="col-12 col-md-8">
-                  <q-input
-                    v-model="userPassword"
-                    outlined
-                    class="full-width modern-input"
-                    bg-color="grey-1"
-                    dense
-                    hide-bottom-space
-                    placeholder="Votre mot de passe"
-                    :type="isPwd ? 'password' : 'text'"
-                  >
+                  <q-input v-model="userPassword" outlined class="full-width modern-input" bg-color="grey-1" dense hide-bottom-space placeholder="Votre mot de passe" :type="isPwd ? 'password' : 'text'">
                     <template v-slot:prepend>
                       <q-icon name="lock" color="primary" />
                     </template>
                     <template v-slot:append>
-                      <q-icon
-                        :name="isPwd ? 'visibility_off' : 'visibility'"
-                        class="cursor-pointer text-grey-6"
-                        @click="isPwd = !isPwd"
-                        size="sm"
-                      />
+                      <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer text-grey-6" @click="isPwd = !isPwd" size="sm" />
                     </template>
                   </q-input>
                 </div>
                 <div class="col-12 col-md-4">
-                  <q-btn
-                    label="Sauvegarder"
-                    color="primary"
-                    class="full-width"
-                    icon="save"
-                    @click="saveField('Mot de passe')"
-                    unelevated
-                    rounded
-                    size="md"
-                  />
+                  <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Mot de passe')" unelevated rounded size="md" />
                 </div>
               </div>
             </q-card-section>
           </q-card>
+          <!-- #endregion Password -->
         </div>
       </div>
+      <!-- #endregion Coordonnées Section -->
     </div>
+    <!-- #endregion Main Content -->
 
+    <!-- #region Other Sections -->
     <div v-if="activeSection === 'adresses'">
       <AdressesBannerComponent />
     </div>
     <div v-if="activeSection === 'paiement'">
       <PaymentBannerComponent />
     </div>
+    <!-- #endregion Other Sections -->
   </q-page>
 </template>
 
 <script setup lang="ts">
+// #region Imports
 import { useApi } from '../js/api';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import AdressesBannerComponent from '../components/AdressesBannerComponent.vue';
 import PaymentBannerComponent from '../components/PaymentBannerComponent.vue';
+// #endregion Imports
 
+// #region Variables and Stores
 const $q = useQuasar();
 const activeSection = ref('coordonnees');
 const api = useApi();
@@ -212,34 +140,47 @@ const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
 const isPwd = ref(true);
+// #endregion Variables and Stores
 
-const saveField = (fieldName: string) => {
+// #region Methods
+const saveField = (fieldName: string) =>
+{
   console.log(`Champ ${fieldName} sauvegardé`);
-  $q.notify({
+  $q.notify(
+  {
     message: `${fieldName} mis à jour avec succès`,
     color: 'positive',
     position: 'bottom',
   });
 };
 
-onMounted(() => {
+onMounted(() =>
+{
   const conectedUser = api.getConectedUser();
-  if (conectedUser) {
+  if (conectedUser)
+  {
     console.log('Utilisateur connecté:', conectedUser);
     userName.value = conectedUser.name;
     userEmail.value = conectedUser.email;
-  } else {
-    $q.notify({
+  }
+  else
+  {
+    $q.notify(
+    {
       message: 'Aucun utilisateur connecté',
       color: 'negative',
       position: 'bottom',
     });
   }
 });
+// #endregion Methods
 </script>
 
 <style scoped>
-.profile-card {
+
+/* #region Profile Card Styles */
+.profile-card
+{
   border-radius: 16px;
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.01) !important;
@@ -249,13 +190,17 @@ onMounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.03) !important;
 }
 
-.profile-card:hover {
+.profile-card:hover
+{
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.02) !important;
 }
+/* #endregion Profile Card Styles */
 
-.modern-input :deep(.q-field__control) {
+/* #region Input Styles */
+.modern-input :deep(.q-field__control)
+{
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
@@ -263,22 +208,28 @@ onMounted(() => {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-.modern-input :deep(.q-field__native) {
+.modern-input :deep(.q-field__native)
+{
   font-weight: 500;
   color: rgba(0, 0, 0, 0.8);
 }
 
-.modern-input :deep(.q-field__control):hover {
+.modern-input :deep(.q-field__control):hover
+{
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.modern-input :deep(.q-field__control):focus-within {
+.modern-input :deep(.q-field__control):focus-within
+{
   background: rgba(255, 255, 255, 0.18);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
+/* #endregion Input Styles */
 
-.q-item {
+/* #region List Item Styles */
+.q-item
+{
   background: rgba(255, 255, 255, 0.05) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -287,28 +238,34 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 
-.q-item:hover {
+.q-item:hover
+{
   background: rgba(255, 255, 255, 0.15) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.q-item.bg-primary {
+.q-item.bg-primary
+{
   background: rgba(25, 118, 210, 0.2) !important;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
 }
+/* #endregion List Item Styles */
 
-/* Effet glassmorphisme pour le conteneur principal */
-.q-page > div:nth-child(2) {
+/* #region Glassmorphisme Effects */
+.q-page > div:nth-child(2)
+{
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
 }
+/* #endregion Glassmorphisme Effects */
 
-/* Effet glassmorphisme pour les boutons */
-.q-btn {
+/* #region Button Styles */
+.q-btn
+{
   background: rgba(25, 118, 210, 0.9) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -316,19 +273,24 @@ onMounted(() => {
   color: white !important;
 }
 
-.q-btn:hover {
+.q-btn:hover
+{
   background: rgba(25, 118, 210, 1) !important;
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
 }
+/* #endregion Button Styles */
 
-/* Style pour le titre principal - sans cadre */
-.text-h4 {
+/* #region Typography Styles */
+.text-h4
+{
   padding: 16px;
 }
 
-/* Titres des sections d'inputs en bleu */
-.text-subtitle1 {
+.text-subtitle1
+{
   color: #1976d2 !important;
 }
+/* #endregion Typography Styles */
+
 </style>

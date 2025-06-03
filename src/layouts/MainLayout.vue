@@ -72,31 +72,31 @@
     <!-- #endregion Header -->
 
     <!-- #region Cart Drawer -->
-    <q-drawer side="right" v-model="drawerRight" show-if-above :width="300" :breakpoint="500">
+    <q-drawer side="right" v-model="drawerRight" show-if-above :width="300" :breakpoint="500" class="cart-drawer">
       <q-scroll-area class="fit">
-        <!-- #region Cart Items -->
-        <template v-for="product in store.data.basket" :key="product.id">
-          <div class="q-ma-md">
-            <q-card style="width: 100%; max-width: 175px" class="q-mx-xl">
-              <q-card-section class="q-pt-none">
-                <div class="text-h6">{{ product.name }}</div>
-                <div class="text-subtitle2">{{ product.price }}€</div>
-                <div class="row items-center">
-                  <img style="max-width: 100px" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="place_older" />
-                  <q-btn class="q-ml-sm" @click="store.deleteProduct(product)" icon="cancel" flat round size="sm" />
-                </div>
-              </q-card-section>
-            </q-card>
+      <!-- #region Cart Items -->
+      <template v-for="product in store.data.basket" :key="product.id">
+        <div class="q-ma-md">
+        <q-card class="cart-card q-mx-xl">
+          <q-card-section class="q-pt-none">
+          <div class="text-h6 text-white">{{ product.name }}</div>
+          <div class="text-subtitle2 text-white">{{ product.price }}€</div>
+          <div class="row items-center">
+            <img style="max-width: 100px" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="place_older" />
+            <q-btn class="q-ml-sm" @click="store.deleteProduct(product)" icon="cancel" flat round size="sm" color="red" />
           </div>
-        </template>
-        <!-- #endregion Cart Items -->
-
-        <!-- #region Cart Total and Checkout -->
-        <div class="column items-center q-mt-md q-mb-xl">
-          <div class="text-h6 q-mb-md">Total à payer : {{ store.basketPrice }}€</div>
-            <q-btn color="primary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
+          </q-card-section>
+        </q-card>
         </div>
-        <!-- #endregion Cart Total and Checkout -->
+      </template>
+      <!-- #endregion Cart Items -->
+
+      <!-- #region Cart Total and Checkout -->
+      <div class="column items-center q-mt-md q-mb-xl">
+        <div class="text-h6 q-mb-md text-white">Total à payer : {{ store.basketPrice }}€</div>
+        <q-btn color="primary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
+      </div>
+      <!-- #endregion Cart Total and Checkout -->
       </q-scroll-area>
     </q-drawer>
     <!-- #endregion Cart Drawer -->
@@ -210,19 +210,28 @@ const logout = () =>
 {
   min-width: 200px;
   border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px);
 }
 
 .menu-item
 {
   transition: all 0.2s ease;
   border-radius: 8px;
-  margin: 4px 8px;
+  background: transparent;
 }
 
-.menu-item:hover
+/* Style pour les séparateurs */
+.user-menu .q-separator
 {
-  background-color: rgba(102, 126, 234, 0.1);
-  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Style pour le texte des éléments du menu */
+.user-menu .q-item__label
+{
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
 }
 /* #endregion User Menu Styles */
 
@@ -248,6 +257,27 @@ const logout = () =>
   }
 }
 /* #endregion Cart Badge and Animations */
+
+/* #region Cart Drawer Styles */
+.cart-drawer
+{
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+}
+
+.cart-card
+{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.cart-card:hover
+{
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+/* #endregion Cart Drawer Styles */
 
 
 </style>

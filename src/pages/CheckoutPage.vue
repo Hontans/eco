@@ -56,14 +56,43 @@
 
             <!-- #region Delivery Step -->
             <div v-if="step === 2">
-              <h5 class="q-my-md text-white">Livraison et Paiement</h5>
-              <q-card flat bordered class="glass-card">
+              <h5 class="q-my-md text-white">Livraison</h5>
+
+              <!-- #region Address Section -->
+              <q-card flat bordered class="glass-card q-mb-lg">
                 <q-card-section>
-                  <p class="text-white">Formulaire de livraison et de paiement à implémenter ici.</p>
-                  <q-input v-model="address" outlined label="Adresse" class="q-mb-md input-white" dense dark />
-                  <q-input v-model="paymentInfo" outlined label="Informations de paiement" class="input-white" dense dark />
+                  <div class="text-h6 text-white q-mb-md">
+                    <q-icon name="location_on" class="q-mr-sm" />
+                    Adresse de livraison
+                  </div>
+
+                  <!-- #region Existing Addresses -->
+                  <div v-if="userAddresses.length > 0" class="q-mb-md">
+                    <div class="text-subtitle2 text-grey-3 q-mb-sm">Mes adresses enregistrées :</div>
+                    <div class="row q-col-gutter-sm">
+                      <div v-for="(address, index) in userAddresses" :key="index" class="col-12">
+                        <q-card flat bordered clickable @click="selectedAddress = address" :class="{ 'selected-address': selectedAddress === address, 'address-option': true }">
+                          <q-card-section class="q-pa-md">
+                            <div class="row items-center">
+                              <q-radio v-model="selectedAddress" :val="address" color="primary" class="q-mr-md" />
+                              <div class="col">
+                                <div class="text-white text-weight-medium">{{ address.city }}</div>
+                                <div class="text-grey-4 text-caption">{{ address.country }} • {{ address.postalCode }}</div>
+                              </div>
+                            </div>
+                          </q-card-section>
+                        </q-card>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- #endregion Existing Addresses -->
+
+                  <!-- #region New Address Form -->
+
+                  <!-- #endregion New Address Form -->
                 </q-card-section>
               </q-card>
+              <!-- #endregion Address Section -->
             </div>
             <!-- #endregion Delivery Step -->
           </div>
@@ -78,7 +107,7 @@
               </q-card-section>
               <q-separator color="white" />
               <q-card-actions vertical align="center" class="q-pa-md">
-                <q-btn :label="step === 1 ? 'Passer à la livraison' : 'Acheter'" color="primary" class="full-width q-py-sm text-subtitle1 btn-glass" @click="handleMainAction" size="lg" />
+                <q-btn :label="step === 1 ? 'Passer à la livraison' : 'Continuer vers le paiement'" color="primary" class="full-width q-py-sm text-subtitle1 btn-glass" @click="handleMainAction" size="lg" :disabled="step === 2 && !isAddressSelected" />
               </q-card-actions>
             </q-card>
           </div>
@@ -92,66 +121,131 @@
 
 <script setup lang="ts">
 // #region Imports
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { QStepper } from 'quasar';
 import { useApi } from '../js/api';
 import { dataStore } from '../stores/data-store';
+import type { Adress } from '../js/types';
+import { useQuasar } from 'quasar';
 // #endregion Imports
 
 // #region Variables and Stores
 const store = dataStore();
 const api = useApi();
+const $q = useQuasar();
 const stepperRef = ref<QStepper | null>(null);
 const step = ref(1);
-const address = ref('');
-const paymentInfo = ref('');
+const userAddresses = ref<Adress[]>([]);
+const selectedAddress = ref<Adress | null>(null);
 // #endregion Variables and Stores
 
+// #region Computed
+const isAddressSelected = computed(() => {
+  return selectedAddress.value !== null;
+});
+// #endregion Computed
+
 // #region Methods
-const handleMainAction = () =>
-{
-  if (step.value === 1)
-  {
+const handleMainAction = () => {
+  if (step.value === 1) {
     stepperRef.value?.next();
-  }
-  else if (step.value === 2)
-  {
-    console.log("Procédure d'achat lancée");
-    console.log('Adresse:', address.value);
-    console.log('Informations de paiement:', paymentInfo.value);
+  } else if (step.value === 2) {
+    if (!isAddressSelected.value) {
+      $q.notify({
+        color: 'negative',
+        textColor: 'white',
+        icon: 'warning',
+        message: 'Veuillez sélectionner une adresse de livraison',
+        timeout: 2000,
+        position: 'top'
+      });
+      return;
+    }
+  };
+}
+const loadUserAddresses = () => {
+  const user = api.getConectedUser();
+  if (user && user.adresses) {
+    userAddresses.value = user.adresses;
   }
 };
 // #endregion Methods
+
+// #region Lifecycle
+onMounted(() => {
+  loadUserAddresses();
+});
+// #endregion Lifecycle
 </script>
 
 <style scoped>
-.header-blur {
+
+/* #region Header Styles */
+.header-blur
+{
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
-.q-stepper--horizontal .q-stepper__step-inner {
+.q-stepper--horizontal .q-stepper__step-inner
+{
   padding: none;
 }
+/* #endregion Header Styles */
 
-/* #region Glass Card */
-.glass-card {
+/* #region Glass Card Styles */
+.glass-card
+{
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
 }
-/* #endregion Glass Card */
+/* #endregion Glass Card Styles */
 
-/* #region Button Glass */
-.btn-glass {
+/* #region Address Selection Styles */
+.address-option
+{
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.address-option:hover
+{
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.selected-address
+{
+  background: rgba(25, 118, 210, 0.2) !important;
+  border-color: #1976d2 !important;
+}
+
+.input-white .q-field__control
+{
+  color: white;
+}
+
+.input-white .q-field__label
+{
+  color: rgba(255, 255, 255, 0.7);
+}
+/* #endregion Address Selection Styles */
+
+/* #region Button Styles */
+.btn-glass
+{
   background: rgba(255, 255, 255, 0.2);
 }
-/* #endregion Button Glass */
+/* #endregion Button Styles */
 
 /* #region Sticky Card Styles */
-.sticky-top-card {
+.sticky-top-card
+{
   position: -webkit-sticky;
   position: sticky;
   top: 20px;
@@ -161,11 +255,13 @@ const handleMainAction = () =>
 /* #endregion Sticky Card Styles */
 
 /* #region Text Styles */
-.ellipsis-2-lines {
+.ellipsis-2-lines
+{
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 /* #endregion Text Styles */
+
 </style>

@@ -11,12 +11,12 @@
       <!-- #endregion Logo Section -->
 
       <!-- #region Stepper Section -->
-      <div class="col">
-        <q-stepper v-model="step" ref="stepperRef" color="primary" animated flat header-nav class="bg-transparent no-shadow full-width">
-          <q-step :name="1" title="Panier" icon="basket" :done="step > 1" class="text-white" />
-          <q-step :name="2" title="Livraison" icon="local_shipping" :done="step > 2" class="text-white" />
-          <q-step :name="3" title="Paiement" icon="credit_card" :done="step > 3" class="text-white" />
-          <q-step :name="4" title="Récapitulatif" icon="receipt" :done="step > 4" class="text-white" />
+      <div class="col flex justify-center">
+        <q-stepper v-model="step" ref="stepperRef" color="primary" animated flat header-nav class="stepper-glass text-white" style="max-width: 600px;">
+          <q-step :name="1" title="Panier" icon="shopping_basket" :done="step > 1" class="text-white step-item" />
+          <q-step :name="2" title="Livraison" icon="local_shipping" :done="step > 2" class="text-white step-item" />
+          <q-step :name="3" title="Paiement" icon="payment" :done="step > 3" class="text-white step-item" />
+          <q-step :name="4" title="Récapitulatif" icon="receipt_long" :done="step > 4" class="text-white step-item" />
         </q-stepper>
       </div>
       <!-- #endregion Stepper Section -->
@@ -129,7 +129,10 @@ const handleMainAction = () =>
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.q-stepper--horizontal .q-stepper__step-inner {
+  padding: none;
 }
 
 /* #region Glass Card */
@@ -144,27 +147,8 @@ const handleMainAction = () =>
 /* #region Button Glass */
 .btn-glass {
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 /* #endregion Button Glass */
-
-/* #region Input Styles */
-.input-white .q-field__control {
-  color: white;
-}
-
-.input-white .q-field__label {
-  color: rgba(255, 255, 255, 0.7);
-}
-/* #endregion Input Styles */
-
-/* #region Page Container Styles */
-.page-content {
-  color: white;
-}
-/* #endregion Page Container Styles */
 
 /* #region Sticky Card Styles */
 .sticky-top-card {

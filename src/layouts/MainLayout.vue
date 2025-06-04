@@ -127,7 +127,7 @@ const api = useApi();
 // #endregion Variables and Stores
 
 // #region Methods
-const logout = () =>
+const logout = async () =>
 {
   const result = api.logout();
   console.log(result);
@@ -138,6 +138,9 @@ const logout = () =>
     icon: 'logout',
     position: 'top',
   });
+
+  // Redirection vers la page d'accueil après déconnexion
+  await router.push('/');
 };
 // #endregion Methods
 </script>

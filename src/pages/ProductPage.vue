@@ -1,46 +1,28 @@
 <template>
-  <div class="q-pa-md">
-    <div class="row q-col-gutter-md">
-      <div class="col-12 col-md-6">
-        <q-carousel
-      swipeable
-      animated
-      v-model="slide"
-      thumbnails
-      infinite
-      height="400px"
-    >
-      <q-carousel-slide :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
-      <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
-      <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
-      <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
-    </q-carousel>
-      </div>
-      <div class="col-12 col-md-6">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-h5 q-mb-sm">{{ product?.name || 'Chargement...' }}</div>
-            <q-separator class="q-my-md" />
-            <div class="text-subtitle1">Description</div>
-            <p class="text-body2 q-mb-md">{{ lorem }}</p>
-            <q-separator class="q-my-md" />
-            <div class="text-h6 q-mb-md">
-              Prix : {{ product?.price ? `${product.price} €` : 'Chargement...' }}
-            </div>
-            <q-btn
-              color="primary"
-              label="Ajouter au panier"
-              class="full-width"
-              @click="addToBasket"
-              :disable="!product"
-            />
-          </q-card-section>
-        </q-card>
-      </div>
+  <div class="row justify-center items-center" style="min-height: calc(100vh - 64px);">
+    <div class="col-12 col-md-6">
+      <q-card flat bordered-rounded class="q-pa-md">
+        <div class="col-12">
+          <q-carousel swipeable animated v-model="slide" thumbnails infinite height="400px" class="rounded-borders">
+            <q-carousel-slide :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
+            <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
+            <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
+            <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
+          </q-carousel>
+        </div>
+        <q-card-section>
+          <div class="text-h5 q-mb-sm text-white">{{ product?.name || 'Chargement...' }}</div>
+            <q-separator class="q-my-md" color="white" />
+            <div class="text-subtitle1 text-white">Description</div>
+            <p class="text-body2 q-mb-md text-white">{{ lorem }}</p>
+            <q-separator class="q-my-md" color="white" />
+          <div class="text-h6 q-mb-md text-white">
+            Prix : {{ product?.price ? `${product.price} €` : 'Chargement...' }}
+          </div>
+          <q-btn color="primary" label="Ajouter au panier" class="full-width" @click="addToBasket" :disable="!product" />
+        </q-card-section>
+      </q-card>
     </div>
-  </div>
-  <div>
-
   </div>
 </template>
 

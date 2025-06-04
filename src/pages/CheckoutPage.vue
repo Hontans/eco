@@ -12,7 +12,7 @@
 
       <!-- #region Stepper Section -->
       <div class="col flex justify-center">
-        <q-stepper v-model="step" ref="stepperRef" color="primary" animated flat header-nav class="stepper-glass text-white" style="max-width: 600px;">
+        <q-stepper v-model="step" ref="stepperRef" color="primary" flat class="stepper-glass text-white" style="max-width: 600px;">
           <q-step :name="1" title="Panier" icon="shopping_basket" :done="step > 1" class="text-white step-item" />
           <q-step :name="2" title="Livraison" icon="local_shipping" :done="step > 2" class="text-white step-item" />
           <q-step :name="3" title="Paiement" icon="payment" :done="step > 3" class="text-white step-item" />
@@ -29,6 +29,19 @@
         <div class="row q-col-gutter-x-lg">
           <!-- #region Main Content -->
           <div class="col-12 col-md-8">
+            <!-- #region Step Navigation -->
+            <div v-if="step > 1" class="q-mb-md">
+              <q-btn
+                flat
+                icon="arrow_back"
+                label="Retour"
+                color="white"
+                @click="goBackStep"
+                class="back-step-btn"
+              />
+            </div>
+            <!-- #endregion Step Navigation -->
+
             <!-- #region Cart Step -->
             <div v-if="step === 1">
               <h5 class="q-my-md text-white">Votre Panier</h5>
@@ -493,6 +506,12 @@ const getButtonDisabled = () => {
 // #endregion Computed
 
 // #region Methods
+const goBackStep = () => {
+  if (step.value > 1) {
+    step.value--;
+  }
+};
+
 const handleMainAction = () => {
   if (step.value === 1) {
     step.value = 2;
@@ -653,6 +672,18 @@ onMounted(() => {
 
 /* #region Button Styles */
 .btn-glass
+{
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.back-step-btn
+{
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.back-step-btn:hover
 {
   background: rgba(255, 255, 255, 0.2);
 }

@@ -90,6 +90,61 @@
                   <!-- #region New Address Form -->
 
                   <!-- #endregion New Address Form -->
+                  <div class="text-center">
+                    <q-btn
+                      label="Ajouter une adresse"
+                      color="primary"
+                      icon="add"
+                      @click="showAddAddressFormAndValue"
+                      class="q-px-xl q-py-sm"
+                      unelevated
+                      rounded
+                    />
+                  </div>
+                  <q-dialog v-model="showAddAddressForm">
+                    <q-card style="min-width: 400px" class="rounded-borders">
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">
+                          <q-icon name="add_location" class="q-mr-sm" />
+                          Ajouter une adresse
+                        </div>
+                      </q-card-section>
+
+                      <q-card-section class="q-pt-lg">
+                        <div class="q-gutter-md">
+                          <q-input
+                            v-model="editAddressCountry"
+                            label="Pays"
+                            outlined
+                            dense
+                            prepend-icon="public"
+                            :rules="[(val) => !!val || 'Le pays est requis']"
+                          />
+                          <q-input
+                            v-model="editAddressCity"
+                            label="Ville"
+                            outlined
+                            dense
+                            prepend-icon="location_city"
+                            :rules="[(val) => !!val || 'La ville est requise']"
+                          />
+                          <q-input
+                            v-model="editAddressPostalCode"
+                            label="Code postal"
+                            outlined
+                            dense
+                            prepend-icon="markunread_mailbox"
+                            :rules="[(val) => !!val || 'Le code postal est requis']"
+                          />
+                        </div>
+                      </q-card-section>
+
+                      <q-card-actions align="right" class="q-pa-md">
+                        <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+                        <q-btn label="Ajouter" color="primary" v-close-popup @click="addAddress" unelevated />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
                 </q-card-section>
               </q-card>
               <!-- #endregion Address Section -->
@@ -137,9 +192,49 @@ const stepperRef = ref<QStepper | null>(null);
 const step = ref(1);
 const userAddresses = ref<Adress[]>([]);
 const selectedAddress = ref<Adress | null>(null);
+const editAddressCountry = ref('');
+const editAddressCity = ref('');
+const editAddressPostalCode = ref('');
+const showAddAddressForm = ref(false);
+const adresses = ref<Adress[]>([]);
 // #endregion Variables and Stores
 
 // #region Computed
+const notify = (message: string, color: string) =>
+  $q.notify({ message, color, position: 'bottom' });
+
+const updateStore = () => {
+  const user = api.getConectedUser();
+  if (user) {
+    user.adresses = adresses.value;
+    dataStore().data.currentUser = user;
+  }
+};
+
+const showAddAddressFormAndValue = () => {
+  showAddAddressForm.value = true;
+  editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
+};
+
+const addAddress = () => {
+  if (!editAddressCountry.value || !editAddressCity.value || !editAddressPostalCode.value) {
+    notify('Veuillez remplir tous les champs', 'negative');
+    return;
+  }
+
+  adresses.value.push({
+    country: editAddressCountry.value,
+    city: editAddressCity.value,
+    postalCode: editAddressPostalCode.value,
+  });
+
+  updateStore();
+  notify('Adresse ajoutée avec succès', 'positive');
+  editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
+};
+
+
+
 const isAddressSelected = computed(() => {
   return selectedAddress.value !== null;
 });
@@ -167,6 +262,7 @@ const loadUserAddresses = () => {
   const user = api.getConectedUser();
   if (user && user.adresses) {
     userAddresses.value = user.adresses;
+    adresses.value = user.adresses || [];
   }
 };
 // #endregion Methods

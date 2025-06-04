@@ -72,8 +72,10 @@
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { dataStore } from '../stores/data-store';
 import { useApi } from '../js/api'
 
+const store  = dataStore();
 const api = useApi()
 const $q = useQuasar();
 const router = useRouter();
@@ -97,7 +99,12 @@ const onSubmit = async () => {
         position: 'top'
       });
 
-      await router.push('/');
+      if (store.data.authAccess) {
+        await router.push(store.data.authAccess);
+        store.data.authAccess = '';
+      } else {
+        await router.push('/');
+      }
     } else {
       $q.notify({
         color: 'negative',

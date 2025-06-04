@@ -7,6 +7,7 @@ const dataDefaults = {
   basket: [] as Product[],
   searchTerm: '',
   currentUser: null as User | null,
+  authAccess : ''
 };
 
 export const dataStore = defineStore('dataStore', {

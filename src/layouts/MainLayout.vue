@@ -160,8 +160,6 @@ const handleCheckout = async () => {
       timeout: 3000,
       position: 'top'
     });
-    await router.push('/auth');
-    return;
   }
 
   if (store.basketCount === 0) {

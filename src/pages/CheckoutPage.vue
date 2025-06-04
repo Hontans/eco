@@ -57,7 +57,6 @@
             <!-- #region Delivery Step -->
             <div v-if="step === 2">
               <h5 class="q-my-md text-white">Livraison</h5>
-
               <!-- #region Address Section -->
               <q-card flat bordered class="glass-card q-mb-lg">
                 <q-card-section>
@@ -87,9 +86,7 @@
                   </div>
                   <!-- #endregion Existing Addresses -->
 
-                  <!-- #region New Address Form -->
-
-                  <!-- #endregion New Address Form -->
+                  <!-- #region Add Address Button -->
                   <div class="text-center">
                     <q-btn
                       label="Ajouter une adresse"
@@ -101,8 +98,11 @@
                       rounded
                     />
                   </div>
+                  <!-- #endregion Add Address Button -->
+
+                  <!-- #region Add Address Dialog -->
                   <q-dialog v-model="showAddAddressForm">
-                    <q-card style="min-width: 400px" class="rounded-borders">
+                    <q-card style="min-width: 400px" class="rounded-borders glass-card">
                       <q-card-section class="bg-primary text-white">
                         <div class="text-h6">
                           <q-icon name="add_location" class="q-mr-sm" />
@@ -118,6 +118,7 @@
                             outlined
                             dense
                             prepend-icon="public"
+                            class="input-white"
                             :rules="[(val) => !!val || 'Le pays est requis']"
                           />
                           <q-input
@@ -126,6 +127,7 @@
                             outlined
                             dense
                             prepend-icon="location_city"
+                            class="input-white"
                             :rules="[(val) => !!val || 'La ville est requise']"
                           />
                           <q-input
@@ -134,6 +136,7 @@
                             outlined
                             dense
                             prepend-icon="markunread_mailbox"
+                            class="input-white"
                             :rules="[(val) => !!val || 'Le code postal est requis']"
                           />
                         </div>
@@ -145,11 +148,196 @@
                       </q-card-actions>
                     </q-card>
                   </q-dialog>
+                  <!-- #endregion Add Address Dialog -->
                 </q-card-section>
               </q-card>
               <!-- #endregion Address Section -->
             </div>
             <!-- #endregion Delivery Step -->
+
+            <!-- #region Payment Step -->
+            <div v-if="step === 3">
+              <h5 class="q-my-md text-white">Paiement</h5>
+
+              <!-- #region Payment Method Section -->
+              <q-card flat bordered class="glass-card q-mb-lg">
+                <q-card-section>
+                  <div class="text-h6 text-white q-mb-md">
+                    <q-icon name="payment" class="q-mr-sm" />
+                    Méthode de paiement
+                  </div>
+
+                  <!-- #region Existing Cards -->
+                  <div v-if="userCards.length > 0" class="q-mb-md">
+                    <div class="text-subtitle2 text-grey-3 q-mb-sm">Mes cartes enregistrées :</div>
+                    <div class="row q-col-gutter-sm">
+                      <div v-for="(card, index) in userCards" :key="index" class="col-12">
+                        <q-card flat bordered clickable @click="selectedCard = card" :class="{ 'selected-card': selectedCard === card, 'card-option': true }">
+                          <q-card-section class="q-pa-md">
+                            <div class="row items-center">
+                              <q-radio v-model="selectedCard" :val="card" color="primary" class="q-mr-md" />
+                              <div class="col">
+                                <div class="text-white text-weight-medium">
+                                  <q-icon name="credit_card" class="q-mr-sm" />
+                                  **** **** **** {{ card.cardNumber?.slice(-4) }}
+                                </div>
+                                <div class="text-grey-4 text-caption">
+                                  <q-icon name="event" size="16px" class="q-mr-xs" />
+                                  Expire le {{ card.expirationDate }}
+                                </div>
+                              </div>
+                            </div>
+                          </q-card-section>
+                        </q-card>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- #endregion Existing Cards -->
+
+                  <!-- #region No Cards Message -->
+                  <div v-else class="text-center q-py-lg">
+                    <q-icon name="credit_card_off" size="3rem" color="grey-4" class="q-mb-md" />
+                    <div class="text-h6 text-grey-4 q-mb-sm">Aucune carte enregistrée</div>
+                    <div class="text-body2 text-grey-5">
+                      Ajoutez votre première carte pour effectuer le paiement
+                    </div>
+                  </div>
+                  <!-- #endregion No Cards Message -->
+
+                  <!-- #region Add Card Button -->
+                  <div class="text-center">
+                    <q-btn
+                      label="Ajouter une carte"
+                      color="primary"
+                      icon="add"
+                      @click="showAddCardFormAndValue"
+                      class="q-px-xl q-py-sm"
+                      unelevated
+                      rounded
+                    />
+                  </div>
+                  <!-- #endregion Add Card Button -->
+
+                  <!-- #region Add Card Dialog -->
+                  <q-dialog v-model="showAddCardForm">
+                    <q-card style="min-width: 450px" class="rounded-borders glass-card">
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">
+                          <q-icon name="add_card" class="q-mr-sm" />
+                          Ajouter une carte
+                        </div>
+                      </q-card-section>
+
+                      <q-card-section class="q-pt-lg">
+                        <div class="q-gutter-md">
+                          <q-input
+                            v-model="editCardNumber"
+                            label="Numéro de carte"
+                            outlined
+                            dense
+                            prepend-icon="credit_card"
+                            mask="#### #### #### ####"
+                            placeholder="1234 5678 9012 3456"
+                            class="input-white"
+                            :rules="[(val) => !!val || 'Le numéro de carte est requis']"
+                          />
+                          <q-input
+                            v-model="editExpirationDate"
+                            label="Date d'expiration"
+                            outlined
+                            dense
+                            prepend-icon="event"
+                            mask="##/##"
+                            placeholder="MM/AA"
+                            class="input-white"
+                            :rules="[(val) => !!val || 'La date d\'expiration est requise']"
+                          />
+                          <q-input
+                            v-model="editCryptogram"
+                            label="Code de sécurité (CVV)"
+                            outlined
+                            dense
+                            prepend-icon="security"
+                            mask="###"
+                            placeholder="123"
+                            type="password"
+                            class="input-white"
+                            :rules="[(val) => !!val || 'Le code de sécurité est requis']"
+                          />
+                        </div>
+                      </q-card-section>
+
+                      <q-card-actions align="right" class="q-pa-md">
+                        <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+                        <q-btn label="Ajouter" color="primary" v-close-popup @click="addCard" unelevated />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
+                  <!-- #endregion Add Card Dialog -->
+                </q-card-section>
+              </q-card>
+              <!-- #endregion Payment Method Section -->
+            </div>
+            <!-- #endregion Payment Step -->
+
+            <!-- #region Summary Step -->
+            <div v-if="step === 4">
+              <h5 class="q-my-md text-white">Récapitulatif de la commande</h5>
+
+              <!-- #region Order Summary -->
+              <q-card flat bordered class="glass-card q-mb-lg">
+                <q-card-section>
+                  <div class="text-h6 text-white q-mb-md">
+                    <q-icon name="receipt_long" class="q-mr-sm" />
+                    Votre commande
+                  </div>
+
+                  <!-- #region Products List -->
+                  <div class="q-mb-md">
+                    <div class="text-subtitle2 text-grey-3 q-mb-sm">Articles commandés :</div>
+                    <template v-for="product in store.data.basket" :key="product.id">
+                      <div class="row items-center q-py-sm">
+                        <div class="col">
+                          <div class="text-white">{{ product.name }}</div>
+                        </div>
+                        <div class="col-auto text-white">{{ product.price }}€</div>
+                      </div>
+                      <q-separator color="rgba(255,255,255,0.1)" />
+                    </template>
+                  </div>
+                  <!-- #endregion Products List -->
+
+                  <!-- #region Delivery Address -->
+                  <div class="q-mb-md" v-if="selectedAddress">
+                    <div class="text-subtitle2 text-grey-3 q-mb-sm">Adresse de livraison :</div>
+                    <div class="text-white">
+                      {{ selectedAddress.city }}, {{ selectedAddress.country }} {{ selectedAddress.postalCode }}
+                    </div>
+                  </div>
+                  <!-- #endregion Delivery Address -->
+
+                  <!-- #region Payment Method -->
+                  <div class="q-mb-md" v-if="selectedCard">
+                    <div class="text-subtitle2 text-grey-3 q-mb-sm">Méthode de paiement :</div>
+                    <div class="text-white">
+                      <q-icon name="credit_card" class="q-mr-sm" />
+                      **** **** **** {{ selectedCard.cardNumber?.slice(-4) }}
+                    </div>
+                  </div>
+                  <!-- #endregion Payment Method -->
+
+                  <!-- #region Total -->
+                  <q-separator color="rgba(255,255,255,0.2)" class="q-my-md" />
+                  <div class="row items-center">
+                    <div class="col text-h6 text-white">Total :</div>
+                    <div class="col-auto text-h5 text-white">{{ store.basketPrice }}€</div>
+                  </div>
+                  <!-- #endregion Total -->
+                </q-card-section>
+              </q-card>
+              <!-- #endregion Order Summary -->
+            </div>
+            <!-- #endregion Summary Step -->
           </div>
           <!-- #endregion Main Content -->
 
@@ -162,7 +350,14 @@
               </q-card-section>
               <q-separator color="white" />
               <q-card-actions vertical align="center" class="q-pa-md">
-                <q-btn :label="step === 1 ? 'Passer à la livraison' : 'Continuer vers le paiement'" color="primary" class="full-width q-py-sm text-subtitle1 btn-glass" @click="handleMainAction" size="lg" :disabled="step === 2 && !isAddressSelected" />
+                <q-btn
+                  :label="getButtonLabel()"
+                  color="primary"
+                  class="full-width q-py-sm text-subtitle1 btn-glass"
+                  @click="handleMainAction"
+                  size="lg"
+                  :disabled="getButtonDisabled()"
+                />
               </q-card-actions>
             </q-card>
           </div>
@@ -180,7 +375,7 @@ import { ref, computed, onMounted } from 'vue';
 import type { QStepper } from 'quasar';
 import { useApi } from '../js/api';
 import { dataStore } from '../stores/data-store';
-import type { Adress } from '../js/types';
+import type { Adress, BasketCard } from '../js/types';
 import { useQuasar } from 'quasar';
 // #endregion Imports
 
@@ -190,6 +385,8 @@ const api = useApi();
 const $q = useQuasar();
 const stepperRef = ref<QStepper | null>(null);
 const step = ref(1);
+
+// Address variables
 const userAddresses = ref<Adress[]>([]);
 const selectedAddress = ref<Adress | null>(null);
 const editAddressCountry = ref('');
@@ -197,6 +394,15 @@ const editAddressCity = ref('');
 const editAddressPostalCode = ref('');
 const showAddAddressForm = ref(false);
 const adresses = ref<Adress[]>([]);
+
+// Payment variables
+const userCards = ref<BasketCard[]>([]);
+const selectedCard = ref<BasketCard | null>(null);
+const editCardNumber = ref('');
+const editExpirationDate = ref('');
+const editCryptogram = ref('');
+const showAddCardForm = ref(false);
+const cards = ref<BasketCard[]>([]);
 // #endregion Variables and Stores
 
 // #region Computed
@@ -207,6 +413,7 @@ const updateStore = () => {
   const user = api.getConectedUser();
   if (user) {
     user.adresses = adresses.value;
+    user.basketCards = cards.value;
     dataStore().data.currentUser = user;
   }
 };
@@ -228,22 +435,67 @@ const addAddress = () => {
     postalCode: editAddressPostalCode.value,
   });
 
+  userAddresses.value = adresses.value;
   updateStore();
   notify('Adresse ajoutée avec succès', 'positive');
   editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
 };
 
+// Payment methods
+const showAddCardFormAndValue = () => {
+  showAddCardForm.value = true;
+  editCardNumber.value = editExpirationDate.value = editCryptogram.value = '';
+};
 
+const addCard = () => {
+  if (!editCardNumber.value || !editExpirationDate.value || !editCryptogram.value) {
+    notify('Veuillez remplir tous les champs', 'negative');
+    return;
+  }
+
+  cards.value.push({
+    cardNumber: editCardNumber.value,
+    expirationDate: editExpirationDate.value,
+    cryptogram: editCryptogram.value,
+  });
+
+  userCards.value = cards.value;
+  updateStore();
+  notify('Carte ajoutée avec succès', 'positive');
+  editCardNumber.value = editExpirationDate.value = editCryptogram.value = '';
+};
 
 const isAddressSelected = computed(() => {
   return selectedAddress.value !== null;
 });
+
+const isCardSelected = computed(() => {
+  return selectedCard.value !== null;
+});
+
+const getButtonLabel = () => {
+  switch (step.value) {
+    case 1: return 'Passer à la livraison';
+    case 2: return 'Continuer vers le paiement';
+    case 3: return 'Voir le récapitulatif';
+    case 4: return 'Confirmer la commande';
+    default: return 'Continuer';
+  }
+};
+
+const getButtonDisabled = () => {
+  switch (step.value) {
+    case 2: return !isAddressSelected.value;
+    case 3: return !isCardSelected.value;
+    default: return false;
+  }
+};
 // #endregion Computed
 
 // #region Methods
 const handleMainAction = () => {
   if (step.value === 1) {
-    stepperRef.value?.next();
+    step.value = 2;
   } else if (step.value === 2) {
     if (!isAddressSelected.value) {
       $q.notify({
@@ -256,8 +508,38 @@ const handleMainAction = () => {
       });
       return;
     }
-  };
-}
+    step.value = 3;
+  } else if (step.value === 3) {
+    if (!isCardSelected.value) {
+      $q.notify({
+        color: 'negative',
+        textColor: 'white',
+        icon: 'warning',
+        message: 'Veuillez sélectionner une méthode de paiement',
+        timeout: 2000,
+        position: 'top'
+      });
+      return;
+    }
+    step.value = 4;
+  } else if (step.value === 4) {
+    // Finaliser la commande
+    $q.notify({
+      color: 'positive',
+      textColor: 'white',
+      icon: 'check_circle',
+      message: 'Commande confirmée avec succès !',
+      timeout: 3000,
+      position: 'top'
+    });
+    // Rediriger vers la page d'accueil ou vider le panier
+    store.data.basket = [];
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 2000);
+  }
+};
+
 const loadUserAddresses = () => {
   const user = api.getConectedUser();
   if (user && user.adresses) {
@@ -265,17 +547,25 @@ const loadUserAddresses = () => {
     adresses.value = user.adresses || [];
   }
 };
+
+const loadUserCards = () => {
+  const user = api.getConectedUser();
+  if (user && user.basketCards) {
+    userCards.value = user.basketCards;
+    cards.value = user.basketCards || [];
+  }
+};
 // #endregion Methods
 
 // #region Lifecycle
 onMounted(() => {
   loadUserAddresses();
+  loadUserCards();
 });
 // #endregion Lifecycle
 </script>
 
 <style scoped>
-
 /* #region Header Styles */
 .header-blur
 {
@@ -320,7 +610,31 @@ onMounted(() => {
   background: rgba(25, 118, 210, 0.2) !important;
   border-color: #1976d2 !important;
 }
+/* #endregion Address Selection Styles */
 
+/* #region Card Selection Styles */
+.card-option
+{
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.card-option:hover
+{
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.selected-card
+{
+  background: rgba(25, 118, 210, 0.2) !important;
+  border-color: #1976d2 !important;
+}
+/* #endregion Card Selection Styles */
+
+/* #region Input Styles */
 .input-white .q-field__control
 {
   color: white;
@@ -330,7 +644,12 @@ onMounted(() => {
 {
   color: rgba(255, 255, 255, 0.7);
 }
-/* #endregion Address Selection Styles */
+
+.input-white .q-field__native
+{
+  color: white;
+}
+/* #endregion Input Styles */
 
 /* #region Button Styles */
 .btn-glass
@@ -360,4 +679,10 @@ onMounted(() => {
 }
 /* #endregion Text Styles */
 
+/* #region Dialog Styles */
+.rounded-borders
+{
+  border-radius: 12px;
+}
+/* #endregion Dialog Styles */
 </style>

@@ -94,7 +94,14 @@
       <!-- #region Cart Total and Checkout -->
       <div class="column items-center q-mt-md q-mb-xl">
         <div class="text-h6 q-mb-md text-white">Total à payer : {{ store.basketPrice }}€</div>
-        <q-btn color="primary" label="Acheter" @click="router.push('/checkout')" size="lg" style="width: 200px" />
+        <q-btn
+          color="primary"
+          label="Acheter"
+          @click="handleCheckout"
+          size="lg"
+          style="width: 200px"
+          :disabled="store.basketCount === 0"
+        />
       </div>
       <!-- #endregion Cart Total and Checkout -->
       </q-scroll-area>
@@ -141,6 +148,35 @@ const logout = async () =>
 
   // Redirection vers la page d'accueil après déconnexion
   await router.push('/');
+};
+
+const handleCheckout = async () => {
+  if (!store.isLoggedIn) {
+    $q.notify({
+      color: 'warning',
+      textColor: 'white',
+      icon: 'warning',
+      message: 'Vous devez être connecté pour passer commande',
+      timeout: 3000,
+      position: 'top'
+    });
+    await router.push('/auth');
+    return;
+  }
+
+  if (store.basketCount === 0) {
+    $q.notify({
+      color: 'warning',
+      textColor: 'white',
+      icon: 'shopping_cart',
+      message: 'Votre panier est vide',
+      timeout: 3000,
+      position: 'top'
+    });
+    return;
+  }
+
+  await router.push('/checkout');
 };
 // #endregion Methods
 </script>

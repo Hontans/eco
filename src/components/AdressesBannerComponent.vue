@@ -106,7 +106,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+          <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
           <q-btn
             label="Enregistrer"
             color="primary"
@@ -158,7 +158,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+          <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
           <q-btn label="Ajouter" color="primary" v-close-popup @click="addAddress" unelevated />
         </q-card-actions>
       </q-card>
@@ -298,7 +298,11 @@ onMounted(() => {
 
 .q-input :deep(.q-field__native) {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.btn-cancel {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .q-input :deep(.q-field__control):hover {

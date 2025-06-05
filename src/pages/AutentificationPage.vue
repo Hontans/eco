@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <q-card class="auth-card q-pa-lg">
       <q-card-section class="text-center q-pt-none">
-        <h4 class="q-my-md">Connexion</h4>
+        <h4 class="q-my-md text-white">Connexion</h4>
       </q-card-section>
 
       <q-card-section>
@@ -16,7 +16,7 @@
             :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
           >
             <template v-slot:prepend>
-              <q-icon name="person" />
+              <q-icon name="person" color="white" />
             </template>
           </q-input>
 
@@ -30,11 +30,12 @@
             :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']"
           >
             <template v-slot:prepend>
-              <q-icon name="lock" />
+              <q-icon name="lock" color="white" />
             </template>
             <template v-slot:append>
               <q-icon
                 :name="isPwd ? 'visibility_off' : 'visibility'"
+                color="white"
                 class="cursor-pointer"
                 @click="isPwd = !isPwd"
               />
@@ -58,11 +59,12 @@
               </template>
             </q-btn>
           </div>
-        </q-form>
-        <div class="text-center q-mt-md text-grey-8">
-            <p class="q-mb-xs">Pas encore de compte?</p>
-            <q-btn flat color="primary" label="S'inscrire" @click="router.push('/register')" />
+
+          <div class="text-center q-mt-md text-white">
+            <p class="q-mb-xs">Pas encore de compte ?</p>
+            <q-btn flat color="primary" label="S'inscrire" to="/register" />
           </div>
+        </q-form>
       </q-card-section>
     </q-card>
   </q-page>
@@ -131,18 +133,33 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-.auth-card {
+.auth-card
+{
   width: 100%;
   max-width: 400px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+
+  :deep(.q-field__control) {
+    color: white;
+  }
+
+  :deep(.q-field__label) {
+    color: white;
+  }
+
+  :deep(.q-field__outline) {
+    border-color: white;
+  }
 }
 
-.auth-input {
+.auth-input
+{
   margin-bottom: 10px;
 }
 
-.full-width {
+.full-width
+{
   width: 100%;
 }
 </style>

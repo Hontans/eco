@@ -1,20 +1,27 @@
 import type { Product, User } from './types';
 import { dataStore } from '../stores/data-store';
 
-export function useApi() {
+export function useApi()
+{
   const store = dataStore();
 
-  const addItemToBasket = (item: Product): boolean => {
+  //#region Basket Operations
+  const addItemToBasket = (item: Product): boolean =>
+  {
     store.addItemToBasket(item);
     return true;
   };
+  //#endregion
 
-  const getProducts = async (): Promise<Product[]> => {
+  //#region Product Operations
+  const getProducts = async (): Promise<Product[]> =>
+  {
     const products = await fetch('/products.json').then((response) => response.json());
     return products as Product[];
   };
 
-  const getProductById = async (id: number): Promise<Product | undefined> => {
+  const getProductById = async (id: number): Promise<Product | undefined> =>
+  {
     const products = await getProducts();
     const product = products.find((item) => item.id === id);
     if (!product) {
@@ -23,20 +30,26 @@ export function useApi() {
     return product;
   };
 
-  const deleteProduct = (product: Product): boolean => {
+  const deleteProduct = (product: Product): boolean =>
+  {
     store.deleteProduct(product);
     return true;
   };
+  //#endregion
 
-  const logout = (): boolean => {
+  //#region Authentication Operations
+  const logout = (): boolean =>
+  {
     return store.logout();
   };
 
-  const getConectedUser = (): User | null => {
+  const getConectedUser = (): User | null =>
+  {
     return store.data.currentUser;
   };
 
-  const login = async (emailOrName: string, password: string): Promise<User | null> => {
+  const login = async (emailOrName: string, password: string): Promise<User | null> =>
+  {
     const users = await getUsers();
     const user = users.find(
       (u) => (u.email === emailOrName || u.name === emailOrName) && u.password === password,
@@ -47,16 +60,18 @@ export function useApi() {
     }
     return null;
   };
+  //#endregion
 
-  const getUsers = async (): Promise<User[]> => {
+  //#region User Operations
+  const getUsers = async (): Promise<User[]> =>
+  {
     const users = await fetch('/users.json').then((response) => response.json());
-
     return users as User[];
   };
 
-  const getUserByEmail = async (email: string): Promise<User> => {
+  const getUserByEmail = async (email: string): Promise<User> =>
+  {
     const users = await getUsers();
-
     const user = users.find((user) => user.email.toLocaleLowerCase() == email.toLocaleLowerCase());
 
     if (!user) {
@@ -65,6 +80,7 @@ export function useApi() {
 
     return user;
   };
+  //#endregion
 
   return {
     addItemToBasket,

@@ -180,7 +180,6 @@ onMounted(() =>
 </script>
 
 <style scoped>
-
 /* #region Profile Card Styles */
 .profile-card
 {
@@ -285,4 +284,5 @@ onMounted(() =>
 {
   padding: 16px;
 }
+/* #endregion Typography Styles */
 </style>

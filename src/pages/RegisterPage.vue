@@ -1,42 +1,58 @@
 <template>
   <q-page class="flex flex-center">
     <q-card class="auth-card q-pa-lg">
+      <!-- #region Card Header -->
       <q-card-section class="text-center q-pt-none">
-      <h4 class="q-my-md text-white">Inscription</h4>
+        <h4 class="q-my-md text-white">Inscription</h4>
       </q-card-section>
+      <!-- #endregion -->
 
+      <!-- #region Registration Form -->
       <q-card-section>
-      <q-form @submit="onSubmit" class="q-gutter-md">
-        <q-input outlined v-model="userName" label="Utilisateur" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
-        <template v-slot:prepend><q-icon name="person" color="white" /></template>
-        </q-input>
+        <q-form @submit="onSubmit" class="q-gutter-md">
+          <!-- #region User Name Input -->
+          <q-input outlined v-model="userName" label="Utilisateur" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
+            <template v-slot:prepend><q-icon name="person" color="white" /></template>
+          </q-input>
+          <!-- #endregion -->
 
-        <q-input outlined v-model="userEmail" label="Email" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
-        <template v-slot:prepend><q-icon name="email" color="white" /></template>
-        </q-input>
+          <!-- #region Email Input -->
+          <q-input outlined v-model="userEmail" label="Email" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
+            <template v-slot:prepend><q-icon name="email" color="white" /></template>
+          </q-input>
+          <!-- #endregion -->
 
-        <q-input outlined :type="isPwd ? 'password' : 'text'" v-model="password" label="Mot de passe" class="auth-input" lazy-rules :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']">
-        <template v-slot:prepend><q-icon name="lock" color="white" /></template>
-        <template v-slot:append><q-icon :name="isPwd ? 'visibility_off' : 'visibility'" color="white" class="cursor-pointer" @click="isPwd = !isPwd" /></template>
-        </q-input>
+          <!-- #region Password Input -->
+          <q-input outlined :type="isPwd ? 'password' : 'text'" v-model="password" label="Mot de passe" class="auth-input" lazy-rules :rules="[(val) => (val !== null && val !== '') || 'Obligatoire']">
+            <template v-slot:prepend><q-icon name="lock" color="white" /></template>
+            <template v-slot:append><q-icon :name="isPwd ? 'visibility_off' : 'visibility'" color="white" class="cursor-pointer" @click="isPwd = !isPwd" /></template>
+          </q-input>
+          <!-- #endregion -->
 
-        <q-input outlined :type="isConfirmPwd ? 'password' : 'text'" v-model="confirmPassword" label="Confirmer le mot de passe" class="auth-input" lazy-rules :rules="[(val) => (val !== null && val !== '') || 'Obligatoire', (val) => val === password || 'Les mots de passe ne correspondent pas']">
-        <template v-slot:prepend><q-icon name="lock" color="white" /></template>
-        <template v-slot:append><q-icon :name="isConfirmPwd ? 'visibility_off' : 'visibility'" color="white" class="cursor-pointer" @click="isConfirmPwd = !isConfirmPwd" /></template>
-        </q-input>
+          <!-- #region Confirm Password Input -->
+          <q-input outlined :type="isConfirmPwd ? 'password' : 'text'" v-model="confirmPassword" label="Confirmer le mot de passe" class="auth-input" lazy-rules :rules="[(val) => (val !== null && val !== '') || 'Obligatoire', (val) => val === password || 'Les mots de passe ne correspondent pas']">
+            <template v-slot:prepend><q-icon name="lock" color="white" /></template>
+            <template v-slot:append><q-icon :name="isConfirmPwd ? 'visibility_off' : 'visibility'" color="white" class="cursor-pointer" @click="isConfirmPwd = !isConfirmPwd" /></template>
+          </q-input>
+          <!-- #endregion -->
 
-        <div class="row justify-between q-mt-md">
-        <q-btn :loading="loading" label="S'inscrire" type="submit" color="primary" class="full-width">
-          <template v-slot:loading><q-spinner-dots color="white" /></template>
-        </q-btn>
-        </div>
+          <!-- #region Submit Button -->
+          <div class="row justify-between q-mt-md">
+            <q-btn :loading="loading" label="S'inscrire" type="submit" color="primary" class="full-width">
+              <template v-slot:loading><q-spinner-dots color="white" /></template>
+            </q-btn>
+          </div>
+          <!-- #endregion -->
 
-        <div class="text-center q-mt-md text-white">
-        <p class="q-mb-xs">Vous avez déjà un compte ?</p>
-        <q-btn flat color="primary" label="Se connecter" to="/auth" />
-        </div>
-      </q-form>
+          <!-- #region Login Link -->
+          <div class="text-center q-mt-md text-white">
+            <p class="q-mb-xs">Vous avez déjà un compte ?</p>
+            <q-btn flat color="primary" label="Se connecter" to="/auth" />
+          </div>
+          <!-- #endregion -->
+        </q-form>
       </q-card-section>
+      <!-- #endregion -->
     </q-card>
   </q-page>
 </template>
@@ -126,6 +142,7 @@ const onSubmit = async () => {
 
 
 <style lang="scss" scoped>
+//#region Auth Card
 .auth-card
 {
   width: 100%;
@@ -133,19 +150,24 @@ const onSubmit = async () => {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 
-  :deep(.q-field__control) {
+  :deep(.q-field__control)
+  {
     color: white;
   }
 
-  :deep(.q-field__label) {
+  :deep(.q-field__label)
+  {
     color: white;
   }
 
-  :deep(.q-field__outline) {
+  :deep(.q-field__outline)
+  {
     border-color: white;
   }
 }
+//#endregion
 
+//#region Form Styling
 .auth-input
 {
   margin-bottom: 10px;
@@ -155,4 +177,5 @@ const onSubmit = async () => {
 {
   width: 100%;
 }
+//#endregion
 </style>

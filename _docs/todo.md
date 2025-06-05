@@ -2,25 +2,30 @@
 
 Definir toutes les appels necessaire:
 
-getCategories() : category[]
+addItemToBasket(item: Product) : bool
 getProducts() : product[]
+getProductById(id: number) : Product
+getCategories() : category[]
 getProducByCategoryId(categoryId: number) : product[]
+deleteProduct(product: Product) : bool
+logout(): bool
+getConectedUser() : User | null
+login(emailOrName: string, password: string) : User | null
+getUserById(id: number) : User[]
+getUserByEmail(email: string) : User
+getUserCart(userId: number) : items[]
+saveCart(Items[]) : bool
+
+
+
 
 
 // Login page, ....
 getUserByCredentials(login: string, password: string) : User | error: { message: "" }
-
-{
-    error: 'utilisateur ou mot de passe inconnu'
-}
 {
     usename: '',
     age: '...'
-} 
-
-getUserCart(userId: number) : items[]
-
-
-
-getUserById(id: number) : User
-saveCart(Items[]) : bool
+}
+{
+    error: 'utilisateur ou mot de passe inconnu'
+}

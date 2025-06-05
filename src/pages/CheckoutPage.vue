@@ -156,7 +156,7 @@
                       </q-card-section>
 
                       <q-card-actions align="right" class="q-pa-md">
-                        <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+                        <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
                         <q-btn label="Ajouter" color="primary" v-close-popup @click="addAddress" unelevated />
                       </q-card-actions>
                     </q-card>
@@ -281,7 +281,7 @@
                       </q-card-section>
 
                       <q-card-actions align="right" class="q-pa-md">
-                        <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+                        <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
                         <q-btn label="Ajouter" color="primary" v-close-popup @click="addCard" unelevated />
                       </q-card-actions>
                     </q-card>
@@ -654,19 +654,24 @@ onMounted(() => {
 /* #endregion Card Selection Styles */
 
 /* #region Input Styles */
-.input-white .q-field__control
-{
-  color: white;
+.input-white :deep(.q-field__control) {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
-.input-white .q-field__label
-{
-  color: rgba(255, 255, 255, 0.7);
+.input-white :deep(.q-field__native) {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.input-white .q-field__native
-{
-  color: white;
+.input-white :deep(.q-field__control):hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.input-white :deep(.q-field__control):focus-within {
+  background: rgba(255, 255, 255, 0.18);
 }
 /* #endregion Input Styles */
 
@@ -686,6 +691,10 @@ onMounted(() => {
 .back-step-btn:hover
 {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-cancel {
+  color: rgba(255, 255, 255, 0.8);
 }
 /* #endregion Button Styles */
 
@@ -714,6 +723,12 @@ onMounted(() => {
 .rounded-borders
 {
   border-radius: 12px;
+}
+
+.q-dialog .q-card {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 }
 /* #endregion Dialog Styles */
 </style>

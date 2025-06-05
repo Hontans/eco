@@ -116,7 +116,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+          <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
           <q-btn label="Enregistrer" color="primary" v-close-popup @click="updateCart" unelevated />
         </q-card-actions>
       </q-card>
@@ -169,7 +169,7 @@
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
-          <q-btn flat label="Annuler" color="grey-7" v-close-popup />
+          <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
           <q-btn label="Ajouter" color="primary" v-close-popup @click="addCart" unelevated />
         </q-card-actions>
       </q-card>
@@ -292,6 +292,10 @@ onMounted(() => {
   border-radius: 12px;
 }
 
+.btn-cancel {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* Glassmorphisme Effects for dialogs */
 .q-dialog .q-card {
   background: rgba(255, 255, 255, 0.1) !important;
@@ -305,11 +309,6 @@ onMounted(() => {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-}
-
-.q-input :deep(.q-field__native) {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
 }
 
 .q-input :deep(.q-field__control):hover {

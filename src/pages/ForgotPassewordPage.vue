@@ -16,7 +16,7 @@
             :rules="[(val) => (val && val.length > 0) || 'Obligatoire']"
           >
             <template v-slot:prepend>
-              <q-icon name="person" color="white" />
+              <q-icon name="email" color="white" />
             </template>
           </q-input>
 

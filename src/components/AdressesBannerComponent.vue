@@ -34,7 +34,7 @@
                   </q-btn>
                 </q-btn-group>
               </div>
-            </div>group>
+            </div>
           </q-card-section>
         </q-card>
       </div>

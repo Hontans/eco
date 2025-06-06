@@ -1,5 +1,5 @@
 <template>
-    <!-- En-tête avec icône -->
+    <!-- #region Header -->
     <div class="text-center q-mb-lg">
       <div class="text-h4 text-primary q-mb-sm">
         <q-icon name="payment" size="md" class="q-mr-sm" />
@@ -7,11 +7,12 @@
       </div>
       <div class="text-body2 text-grey-7">Gérez vos moyens de paiement</div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Liste des cartes -->
+    <!-- #region Cards List -->
     <div v-if="basketCards.length > 0" class="q-mb-lg">
       <div v-for="(cart, index) in basketCards" :key="cart.cardNumber ?? index" class="q-mb-md">
-        <q-card flat bordered class="payment-card" :class="{ 'payment-card-hover': true }">
+        <q-card flat bordered class="payment-card payment-card-hover">
           <q-card-section class="q-pa-md">
             <div class="row items-center">
               <div class="col">
@@ -26,14 +27,7 @@
               </div>
               <div class="col-auto">
                 <q-btn-group flat>
-                  <q-btn
-                    flat
-                    dense
-                    icon="edit"
-                    color="primary"
-                    @click="showEditCartFormAndValue(cart)"
-                    class="q-mr-xs"
-                  >
+                  <q-btn flat dense icon="edit" color="primary" @click="showEditCartFormAndValue(cart)" class="q-mr-xs">
                     <q-tooltip>Modifier</q-tooltip>
                   </q-btn>
                   <q-btn flat dense icon="delete" color="negative" @click="deleteCart(cart)">
@@ -46,8 +40,9 @@
         </q-card>
       </div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Message si aucune carte -->
+    <!-- #region Empty State -->
     <div v-else class="text-center q-py-xl">
       <q-icon name="credit_card_off" size="4rem" color="grey-4" class="q-mb-md" />
       <div class="text-h6 text-grey-6 q-mb-sm">Aucune carte enregistrée</div>
@@ -55,63 +50,29 @@
         Ajoutez votre première carte pour effectuer des paiements
       </div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Bouton d'ajout -->
+    <!-- #region Add Button -->
     <div class="text-center">
-      <q-btn
-        label="Ajouter une carte"
-        color="primary"
-        icon="add"
-        @click="showAddCartFormAndValue"
-        class="q-px-xl q-py-sm"
-        unelevated
-        rounded
-      />
+      <q-btn label="Ajouter une carte" color="primary" icon="add" @click="showAddCartFormAndValue" class="q-px-xl q-py-sm" unelevated rounded />
     </div>
+    <!-- #endregion -->
 
-    <!-- Dialog de modification -->
+    <!-- #region Edit Dialog -->
     <q-dialog v-model="showEditCartForm">
       <q-card style="min-width: 450px" class="rounded-borders">
         <q-card-section class="bg-primary text-white">
           <div class="text-h6">
-            <q-icon  name="edit" class="q-mr-sm" />
+            <q-icon name="edit" class="q-mr-sm" />
             Modifier la carte
           </div>
         </q-card-section>
 
         <q-card-section class="q-pt-lg">
           <div class="q-gutter-md">
-            <q-input
-              v-model="editCardNumber"
-              label="Numéro de carte"
-              outlined
-              dense
-              prepend-icon="credit_card"
-              mask="#### #### #### ####"
-              placeholder="1234 5678 9012 3456"
-              :rules="[(val) => !!val || 'Le numéro de carte est requis']"
-            />
-            <q-input
-              v-model="editExpirationDate"
-              label="Date d'expiration"
-              outlined
-              dense
-              prepend-icon="event"
-              mask="##/##"
-              placeholder="MM/AA"
-              :rules="[(val) => !!val || 'La date d\'expiration est requise']"
-            />
-            <q-input
-              v-model="editCryptogram"
-              label="Code de sécurité (CVV)"
-              outlined
-              dense
-              prepend-icon="security"
-              mask="###"
-              placeholder="123"
-              type="password"
-              :rules="[(val) => !!val || 'Le code de sécurité est requis']"
-            />
+            <q-input v-model="editCardNumber" label="Numéro de carte" outlined dense prepend-icon="credit_card" mask="#### #### #### ####" placeholder="1234 5678 9012 3456" :rules="[(val) => !!val || 'Le numéro de carte est requis']" />
+            <q-input v-model="editExpirationDate" label="Date d'expiration" outlined dense prepend-icon="event" mask="##/##" placeholder="MM/AA" :rules="[(val) => !!val || 'La date d\'expiration est requise']" />
+            <q-input v-model="editCryptogram" label="Code de sécurité (CVV)" outlined dense prepend-icon="security" mask="###" placeholder="123" type="password" :rules="[(val) => !!val || 'Le code de sécurité est requis']" />
           </div>
         </q-card-section>
 
@@ -121,8 +82,9 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- #endregion -->
 
-    <!-- Dialog d'ajout -->
+    <!-- #region Add Dialog -->
     <q-dialog v-model="showAddCartForm">
       <q-card style="min-width: 450px" class="rounded-borders">
         <q-card-section class="bg-primary text-white">
@@ -134,37 +96,9 @@
 
         <q-card-section class="q-pt-lg">
           <div class="q-gutter-md">
-            <q-input
-              v-model="editCardNumber"
-              label="Numéro de carte"
-              outlined
-              dense
-              prepend-icon="credit_card"
-              mask="#### #### #### ####"
-              placeholder="1234 5678 9012 3456"
-              :rules="[(val) => !!val || 'Le numéro de carte est requis']"
-            />
-            <q-input
-              v-model="editExpirationDate"
-              label="Date d'expiration"
-              outlined
-              dense
-              prepend-icon="event"
-              mask="##/##"
-              placeholder="MM/AA"
-              :rules="[(val) => !!val || 'La date d\'expiration est requise']"
-            />
-            <q-input
-              v-model="editCryptogram"
-              label="Code de sécurité (CVV)"
-              outlined
-              dense
-              prepend-icon="security"
-              mask="###"
-              placeholder="123"
-              type="password"
-              :rules="[(val) => !!val || 'Le code de sécurité est requis']"
-            />
+            <q-input v-model="editCardNumber" label="Numéro de carte" outlined dense prepend-icon="credit_card" mask="#### #### #### ####" placeholder="1234 5678 9012 3456" :rules="[(val) => !!val || 'Le numéro de carte est requis']" />
+            <q-input v-model="editExpirationDate" label="Date d'expiration" outlined dense prepend-icon="event" mask="##/##" placeholder="MM/AA" :rules="[(val) => !!val || 'La date d\'expiration est requise']" />
+            <q-input v-model="editCryptogram" label="Code de sécurité (CVV)" outlined dense prepend-icon="security" mask="###" placeholder="123" type="password" :rules="[(val) => !!val || 'Le code de sécurité est requis']" />
           </div>
         </q-card-section>
 
@@ -174,15 +108,19 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- #endregion -->
 </template>
 
 <script setup lang="ts">
+// #region Imports
 import { dataStore } from '../stores/data-store';
 import { ref, onMounted } from 'vue';
 import type { BasketCard } from '../js/types';
 import { useQuasar } from 'quasar';
 import { useApi } from '../js/api';
+// #endregion
 
+// #region Variables
 const api = useApi();
 const $q = useQuasar();
 const editCardNumber = ref('');
@@ -192,9 +130,12 @@ const showEditCartForm = ref(false);
 const showAddCartForm = ref(false);
 const basketCards = ref<BasketCard[]>([]);
 const editingBasketCards = ref<BasketCard | null>(null);
+// #endregion
 
-const notify = (message: string, color: string) =>
+// #region Helper Functions
+const notify = (message: string, color: string) => {
   $q.notify({ message, color, position: 'bottom' });
+};
 
 const updateStore = () => {
   const user = api.getConectedUser();
@@ -203,7 +144,9 @@ const updateStore = () => {
     dataStore().data.currentUser = user;
   }
 };
+// #endregion
 
+// #region Form Display Functions
 const showEditCartFormAndValue = (cart: BasketCard) => {
   showEditCartForm.value = true;
   editingBasketCards.value = cart;
@@ -216,7 +159,9 @@ const showAddCartFormAndValue = () => {
   showAddCartForm.value = true;
   editCardNumber.value = editExpirationDate.value = editCryptogram.value = '';
 };
+// #endregion
 
+// #region Card Management Functions
 const updateCart = () => {
   const index = basketCards.value.findIndex((cart) => cart === editingBasketCards.value);
   if (index !== -1) {
@@ -265,16 +210,20 @@ const deleteCart = (cart: BasketCard) => {
     notify('Erreur lors de la suppression', 'negative');
   }
 };
+// #endregion
 
+// #region Lifecycle
 onMounted(() => {
   const user = api.getConectedUser();
   if (user) {
     basketCards.value = user.basketCards || [];
   }
 });
+// #endregion
 </script>
 
 <style scoped>
+/* #region Payment Card Styles */
 .payment-card {
   border-radius: 16px;
   transition: all 0.3s ease;
@@ -287,23 +236,27 @@ onMounted(() => {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.02) !important;
 }
+/* #endregion */
 
+/* #region Dialog Styles */
 .rounded-borders {
   border-radius: 12px;
 }
 
-.btn-cancel {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* Glassmorphisme Effects for dialogs */
 .q-dialog .q-card {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
 }
+/* #endregion */
 
-/* Input Styles */
+/* #region Button Styles */
+.btn-cancel {
+  color: rgba(255, 255, 255, 0.8);
+}
+/* #endregion */
+
+/* #region Input Styles */
 .q-input :deep(.q-field__control) {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
@@ -318,17 +271,20 @@ onMounted(() => {
 .q-input :deep(.q-field__control):focus-within {
   background: rgba(255, 255, 255, 0.18);
 }
+/* #endregion */
 
-.q-card
-{
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 16px;
+/* #region Card Styles */
+.q-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 16px;
 }
+/* #endregion */
 
-/* Changer les textes primaires en blanc */
+/* #region Text Styles */
 .text-primary {
   color: white !important;
 }
+/* #endregion */
 </style>
 

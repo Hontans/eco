@@ -94,14 +94,7 @@
       <!-- #region Cart Total and Checkout -->
       <div class="column items-center q-mt-md q-mb-xl">
         <div class="text-h6 q-mb-md text-white">Total à payer : {{ store.basketPrice }}€</div>
-        <q-btn
-          color="primary"
-          label="Acheter"
-          @click="handleCheckout"
-          size="lg"
-          style="width: 200px"
-          :disabled="store.basketCount === 0"
-        />
+        <q-btn color="primary" label="Acheter" @click="handleCheckout" size="lg" style="width: 200px" :disabled="store.basketCount === 0" />
       </div>
       <!-- #endregion Cart Total and Checkout -->
       </q-scroll-area>
@@ -145,8 +138,6 @@ const logout = async () =>
     icon: 'logout',
     position: 'top',
   });
-
-  // Redirection vers la page d'accueil après déconnexion
   await router.push('/');
 };
 

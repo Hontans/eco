@@ -94,15 +94,7 @@
 
                   <!-- #region Add Address Button -->
                   <div class="text-center">
-                    <q-btn
-                      label="Ajouter une adresse"
-                      color="primary"
-                      icon="add"
-                      @click="showAddAddressFormAndValue"
-                      class="q-px-xl q-py-sm"
-                      unelevated
-                      rounded
-                    />
+                    <q-btn label="Ajouter une adresse" color="primary" icon="add" @click="showAddAddressFormAndValue" class="q-px-xl q-py-sm" unelevated rounded />
                   </div>
                   <!-- #endregion Add Address Button -->
 
@@ -118,33 +110,9 @@
 
                       <q-card-section class="q-pt-lg">
                         <div class="q-gutter-md">
-                          <q-input
-                            v-model="editAddressCountry"
-                            label="Pays"
-                            outlined
-                            dense
-                            prepend-icon="public"
-                            class="input-white"
-                            :rules="[(val) => !!val || 'Le pays est requis']"
-                          />
-                          <q-input
-                            v-model="editAddressCity"
-                            label="Ville"
-                            outlined
-                            dense
-                            prepend-icon="location_city"
-                            class="input-white"
-                            :rules="[(val) => !!val || 'La ville est requise']"
-                          />
-                          <q-input
-                            v-model="editAddressPostalCode"
-                            label="Code postal"
-                            outlined
-                            dense
-                            prepend-icon="markunread_mailbox"
-                            class="input-white"
-                            :rules="[(val) => !!val || 'Le code postal est requis']"
-                          />
+                          <q-input v-model="editAddressCountry" label="Pays" outlined dense prepend-icon="public" class="input-white" :rules="[(val) => !!val || 'Le pays est requis']" />
+                          <q-input v-model="editAddressCity" label="Ville" outlined dense prepend-icon="location_city" class="input-white" :rules="[(val) => !!val || 'La ville est requise']" />
+                          <q-input v-model="editAddressPostalCode" label="Code postal" outlined dense prepend-icon="markunread_mailbox" class="input-white" :rules="[(val) => !!val || 'Le code postal est requis']" />
                         </div>
                       </q-card-section>
 

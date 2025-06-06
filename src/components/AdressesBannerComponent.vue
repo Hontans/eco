@@ -1,5 +1,5 @@
 <template>
-    <!-- En-tête avec icône -->
+    <!-- #region Header -->
     <div class="text-center q-mb-lg">
       <div class="text-h4 text-primary q-mb-sm">
         <q-icon name="location_on" size="md" class="q-mr-sm" />
@@ -7,11 +7,12 @@
       </div>
       <div class="text-body2 text-grey-7">Gérez vos adresses de livraison</div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Liste des adresses -->
+    <!-- #region Address List -->
     <div v-if="adresses.length > 0" class="q-mb-lg">
       <div v-for="(address, index) in adresses" :key="address.city ?? index" class="q-mb-md">
-        <q-card flat bordered class="address-card" :class="{ 'address-card-hover': true }">
+        <q-card flat bordered class="address-card address-card-hover">
           <q-card-section class="q-pa-md">
             <div class="row items-center">
               <div class="col">
@@ -25,48 +26,36 @@
               </div>
               <div class="col-auto">
                 <q-btn-group flat>
-                  <q-btn
-                    flat
-                    dense
-                    icon="edit"
-                    color="primary"
-                    @click="showEditAddressFormfAndValue(address)"
-                    class="q-mr-xs"
-                  >
-                    <q-tooltip>Modifier</q-tooltip>
+                  <q-btn flat dense icon="edit" color="primary" class="q-mr-xs" @click="showEditAddressFormfAndValue(address)">
+                    <q-tooltip-tooltip>Modifier</q-tooltip-tooltip>
                   </q-btn>
                   <q-btn flat dense icon="delete" color="negative" @click="deleteAddress(address)">
                     <q-tooltip>Supprimer</q-tooltip>
                   </q-btn>
                 </q-btn-group>
               </div>
-            </div>
+            </div>group>
           </q-card-section>
         </q-card>
       </div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Message si aucune adresse -->
+    <!-- #region Empty State -->
     <div v-else class="text-center q-py-xl">
       <q-icon name="location_off" size="4rem" color="grey-4" class="q-mb-md" />
       <div class="text-h6 text-grey-6 q-mb-sm">Aucune adresse enregistrée</div>
       <div class="text-body2 text-grey-5">Ajoutez votre première adresse pour commencer</div>
     </div>
+    <!-- #endregion -->
 
-    <!-- Bouton d'ajout -->
+    <!-- #region Add Button -->
     <div class="text-center">
-      <q-btn
-        label="Ajouter une adresse"
-        color="primary"
-        icon="add"
-        @click="showAddAddressFormAndValue"
-        class="q-px-xl q-py-sm"
-        unelevated
-        rounded
-      />
+      <q-btn label="Ajouter une adresse" color="primary" icon="add" class="q-px-xl q-py-sm" unelevated rounded @click="showAddAddressFormAndValue" />
     </div>
+    <!-- #endregion -->
 
-    <!-- Dialog de modification -->
+    <!-- #region Edit Dialog -->
     <q-dialog v-model="showEditAddressForm">
       <q-card style="min-width: 400px" class="rounded-borders">
         <q-card-section class="bg-primary text-white">
@@ -78,47 +67,21 @@
 
         <q-card-section class="q-pt-lg">
           <div class="q-gutter-md">
-            <q-input
-              v-model="editAddressCountry"
-              label="Pays"
-              outlined
-              dense
-              prepend-icon="public"
-              :rules="[(val) => !!val || 'Le pays est requis']"
-            />
-            <q-input
-              v-model="editAddressCity"
-              label="Ville"
-              outlined
-              dense
-              prepend-icon="location_city"
-              :rules="[(val) => !!val || 'La ville est requise']"
-            />
-            <q-input
-              v-model="editAddressPostalCode"
-              label="Code postal"
-              outlined
-              dense
-              prepend-icon="markunread_mailbox"
-              :rules="[(val) => !!val || 'Le code postal est requis']"
-            />
+            <q-input v-model="editAddressCountry" label="Pays" outlined dense prepend-icon="public" :rules="[(val) => !!val || 'Le pays est requis']" />
+            <q-input v-model="editAddressCity" label="Ville" outlined dense prepend-icon="location_city" :rules="[(val) => !!val || 'La ville est requise']" />
+            <q-input v-model="editAddressPostalCode" label="Code postal" outlined dense prepend-icon="markunread_mailbox" :rules="[(val) => !!val || 'Le code postal est requis']" />
           </div>
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
           <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
-          <q-btn
-            label="Enregistrer"
-            color="primary"
-            v-close-popup
-            @click="updateAddress"
-            unelevated
-          />
+          <q-btn label="Enregistrer" color="primary" unelevated v-close-popup @click="updateAddress" />
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- #endregion -->
 
-    <!-- Dialog d'ajout -->
+    <!-- #region Add Dialog -->
     <q-dialog v-model="showAddAddressForm">
       <q-card style="min-width: 400px" class="rounded-borders">
         <q-card-section class="bg-primary text-white">
@@ -130,48 +93,31 @@
 
         <q-card-section class="q-pt-lg">
           <div class="q-gutter-md">
-            <q-input
-              v-model="editAddressCountry"
-              label="Pays"
-              outlined
-              dense
-              prepend-icon="public"
-              :rules="[(val) => !!val || 'Le pays est requis']"
-            />
-            <q-input
-              v-model="editAddressCity"
-              label="Ville"
-              outlined
-              dense
-              prepend-icon="location_city"
-              :rules="[(val) => !!val || 'La ville est requise']"
-            />
-            <q-input
-              v-model="editAddressPostalCode"
-              label="Code postal"
-              outlined
-              dense
-              prepend-icon="markunread_mailbox"
-              :rules="[(val) => !!val || 'Le code postal est requis']"
-            />
+            <q-input v-model="editAddressCountry" label="Pays" outlined dense prepend-icon="public" :rules="[(val) => !!val || 'Le pays est requis']" />
+            <q-input v-model="editAddressCity" label="Ville" outlined dense prepend-icon="location_city" :rules="[(val) => !!val || 'La ville est requise']" />
+            <q-input v-model="editAddressPostalCode" label="Code postal" outlined dense prepend-icon="markunread_mailbox" :rules="[(val) => !!val || 'Le code postal est requis']" />
           </div>
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
           <q-btn flat label="Annuler" class="btn-cancel" v-close-popup />
-          <q-btn label="Ajouter" color="primary" v-close-popup @click="addAddress" unelevated />
+          <q-btn label="Ajouter" color="primary" unelevated v-close-popup @click="addAddress" />
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- #endregion -->
 </template>
 
 <script setup lang="ts">
+// #region Imports
 import { dataStore } from '../stores/data-store';
 import { ref, onMounted } from 'vue';
 import type { Adress } from '../js/types';
 import { useQuasar } from 'quasar';
 import { useApi } from '../js/api';
+// #endregion
 
+// #region Variables
 const api = useApi();
 const $q = useQuasar();
 const editAddressCountry = ref('');
@@ -181,9 +127,12 @@ const showEditAddressForm = ref(false);
 const showAddAddressForm = ref(false);
 const adresses = ref<Adress[]>([]);
 const editingAddress = ref<Adress | null>(null);
+// #endregion
 
-const notify = (message: string, color: string) =>
+// #region Utility Functions
+const notify = (message: string, color: string) => {
   $q.notify({ message, color, position: 'bottom' });
+};
 
 const updateStore = () => {
   const user = api.getConectedUser();
@@ -192,7 +141,9 @@ const updateStore = () => {
     dataStore().data.currentUser = user;
   }
 };
+// #endregion
 
+// #region Form Functions
 const showEditAddressFormfAndValue = (address: Adress) => {
   showEditAddressForm.value = true;
   editingAddress.value = address;
@@ -205,7 +156,9 @@ const showAddAddressFormAndValue = () => {
   showAddAddressForm.value = true;
   editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
 };
+// #endregion
 
+// #region CRUD Functions
 const updateAddress = () => {
   const index = adresses.value.findIndex((addr) => addr === editingAddress.value);
   if (index !== -1) {
@@ -254,16 +207,20 @@ const deleteAddress = (address: Adress) => {
     notify('Erreur lors de la suppression', 'negative');
   }
 };
+// #endregion
 
+// #region Lifecycle
 onMounted(() => {
   const user = api.getConectedUser();
   if (user) {
     adresses.value = user.adresses || [];
   }
 });
+// #endregion
 </script>
 
 <style scoped>
+/* #region Card Styles */
 .address-card {
   border-radius: 16px;
   transition: all 0.3s ease;
@@ -277,18 +234,26 @@ onMounted(() => {
   background: rgba(255, 255, 255, 0.02) !important;
 }
 
+.q-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 16px;
+}
+/* #endregion */
+
+/* #region Dialog Styles */
 .rounded-borders {
   border-radius: 12px;
 }
 
-/* Glassmorphisme Effects for dialogs */
 .q-dialog .q-card {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
 }
+/* #endregion */
 
-/* Input Styles */
+/* #region Input Styles */
 .q-input :deep(.q-field__control) {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
@@ -301,10 +266,6 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.btn-cancel {
-  color: rgba(255, 255, 255, 0.8);
-}
-
 .q-input :deep(.q-field__control):hover {
   background: rgba(255, 255, 255, 0.15);
 }
@@ -312,16 +273,17 @@ onMounted(() => {
 .q-input :deep(.q-field__control):focus-within {
   background: rgba(255, 255, 255, 0.18);
 }
+/* #endregion */
 
-.q-card
-{
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 16px;
+/* #region Button Styles */
+.btn-cancel {
+  color: rgba(255, 255, 255, 0.8);
 }
+/* #endregion */
 
-/* Changer les textes primaires en blanc */
+/* #region Text Styles */
 .text-primary {
   color: white !important;
 }
+/* #endregion */
 </style>

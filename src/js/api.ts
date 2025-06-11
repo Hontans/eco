@@ -30,7 +30,7 @@ export function useApi()
     return product;
   };
 
-  const deleteProduct = (product: Product): boolean =>
+  const deleteProductInBasket = (product: Product): boolean =>
   {
     store.deleteProduct(product);
     return true;
@@ -158,7 +158,7 @@ export function useApi()
     getProducts,
     getProductById,
     addItemToBasket,
-    deleteProduct,
+    deleteProductInBasket,
     getConectedUser,
     getUserById,
     updateUser

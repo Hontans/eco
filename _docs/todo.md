@@ -7,8 +7,7 @@ login(emailOrName: string, password: string) : User | error: { message: "" }
 register(name: string, email: string, password: string) : User | error: { message: "" }
 logout() : bool
 forgotPassword(email: string) : bool | error: { message: "" }
-
-## changePassword(newPassword: string) : bool | error: { message: "" }
+# changePassword(newPassword: string) : bool | error: { message: "" }
 
 
 ## User Management
@@ -19,9 +18,9 @@ updateUser(name: string, email: string, password: string, adresses[], basketCard
 ## Products
 getProducts() : product[]
 getProductById(id: number) : Product
-searchProductsByName(name: string) : product[]
-getCategories() : string[]
-getProducByCategoryId(categoryId: number) : product[]
+# searchProductsByName(name: string) : product[]
+# getCategories() : string[]
+# getProducByCategoryId(categoryId: number) : product[]
 
 ## Cart/Basket
 addItemToBasket(item: Product) : bool

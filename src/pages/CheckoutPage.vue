@@ -52,7 +52,7 @@
                     </q-card-section>
                     <q-card-section class="column items-end justify-between q-py-sm q-px-md" style="min-width: 80px">
                       <div class="text-subtitle1 q-mb-xs text-white">{{ product.price }}€</div>
-                      <q-btn class="q-ml-sm" @click="api.deleteProduct(product)" icon="cancel" flat round size="sm" color="red" />
+                      <q-btn class="q-ml-sm" @click="api.deleteProductInBasket(product)" icon="cancel" flat round size="sm" color="red" />
                     </q-card-section>
                   </q-card-section>
                 </q-card>

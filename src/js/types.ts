@@ -5,11 +5,6 @@ export interface Product {
   category?: string | null;
 }
 
-export interface Category {
-  id: number;
-  name?: string | null;
-}
-
 export interface User {
   name: string;
   email: string;

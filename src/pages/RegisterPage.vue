@@ -59,14 +59,13 @@
 
 <script setup lang="ts">
 //#region Imports
+import { useApi } from '../js/api';
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { dataStore } from '../stores/data-store';
 //#endregion
 
 //#region Variables
-const store = dataStore();
 const $q = useQuasar();
 const router = useRouter();
 const userName = ref('');
@@ -106,13 +105,7 @@ const onSubmit = async () => {
       return;
     }
 
-    const newUser = {
-      name: userName.value,
-      email: userEmail.value,
-      password: password.value,
-    };
-
-    store.data.currentUser = newUser;
+    const newUser = await useApi().register(userName.value, userEmail.value, password.value);
 
     $q.notify({
       color: 'positive',

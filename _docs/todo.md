@@ -18,7 +18,7 @@ updateUser(name: string, email: string, password: string, adresses[], basketCard
 getProducts() : product[]
 getProductById(id: number) : Product
 searchProductsByName(name: string) : product[]
-getCategories() : category[]
+getCategories() : string[]
 getProducByCategoryId(categoryId: number) : product[]
 
 ## Cart/Basket

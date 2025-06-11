@@ -58,7 +58,28 @@ export function useApi()
       store.data.currentUser = user;
       return user;
     }
-    return null;
+    throw new Error('Identifiants incorrects');
+  };
+  //#endregion
+
+  //#region Registration Operations
+  const register = async (name: string, email: string, password: string): Promise<User> => {
+    const users = await getUsers();
+
+    const existingUser = users.find(u => u.email === email || u.name === name);
+    if (existingUser) {
+      throw new Error('Un utilisateur avec cet email ou ce nom existe déjà');
+    }
+
+    const newUser: User = {
+      name,
+      email,
+      password
+    };
+
+    store.data.currentUser = newUser;
+
+    return newUser;
   };
   //#endregion
 
@@ -71,13 +92,13 @@ export function useApi()
   //#endregion
 
   return {
-    addItemToBasket,
+    login,
+    logout,
+    register,
     getProducts,
     getProductById,
+    addItemToBasket,
     deleteProduct,
-    logout,
-    getConectedUser,
-    login,
-    getUsers,
+    getConectedUser
   };
 }

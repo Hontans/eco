@@ -7,7 +7,9 @@ login(emailOrName: string, password: string) : User | error: { message: "" }
 register(name: string, email: string, password: string) : User | error: { message: "" }
 logout() : bool
 forgotPassword(email: string) : bool | error: { message: "" }
-changePassword(newPassword: string) : bool | error: { message: "" }
+
+## changePassword(newPassword: string) : bool | error: { message: "" }
+
 
 ## User Management
 getConectedUser() : User | null

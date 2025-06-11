@@ -51,7 +51,7 @@
           </q-input>
             </div>
             <div class="col-12 col-md-4">
-          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Identifiant')" unelevated rounded size="md" />
+          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="updateUser()" unelevated rounded size="md" />
             </div>
           </div>
         </q-card-section>
@@ -74,7 +74,7 @@
           </q-input>
             </div>
             <div class="col-12 col-md-4">
-          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Email')" unelevated rounded size="md" />
+          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="updateUser()" unelevated rounded size="md" />
             </div>
           </div>
         </q-card-section>
@@ -100,7 +100,7 @@
           </q-input>
             </div>
             <div class="col-12 col-md-4">
-          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="saveField('Mot de passe')" unelevated rounded size="md" />
+          <q-btn label="Sauvegarder" color="primary" class="full-width" icon="save" @click="updateUser()" unelevated rounded size="md" />
             </div>
           </div>
         </q-card-section>
@@ -146,34 +146,39 @@ const isPwd = ref(true);
 // #endregion Variables and Stores
 
 // #region Methods
-const saveField = (fieldName: string) =>
-{
-  console.log(`Champ ${fieldName} sauvegardé`);
-  $q.notify(
-  {
-    message: `${fieldName} mis à jour avec succès`,
-    color: 'positive',
-    position: 'bottom',
-  });
+const updateUser = async () => {
+  try {
+    const result = await api.updateUser(userName.value, userEmail.value, userPassword.value, [], []);
+
+    if (result === true) {
+      $q.notify({
+        message: 'Profil mis à jour avec succès',
+        color: 'positive',
+        position: 'bottom',
+      });
+    } else if (typeof result === 'object' && result.message) {
+      $q.notify({
+        message: result.message,
+        color: 'negative',
+        position: 'bottom',
+      });
+    }
+  } catch {
+    $q.notify({
+      message: 'Erreur lors de la mise à jour du profil',
+      color: 'negative',
+      position: 'bottom',
+    });
+  }
 };
 
 onMounted(() =>
 {
-  const conectedUser = api.getConectedUser();
-  if (conectedUser)
-  {
-    console.log('Utilisateur connecté:', conectedUser);
-    userName.value = conectedUser.name;
-    userEmail.value = conectedUser.email;
-  }
-  else
-  {
-    $q.notify(
-    {
-      message: 'Aucun utilisateur connecté',
-      color: 'negative',
-      position: 'bottom',
-    });
+  const currentUser = api.getConectedUser();
+  if (currentUser) {
+    userName.value = currentUser.name;
+    userEmail.value = currentUser.email;
+    userPassword.value = currentUser.password;
   }
 });
 // #endregion Methods

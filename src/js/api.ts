@@ -116,6 +116,40 @@ export function useApi()
   };
   //#endregion
 
+  //#region User Update Operations
+  const updateUser = async (name: string, email: string, password: string, adresses: [], basketCards: []): Promise<boolean | { message: string }> => {
+    try
+    {
+      const currentUser = store.data.currentUser;
+      if (!currentUser)
+      {
+        return { message: 'Aucun utilisateur connecté' };
+      }
+
+      const users = await getUsers();
+
+      const existingUser = users.find(u => u.id !== currentUser.id && (u.email === email || u.name === name));
+      if (existingUser)
+      {
+        return { message: 'Un utilisateur avec cet email ou ce nom existe déjà' };
+      }
+
+      currentUser.name = name;
+      currentUser.email = email;
+      currentUser.password = password;
+      currentUser.adresses = adresses;
+      currentUser.basketCards = basketCards;
+      store.data.currentUser = currentUser;
+      return true;
+    }
+
+    catch
+    {
+      return { message: 'Erreur lors de la mise à jour de l\'utilisateur' };
+    }
+  };
+  //#endregion
+
   return {
     login,
     forgotPassword,
@@ -126,6 +160,7 @@ export function useApi()
     addItemToBasket,
     deleteProduct,
     getConectedUser,
-    getUserById
+    getUserById,
+    updateUser
   };
 }

@@ -35,6 +35,15 @@ export function useApi()
     store.deleteProduct(product);
     return true;
   };
+
+  const searchProductsByName = async (name: string): Promise<Product[]> =>
+  {
+    store.data.searchTerm = name;
+    const products = await getProducts();
+    return products.filter(product =>
+      product.name?.toLowerCase().includes(name.toLowerCase())
+    );
+  };
   //#endregion
 
   //#region Authentication Operations
@@ -157,6 +166,7 @@ export function useApi()
     register,
     getProducts,
     getProductById,
+    searchProductsByName,
     addItemToBasket,
     deleteProduct,
     getConectedUser,

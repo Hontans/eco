@@ -23,31 +23,29 @@
 
 <script setup lang="ts">
 // #region Imports
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import ProductCardComponent from 'components/ProductCardComponent.vue';
-import { dataStore } from '../stores/data-store';
-import { useApi } from '../js/api';
-import type { Product } from '../js/types';
+import { dataStore } from '../stores/data-store'
+import { useApi } from '../js/api'
+import type { Product } from '../js/types'
 // #endregion
 
 // #region Variables
 const tab = ref('all');
 const store = dataStore();
-const api = useApi();
-const products = ref<Product[]>([]);
-const searchResults = ref<Product[]>([]);
+const api = useApi()
+const products = ref<Product[]>();
 // #endregion
 
 // #region Computed Properties
-const uniqueCategories = computed(() => {
-  const currentProducts = store.data.searchTerm ? searchResults.value : products.value;
-
-  if (!currentProducts || !Array.isArray(currentProducts)) {
+const uniqueCategories = computed(() =>
+{
+  if (!products.value || !Array.isArray(products.value)) {
     return ['all'];
   }
 
   const categories = new Set(
-    currentProducts
+    products.value
       .map(product => product.category)
       .filter(Boolean)
       .map(category => String(category))
@@ -60,41 +58,29 @@ const uniqueCategories = computed(() => {
   return Array.from(categories).sort();
 });
 
-const results = computed(() => {
-  let filteredProducts = store.data.searchTerm ? searchResults.value : products.value;
+const results = computed(() =>
+{
+  let filteredProducts = products.value;
 
   if (tab.value !== 'all') {
     filteredProducts = filteredProducts?.filter(product => product.category === tab.value);
   }
 
-  return filteredProducts || [];
+  if (store.data.searchTerm) {
+    filteredProducts = filteredProducts?.filter(product =>
+      product.name?.toLowerCase().includes(store.data.searchTerm.toLowerCase())
+    );
+  }
+
+  return filteredProducts;
 });
 // #endregion
 
 // #region Lifecycle
-onMounted(async () => {
-  products.value = await api.getProducts();
-
-  // Watcher pour la recherche
-  watch(
-    () => store.data.searchTerm,
-    async (newSearchTerm) => {
-      if (newSearchTerm && newSearchTerm.trim()) {
-        try {
-          searchResults.value = await api.searchProductsByName(newSearchTerm);
-          // Reset tab to 'all' when searching
-          tab.value = 'all';
-        } catch (error) {
-          console.error('Erreur lors de la recherche:', error);
-          searchResults.value = [];
-        }
-      } else {
-        searchResults.value = [];
-      }
-    },
-    { immediate: true }
-  );
-});
+onMounted(async () =>
+{
+  products.value = await api.getProducts()
+})
 // #endregion
 </script>
 

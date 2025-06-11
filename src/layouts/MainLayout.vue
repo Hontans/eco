@@ -13,29 +13,12 @@
 
         <!-- #region Search Bar -->
         <div class="col-8 flex justify-center items-center">
-          <q-input
-            class="search-bar"
-            style="max-width: 500px; width: 100%"
-            rounded
-            outlined
-            dense
-            v-model="searchTerm"
-            @update:model-value="handleSearch"
-            placeholder="Rechercher un produit..."
-            bg-color="white"
-            color="primary"
-          >
+          <q-input class="search-bar" style="max-width: 500px; width: 100%" rounded outlined dense v-model="store.data.searchTerm" placeholder="Rechercher un produit..." bg-color="white" color="primary">
             <template v-slot:prepend>
               <q-icon name="search" color="grey-6" />
             </template>
             <template v-slot:append>
-              <q-icon
-                v-if="searchTerm"
-                name="close"
-                @click="clearSearch"
-                class="cursor-pointer hover-icon"
-                color="grey-6"
-              />
+              <q-icon v-if="store.data.searchTerm" name="close" @click="store.data.searchTerm = ''" class="cursor-pointer hover-icon" color="grey-6" />
             </template>
           </q-input>
         </div>
@@ -141,27 +124,9 @@ const router = useRouter();
 const $q = useQuasar();
 const drawerRight = ref(false);
 const api = useApi();
-const searchTerm = ref('');
 // #endregion Variables and Stores
 
 // #region Methods
-const handleSearch = async (value: string | number | null) => {
-  const searchValue = value?.toString() || '';
-  store.data.searchTerm = searchValue;
-  if (searchValue.trim()) {
-    try {
-      await api.searchProductsByName(searchValue);
-    } catch (error) {
-      console.error('Erreur lors de la recherche:', error);
-    }
-  }
-};
-
-const clearSearch = () => {
-  searchTerm.value = '';
-  store.data.searchTerm = '';
-};
-
 const logout = async () =>
 {
   const result = api.logout();

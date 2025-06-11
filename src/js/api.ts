@@ -48,16 +48,6 @@ export function useApi()
     return store.data.currentUser;
   };
 
-  const getUserById = async (id: number): Promise<User | undefined> =>
-  {
-    const users = await getUsers();
-    const user = users.find((u) => u.id === id);
-    if (!user) {
-      throw new Error('Utilisateur non trouvé');
-    }
-    return user;
-  };
-
   const login = async (emailOrName: string, password: string): Promise<User | null> =>
   {
     const users = await getUsers();
@@ -176,18 +166,18 @@ export function useApi()
   //#endregion
 
   return {
+    getConectedUser,
     login,
-    forgotPassword,
     logout,
     register,
+    forgotPassword,
+    updateUser,
+
     getProducts,
     getProductById,
     getCartByUserId,
     addItemToBasket,
     deleteProductInBasket,
-    getConectedUser,
-    getUserById,
-    updateUser,
     buyCart
   };
 }

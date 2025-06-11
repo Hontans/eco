@@ -83,7 +83,7 @@
           <div class="text-subtitle2 text-white">{{ product.price }}€</div>
             <div class="row items-center">
             <img style="max-width: 100px; cursor: pointer" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" alt="place_older" @click="router.push(`/product/${product.id}`)" />
-            <q-btn class="q-ml-sm" @click="store.deleteProduct(product)" icon="cancel" flat round size="sm" color="red" />
+            <q-btn class="q-ml-sm" @click="api.deleteProductInBasket(product)" icon="cancel" flat round size="sm" color="red" />
             </div>
           </q-card-section>
         </q-card>
@@ -114,16 +114,16 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
-import { dataStore } from '../stores/data-store';
 import { useApi } from '../js/api';
+import { dataStore } from 'src/stores/data-store';
 // #endregion Imports
 
 // #region Variables and Stores
-const store = dataStore();
 const router = useRouter();
 const $q = useQuasar();
 const drawerRight = ref(false);
 const api = useApi();
+const store = dataStore();
 // #endregion Variables and Stores
 
 // #region Methods

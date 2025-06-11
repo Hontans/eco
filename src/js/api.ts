@@ -150,6 +150,31 @@ export function useApi()
   };
   //#endregion
 
+  //#region Cart Operations
+  const getCartByUserId = (userId: number): Product[] => {
+    const currentUser = store.data.currentUser;
+    if (!currentUser || currentUser.id !== userId) {
+      return [];
+    }
+    return store.data.basket || [];
+  };
+  //#endregion
+
+  //#region Cart Management Operations
+  const buyCart = (): boolean => {
+    try {
+      const currentUser = store.data.currentUser;
+      if (!currentUser || !store.data.basket || store.data.basket.length === 0) {
+        return false;
+      }
+      store.data.basket = [];
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  //#endregion
+
   return {
     login,
     forgotPassword,
@@ -157,10 +182,12 @@ export function useApi()
     register,
     getProducts,
     getProductById,
+    getCartByUserId,
     addItemToBasket,
     deleteProductInBasket,
     getConectedUser,
     getUserById,
-    updateUser
+    updateUser,
+    buyCart
   };
 }

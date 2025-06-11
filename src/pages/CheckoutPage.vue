@@ -469,6 +469,7 @@ const handleMainAction = () => {
     // Rediriger vers la page d'accueil ou vider le panier
     store.data.basket = [];
     setTimeout(() => {
+      api.buyCart();
       window.location.href = '/';
     }, 2000);
   }

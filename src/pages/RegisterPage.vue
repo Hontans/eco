@@ -17,9 +17,9 @@
           <!-- #endregion -->
 
           <!-- #region Email Input -->
-          <q-input outlined v-model="userEmail" label="Email" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
+            <q-input outlined type="email" v-model="userEmail" label="Email" class="auth-input" lazy-rules :rules="[(val) => (val && val.length > 0) || 'Obligatoire']">
             <template v-slot:prepend><q-icon name="email" color="white" /></template>
-          </q-input>
+            </q-input>
           <!-- #endregion -->
 
           <!-- #region Password Input -->

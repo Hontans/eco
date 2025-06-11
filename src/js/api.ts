@@ -68,18 +68,6 @@ export function useApi()
     const users = await fetch('/users.json').then((response) => response.json());
     return users as User[];
   };
-
-  const getUserByEmail = async (email: string): Promise<User> =>
-  {
-    const users = await getUsers();
-    const user = users.find((user) => user.email.toLocaleLowerCase() == email.toLocaleLowerCase());
-
-    if (!user) {
-      throw new Error('Utilisateur non trouvé');
-    }
-
-    return user;
-  };
   //#endregion
 
   return {
@@ -91,6 +79,5 @@ export function useApi()
     getConectedUser,
     login,
     getUsers,
-    getUserByEmail,
   };
 }

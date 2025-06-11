@@ -48,30 +48,38 @@
 // #region Imports
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { useApi } from '../js/api'
 // #endregion
 
 // #region Composables
 const $q = useQuasar()
-// #endregion
-
-// #region Reactive Data
+const api = useApi()
 const email = ref('')
 const sending = ref(false)
 // #endregion
 
-// #region Methods
-const onSubmit = () =>
-{
+// #region Form Submission
+const onSubmit = async () => {
+  if (!email.value) return
+
   sending.value = true
-  setTimeout(() =>
-  {
-    sending.value = false
+
+  try {
+    await api.forgotPassword(email.value)
     $q.notify({
-      message: 'Email envoyé avec succès',
+      message: 'Email de réinitialisation envoyé avec succès',
       color: 'positive',
       position: 'top'
     })
-  })
+  } catch (error) {
+    $q.notify({
+      message: error instanceof Error ? error.message : 'Erreur lors de l\'envoi de l\'email',
+      color: 'negative',
+      position: 'top'
+    })
+  } finally {
+    sending.value = false
+  }
 }
 // #endregion
 </script>

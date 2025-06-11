@@ -83,6 +83,20 @@ export function useApi()
   };
   //#endregion
 
+  //#region Password Reset Operations
+  const forgotPassword = async (email: string): Promise<boolean> => {
+    const users = await getUsers();
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      throw new Error('Aucun utilisateur trouvé avec cet email');
+    }
+
+    // Simulate sending password reset email
+    return true;
+  };
+  //#endregion
+
   //#region User Operations
   const getUsers = async (): Promise<User[]> =>
   {
@@ -93,6 +107,7 @@ export function useApi()
 
   return {
     login,
+    forgotPassword,
     logout,
     register,
     getProducts,

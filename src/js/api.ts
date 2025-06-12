@@ -1,68 +1,45 @@
-import type { Product, User } from './types';
+import type { Product, User, ErrorResponse } from './types';
 import { dataStore } from '../stores/data-store';
 
 export function useApi()
 {
+  const baseUrl = 'http://localhost:9100/api';
   const store = dataStore();
 
-  //#region Basket Operations
-  const addItemToBasket = (item: Product): boolean =>
-  {
-    store.addItemToBasket(item);
-    return true;
-  };
-  //#endregion
-
-  //#region Product Operations
-  const getProducts = async (): Promise<Product[]> =>
-  {
-    const products = await fetch('/products.json').then((response) => response.json());
-    return products as Product[];
-  };
-
-  const getProductById = async (id: number): Promise<Product | undefined> =>
-  {
-    const products = await getProducts();
-    const product = products.find((item) => item.id === id);
-    if (!product) {
-      throw new Error('Produit non trouvé');
-    }
-    return product;
-  };
-
-  const deleteProductInBasket = (product: Product): boolean =>
-  {
-    store.deleteProduct(product);
-    return true;
-  };
-  //#endregion
-
-  //#region Authentication Operations
-  const logout = (): boolean =>
-  {
-    return store.logout();
-  };
-
+  //#region User Management
   const getConectedUser = (): User | null =>
   {
     return store.data.currentUser;
   };
 
-  const login = async (emailOrName: string, password: string): Promise<User | null> =>
+  const login = async (emailOrName: string, password: string): Promise<User | ErrorResponse> =>
   {
-    const users = await getUsers();
-    const user = users.find(
-      (u) => (u.email === emailOrName || u.name === emailOrName) && u.password === password,
-    );
+    const user = await fetch(`${baseUrl}/login`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        emailOrName,
+        password
+      })
+    }).then((response) => response.json());
+
+    console.log('user from api', user);
+
     if (user) {
       store.data.currentUser = user;
       return user;
     }
+
     throw new Error('Identifiants incorrects');
   };
-  //#endregion
 
-  //#region Registration Operations
+  const logout = (): boolean =>
+  {
+    return store.logout();
+  };
+
   const register = async (name: string, email: string, password: string): Promise<User> => {
     const users = await getUsers();
 
@@ -82,9 +59,7 @@ export function useApi()
 
     return newUser;
   };
-  //#endregion
 
-  //#region Password Reset Operations
   const forgotPassword = async (email: string): Promise<boolean> => {
     const users = await getUsers();
     const user = users.find(u => u.email === email);
@@ -92,21 +67,9 @@ export function useApi()
     if (!user) {
       throw new Error('Aucun utilisateur trouvé avec cet email');
     }
-
-    // Simulate sending password reset email
     return true;
   };
-  //#endregion
 
-  //#region User Operations
-  const getUsers = async (): Promise<User[]> =>
-  {
-    const users = await fetch('/users.json').then((response) => response.json());
-    return users as User[];
-  };
-  //#endregion
-
-  //#region User Update Operations
   const updateUser = async (name: string, email: string, password: string, adresses: [], basketCards: []): Promise<boolean | { message: string }> => {
     try
     {
@@ -138,9 +101,39 @@ export function useApi()
       return { message: 'Erreur lors de la mise à jour de l\'utilisateur' };
     }
   };
+
+  const getUsers = async (): Promise<User[]> =>
+  {
+    const users = await fetch('/users.json').then((response) => response.json());
+    return users as User[];
+  };
   //#endregion
 
-  //#region Cart Operations
+  //#region Product Management
+  const getProducts = async (): Promise<Product[]> =>
+  {
+    const test = await fetch(`${baseUrl}/getProducts`, {
+      method: "GET"
+    }).then((response) => response.json());
+
+    console.log('products from api', test);
+
+    const products = await fetch('/products.json').then((response) => response.json());
+    return products as Product[];
+  };
+
+  const getProductById = async (id: number): Promise<Product | undefined> =>
+  {
+    const products = await getProducts();
+    const product = products.find((item) => item.id === id);
+    if (!product) {
+      throw new Error('Produit non trouvé');
+    }
+    return product;
+  };
+  //#endregion
+
+  //#region Cart Management
   const getCartByUserId = (userId: number): Product[] => {
     const currentUser = store.data.currentUser;
     if (!currentUser || currentUser.id !== userId) {
@@ -148,9 +141,19 @@ export function useApi()
     }
     return store.data.basket || [];
   };
-  //#endregion
 
-  //#region Cart Management Operations
+  const addItemToBasket = (item: Product): boolean =>
+  {
+    store.addItemToBasket(item);
+    return true;
+  };
+
+  const deleteProductInBasket = (product: Product): boolean =>
+  {
+    store.deleteProduct(product);
+    return true;
+  };
+
   const buyCart = (): boolean => {
     try {
       const currentUser = store.data.currentUser;
@@ -166,6 +169,7 @@ export function useApi()
   //#endregion
 
   return {
+    // User Management
     getConectedUser,
     login,
     logout,
@@ -173,8 +177,11 @@ export function useApi()
     forgotPassword,
     updateUser,
 
+    // Product Management
     getProducts,
     getProductById,
+
+    // Cart Management
     getCartByUserId,
     addItemToBasket,
     deleteProductInBasket,

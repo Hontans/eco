@@ -25,3 +25,7 @@ export interface BasketCard {
   expirationDate?: string | null;
   cryptogram?: string | null;
 }
+
+export interface ErrorResponse {
+  error: string;
+};

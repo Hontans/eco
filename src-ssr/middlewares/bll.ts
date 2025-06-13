@@ -46,4 +46,27 @@ export default defineSsrMiddleware(({ app }) => {
       res.status(400).json({ error: error instanceof Error ? error.message : 'Registration failed' });
     }
   });
+
+  app.post('/api/register', (req: Request, res: Response) => {
+  const { name, email, password } = req.body;
+  try {
+    const newUser = db.register(name, email, password);
+    res.json(newUser);
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : 'Registration failed' });
+  }
+  });
+
+  app.post('/api/forgotPassword', (req: Request, res: Response) => {
+    const { email } = req.body;
+    try {
+      const success = db.forgotPassword(email);
+      res.json({ success });
+    } catch (error) {
+      res.status(404).json({ error: error instanceof Error ? error.message : 'Forgot password failed' });
+    }
+  }
+  );
+
+
 });

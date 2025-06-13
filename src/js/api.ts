@@ -1,4 +1,4 @@
-import type { Product, User, ErrorResponse } from './types';
+import type { Product, User, ErrorResponse, Adress } from './types';
 import { dataStore } from '../stores/data-store';
 
 export function useApi()
@@ -70,35 +70,56 @@ export function useApi()
     return true;
   };
 
-  const updateUser = async (name: string, email: string, password: string, adresses: [], basketCards: []): Promise<boolean | { message: string }> => {
-    try
-    {
+  const updateUserCredentials = async (name: string, email: string, password: string): Promise<boolean | { message: string }> => {
+    try {
       const currentUser = store.data.currentUser;
-      if (!currentUser)
-      {
+      if (!currentUser) {
         return { message: 'Aucun utilisateur connecté' };
       }
 
       const users = await getUsers();
-
       const existingUser = users.find(u => u.id !== currentUser.id && (u.email === email || u.name === name));
-      if (existingUser)
-      {
+      if (existingUser) {
         return { message: 'Un utilisateur avec cet email ou ce nom existe déjà' };
       }
 
       currentUser.name = name;
       currentUser.email = email;
       currentUser.password = password;
-      currentUser.adresses = adresses;
+      store.data.currentUser = currentUser;
+      return true;
+    } catch {
+      return { message: 'Erreur lors de la mise à jour des informations utilisateur' };
+    }
+  };
+
+  const updateUserAddresses = (addresses: Adress[]): boolean | { message: string } => {
+    try {
+      const currentUser = store.data.currentUser;
+      if (!currentUser) {
+        return { message: 'Aucun utilisateur connecté' };
+      }
+
+      currentUser.adresses = addresses;
+      store.data.currentUser = currentUser;
+      return true;
+    } catch {
+      return { message: 'Erreur lors de la mise à jour des adresses' };
+    }
+  };
+
+  const updateUserPaymentCards = (basketCards: []): boolean | { message: string } => {
+    try {
+      const currentUser = store.data.currentUser;
+      if (!currentUser) {
+        return { message: 'Aucun utilisateur connecté' };
+      }
+
       currentUser.basketCards = basketCards;
       store.data.currentUser = currentUser;
       return true;
-    }
-
-    catch
-    {
-      return { message: 'Erreur lors de la mise à jour de l\'utilisateur' };
+    } catch {
+      return { message: 'Erreur lors de la mise à jour des cartes de paiement' };
     }
   };
 
@@ -112,13 +133,10 @@ export function useApi()
   //#region Product Management
   const getProducts = async (): Promise<Product[]> =>
   {
-    const test = await fetch(`${baseUrl}/getProducts`, {
+    const products = await fetch(`${baseUrl}/getProducts`, {
       method: "GET"
     }).then((response) => response.json());
 
-    console.log('products from api', test);
-
-    const products = await fetch('/products.json').then((response) => response.json());
     return products as Product[];
   };
 
@@ -175,7 +193,9 @@ export function useApi()
     logout,
     register,
     forgotPassword,
-    updateUser,
+    updateUserCredentials,
+    updateUserAddresses,
+    updateUserPaymentCards,
 
     // Product Management
     getProducts,

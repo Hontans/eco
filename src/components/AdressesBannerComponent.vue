@@ -110,7 +110,6 @@
 
 <script setup lang="ts">
 // #region Imports
-import { dataStore } from '../stores/data-store';
 import { ref, onMounted } from 'vue';
 import type { Adress } from '../js/types';
 import { useQuasar } from 'quasar';
@@ -133,14 +132,6 @@ const editingAddress = ref<Adress | null>(null);
 const notify = (message: string, color: string) => {
   $q.notify({ message, color, position: 'bottom' });
 };
-
-const updateStore = () => {
-  const user = api.getConectedUser();
-  if (user) {
-    user.adresses = adresses.value;
-    dataStore().data.currentUser = user;
-  }
-};
 // #endregion
 
 // #region Form Functions
@@ -161,14 +152,21 @@ const showAddAddressFormAndValue = () => {
 // #region CRUD Functions
 const updateAddress = () => {
   const index = adresses.value.findIndex((addr) => addr === editingAddress.value);
+
+    // si index n'est pas vide
   if (index !== -1) {
     adresses.value[index] = {
       country: editAddressCountry.value,
       city: editAddressCity.value,
       postalCode: editAddressPostalCode.value,
     };
-    updateStore();
-    notify('Adresse modifiée avec succès', 'positive');
+
+    const result = api.updateUserAddresses(adresses.value);
+    if (result === true) {
+      notify('Adresse modifiée avec succès', 'positive');
+    } else {
+      notify(typeof result === 'object' ? result.message : 'Erreur lors de la modification', 'negative');
+    }
   } else {
     notify('Erreur lors de la modification', 'negative');
   }
@@ -186,9 +184,13 @@ const addAddress = () => {
     postalCode: editAddressPostalCode.value,
   });
 
-  updateStore();
-  notify('Adresse ajoutée avec succès', 'positive');
-  editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
+  const result = api.updateUserAddresses(adresses.value);
+  if (result === true) {
+    notify('Adresse ajoutée avec succès', 'positive');
+    editAddressCountry.value = editAddressCity.value = editAddressPostalCode.value = '';
+  } else {
+    notify(typeof result === 'object' ? result.message : 'Erreur lors de l\'ajout', 'negative');
+  }
 };
 
 const deleteAddress = (address: Adress) => {
@@ -201,8 +203,12 @@ const deleteAddress = (address: Adress) => {
 
   if (index !== -1) {
     adresses.value.splice(index, 1);
-    updateStore();
-    notify('Adresse supprimée avec succès', 'positive');
+    const result = api.updateUserAddresses(adresses.value);
+    if (result === true) {
+      notify('Adresse supprimée avec succès', 'positive');
+    } else {
+      notify(typeof result === 'object' ? result.message : 'Erreur lors de la suppression', 'negative');
+    }
   } else {
     notify('Erreur lors de la suppression', 'negative');
   }

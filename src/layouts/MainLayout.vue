@@ -27,8 +27,8 @@
         <!-- #region User Actions -->
         <div class="col-2 flex justify-center items-center q-gutter-sm">
           <!-- #region User Menu (Logged In) -->
-          <template v-if="store.isLoggedIn">
-            <q-btn-dropdown flat rounded icon="person" color="white" :label="store.userName" class="user-btn" dropdown-icon="expand_more">
+          <template v-if="isLoggedIn">
+            <q-btn-dropdown flat rounded icon="person" color="white" :label="userName" class="user-btn" dropdown-icon="expand_more">
                 <q-list class="user-menu">
                 <q-item clickable v-close-popup to="/profile" class="menu-item">
                   <q-item-section avatar>
@@ -75,7 +75,7 @@
     <q-drawer side="right" v-model="drawerRight" show-if-above :width="300" :breakpoint="500" class="cart-drawer">
       <q-scroll-area class="fit">
       <!-- #region Cart Items -->
-      <template v-for="product in store.data.basket" :key="product.id">
+      <template v-for="product in basket" :key="product.id">
         <div class="q-ma-md">
         <q-card class="cart-card q-mx-xl">
           <q-card-section class="q-pt-none">
@@ -111,12 +111,17 @@
 
 <script setup lang="ts">
 // #region Imports
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useApi } from '../js/api';
 import { dataStore } from 'src/stores/data-store';
+import type { Product } from '../js/types';
 // #endregion Imports
+
+const isLoggedIn = ref(false);
+const userName   = ref('');
+const basket = ref<Product[]>([]);
 
 // #region Variables and Stores
 const router = useRouter();
@@ -168,6 +173,12 @@ const handleCheckout = async () => {
   await router.push('/checkout');
 };
 // #endregion Methods
+
+onMounted(() => {
+  isLoggedIn.value = store.isLoggedIn;
+  userName.value   = store.userName;
+  basket.value     = store.data.basket;
+});
 </script>
 
 <style scoped>

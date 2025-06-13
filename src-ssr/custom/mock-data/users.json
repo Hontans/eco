@@ -103,5 +103,13 @@
         "cryptogram": "012"
       }
     ]
+  },
+  {
+    "id": 6,
+    "name": "aze",
+    "email": "azmssssme@gmail.com",
+    "password": "aze",
+    "adresses": [],
+    "basketCards": []
   }
 ]

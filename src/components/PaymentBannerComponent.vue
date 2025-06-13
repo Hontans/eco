@@ -164,6 +164,8 @@ const showAddCartFormAndValue = () => {
 // #region Card Management Functions
 const updateCart = () => {
   const index = basketCards.value.findIndex((cart) => cart === editingBasketCards.value);
+
+  // si index n'est pas vide
   if (index !== -1) {
     basketCards.value[index] = {
       cardNumber: editCardNumber.value,

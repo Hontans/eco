@@ -1,10 +1,10 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 import type { Product, User } from '../js/types';
-import products from '../../public/products.json';
 
 //#region Constants
 const dataDefaults = {
+  products: [] as Product[],
   basket: [] as Product[],
   searchTerm: '',
   currentUser: null as User | null,
@@ -36,7 +36,7 @@ export const dataStore = defineStore('dataStore', {
 
     getProductById(id: number): Product | undefined
     {
-      return products.find((item) => item.id === id);
+      return this.data.products.find((item) => item.id === id);
     },
 
     deleteProduct(product: Product)

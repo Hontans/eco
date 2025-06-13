@@ -148,7 +148,7 @@ const isPwd = ref(true);
 // #region Methods
 const updateUser = async () => {
   try {
-    const result = await api.updateUser(userName.value, userEmail.value, userPassword.value, [], []);
+    const result = await api.updateUserCredentials(userName.value, userEmail.value, userPassword.value);
 
     if (result === true) {
       $q.notify({

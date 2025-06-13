@@ -29,12 +29,11 @@ export function useApi()
 
     console.log('user from api', obj);
 
-    if (response.ok) {
+    if (obj.data) {
       store.data.currentUser = obj.data as User;
-      return obj;
     }
 
-    throw new Error(obj.error);
+    return obj;
   };
 
   const logout = (): boolean =>

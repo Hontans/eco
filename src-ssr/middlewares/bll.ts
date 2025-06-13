@@ -18,9 +18,11 @@ export default defineSsrMiddleware(({ app }) => {
     res.json( db.getUserById(req.body.userId));
   });
 
-  app.post('/api/login', (req: Request) => {
+  app.post('/api/login', (req: Request, res: Response) => {
     const { emailOrName, password } = req.body;
-    return db.login(emailOrName, password);
+    const result = db.login(emailOrName, password);
+
+    res.json(result);
   });
 
   app.post('/api/logout', (req: Request, res: Response) => {

@@ -3,16 +3,6 @@ import Products from './mock-data/products.json';
 
 export function userDatabase()
 {
-  function getUserById(userId: number)
-  {
-    const user = Users.find(user => user.id === userId);
-    return user;
-  }
-
-  function getProducts()
-  {
-    return Products;
-  }
 
   function login (emailOrName: string, password: string)
   {
@@ -20,7 +10,13 @@ export function userDatabase()
     return user || null;
   }
 
-  const register = async (name: string, email: string, password: string) => {
+  function logout()
+  {
+    return true;
+  }
+
+  function register(name: string, email: string, password: string)
+  {
     const existingUser = Users.find(u => u.email === email || u.name === name);
     if (existingUser) {
       return {
@@ -41,13 +37,27 @@ export function userDatabase()
 
     console.log('Users', Users);
     return newUser;
-  };
+  }
 
+  function getUserById(userId: number)
+  {
+    const user = Users.find(user => user.id === userId);
+    return user;
+  }
+
+  function getProducts()
+  {
+    return Products;
+  }
 
   return {
-    getUserById,
-    getProducts,
+    // User management
     login,
-    register
+    logout,
+    register,
+
+    // Product management
+    getUserById,
+    getProducts
   }
 }

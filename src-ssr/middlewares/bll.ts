@@ -20,15 +20,30 @@ export default defineSsrMiddleware(({ app }) => {
 
   app.post('/api/login', (req: Request, res: Response) => {
     const { emailOrName, password } = req.body;
-
     const user = db.login(emailOrName, password);
-    res.json(user);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
   });
 
-  app.post('/api/register', async (req: Request, res: Response) => {
-    const { name, email, password } = req.body;
+  app.post('/api/logout', (req: Request, res: Response) => {
+    const success = db.logout();
+    if (success) {
+      res.json({ message: 'Logged out successfully' });
+    } else {
+      res.status(500).json({ error: 'Logout failed' });
+    }
+  });
 
-    const user = await db.register(name, email, password);
-    res.json(user);
+  app.post('/api/register', (req: Request, res: Response) => {
+    const { name, email, password } = req.body;
+    try {
+      const newUser = db.register(name, email, password);
+      res.json(newUser);
+    } catch (error) {
+      res.status(400).json({ error: error instanceof Error ? error.message : 'Registration failed' });
+    }
   });
 });

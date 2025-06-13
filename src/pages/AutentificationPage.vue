@@ -98,7 +98,7 @@ const onSubmit = async () =>
     {
       $q.notify({
         color: 'positive', textColor: 'white', icon: 'check_circle',
-        message: `Bienvenue ${user.name}!`, timeout: 2000, position: 'top'
+        message: `Bienvenue ${'name' in user ? user.name : 'utilisateur'}!`, timeout: 2000, position: 'top'
       });
 
       if (store.data.authAccess)

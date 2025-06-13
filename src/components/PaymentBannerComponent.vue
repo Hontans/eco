@@ -113,7 +113,6 @@
 
 <script setup lang="ts">
 // #region Imports
-import { dataStore } from '../stores/data-store';
 import { ref, onMounted } from 'vue';
 import type { BasketCard } from '../js/types';
 import { useQuasar } from 'quasar';
@@ -136,14 +135,6 @@ const editingBasketCards = ref<BasketCard | null>(null);
 const notify = (message: string, color: string) => {
   $q.notify({ message, color, position: 'bottom' });
 };
-
-const updateStore = () => {
-  const user = api.getConectedUser();
-  if (user) {
-    user.basketCards = basketCards.value;
-    dataStore().data.currentUser = user;
-  }
-};
 // #endregion
 
 // #region Form Display Functions
@@ -165,15 +156,19 @@ const showAddCartFormAndValue = () => {
 const updateCart = () => {
   const index = basketCards.value.findIndex((cart) => cart === editingBasketCards.value);
 
-  // si index n'est pas vide
   if (index !== -1) {
     basketCards.value[index] = {
       cardNumber: editCardNumber.value,
       expirationDate: editExpirationDate.value,
       cryptogram: editCryptogram.value,
     };
-    updateStore();
-    notify('Carte modifiée avec succès', 'positive');
+
+    const result = api.updateUserPaymentCards(basketCards.value);
+    if (result === true) {
+      notify('Carte modifiée avec succès', 'positive');
+    } else {
+      notify(typeof result === 'object' ? result.message : 'Erreur lors de la modification', 'negative');
+    }
   } else {
     notify('Erreur lors de la modification', 'negative');
   }
@@ -191,9 +186,13 @@ const addCart = () => {
     cryptogram: editCryptogram.value,
   });
 
-  updateStore();
-  notify('Carte ajoutée avec succès', 'positive');
-  editCardNumber.value = editExpirationDate.value = editCryptogram.value = '';
+  const result = api.updateUserPaymentCards(basketCards.value);
+  if (result === true) {
+    notify('Carte ajoutée avec succès', 'positive');
+    editCardNumber.value = editExpirationDate.value = editCryptogram.value = '';
+  } else {
+    notify(typeof result === 'object' ? result.message : 'Erreur lors de l\'ajout', 'negative');
+  }
 };
 
 const deleteCart = (cart: BasketCard) => {
@@ -206,8 +205,13 @@ const deleteCart = (cart: BasketCard) => {
 
   if (index !== -1) {
     basketCards.value.splice(index, 1);
-    updateStore();
-    notify('Carte supprimée avec succès', 'positive');
+
+    const result = api.updateUserPaymentCards(basketCards.value);
+    if (result === true) {
+      notify('Carte supprimée avec succès', 'positive');
+    } else {
+      notify(typeof result === 'object' ? result.message : 'Erreur lors de la suppression', 'negative');
+    }
   } else {
     notify('Erreur lors de la suppression', 'negative');
   }

@@ -1,4 +1,4 @@
-import type { Product, User, ErrorResponse, Adress } from './types';
+import type { Product, User, ErrorResponse, Adress, BasketCard } from './types';
 import { dataStore } from '../stores/data-store';
 
 export function useApi()
@@ -108,7 +108,7 @@ export function useApi()
     }
   };
 
-  const updateUserPaymentCards = (basketCards: []): boolean | { message: string } => {
+  const updateUserPaymentCards = (basketCards: BasketCard[]): boolean | { message: string } => {
     try {
       const currentUser = store.data.currentUser;
       if (!currentUser) {
@@ -125,7 +125,9 @@ export function useApi()
 
   const getUsers = async (): Promise<User[]> =>
   {
-    const users = await fetch('/users.json').then((response) => response.json());
+    const users = await fetch(`${baseUrl}/getUsers`, {
+      method: "GET"
+    }).then((response) => response.json());
     return users as User[];
   };
   //#endregion

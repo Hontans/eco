@@ -1,4 +1,4 @@
-import type { Product, User, ErrorResponse, Adress, BasketCard } from './types';
+import type { Product, User, ServerResponse, Adress, BasketCard } from './types';
 import { dataStore } from '../stores/data-store';
 
 export function useApi()
@@ -12,9 +12,9 @@ export function useApi()
     return store.data.currentUser;
   };
 
-  const login = async (emailOrName: string, password: string): Promise<User | ErrorResponse> =>
+  const login = async (emailOrName: string, password: string): Promise<ServerResponse> =>
   {
-    const user = await fetch(`${baseUrl}/login`, {
+    const response = await fetch(`${baseUrl}/login`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -23,16 +23,18 @@ export function useApi()
         emailOrName,
         password
       })
-    }).then((response) => response.json());
+    })
 
-    console.log('user from api', user);
+    const obj = await response.json() as ServerResponse;
 
-    if (user) {
-      store.data.currentUser = user;
-      return user;
+    console.log('user from api', obj);
+
+    if (response.ok) {
+      store.data.currentUser = obj.data as User;
+      return obj;
     }
 
-    throw new Error('Identifiants incorrects');
+    throw new Error(obj.error);
   };
 
   const logout = (): boolean =>

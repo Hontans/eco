@@ -9,7 +9,10 @@ export function userDatabase()
   function login (emailOrName: string, password: string)
   {
     const user = Users.find(user => (user.email === emailOrName || user.name === emailOrName) && user.password === password);
-    return user || null;
+    return {
+      data : user || null,
+      error: user ? null : 'Identifiants invalides'
+    };
   }
 
   function logout()

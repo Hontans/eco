@@ -18,14 +18,9 @@ export default defineSsrMiddleware(({ app }) => {
     res.json( db.getUserById(req.body.userId));
   });
 
-  app.post('/api/login', (req: Request, res: Response) => {
+  app.post('/api/login', (req: Request) => {
     const { emailOrName, password } = req.body;
-    const user = db.login(emailOrName, password);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(401).json({ error: 'Invalid credentials' });
-    }
+    return db.login(emailOrName, password);
   });
 
   app.post('/api/logout', (req: Request, res: Response) => {

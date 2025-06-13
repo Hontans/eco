@@ -14,7 +14,7 @@ router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
     if (!store.data.currentUser) {
       // add last access to localstorage
-      store.data.authAccess = to.fullPath;
+      store.data.returnUrl = to.fullPath;
       console.log(to.fullPath);
       return '/auth';
     }

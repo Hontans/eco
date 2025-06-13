@@ -26,6 +26,7 @@ export interface BasketCard {
   cryptogram?: string | null;
 }
 
-export interface ErrorResponse {
-  error: string;
+export interface ServerResponse {
+  data  : User | Product | Product[] | User[] | null;
+  error?: string;
 };

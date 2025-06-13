@@ -71,6 +71,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { dataStore } from '../stores/data-store';
 import { useApi } from '../js/api'
+import type { User } from '../js/types';
 // #endregion
 
 // #region Store and API
@@ -93,31 +94,32 @@ const onSubmit = async () =>
   loading.value = true;
   try
   {
-    const user = await api.login(emailOrName.value, password.value);
-    if (user)
+    const response = await api.login(emailOrName.value, password.value);
+
+    if (response.error)
     {
       $q.notify({
-        color: 'positive', textColor: 'white', icon: 'check_circle',
-        message: `Bienvenue ${'name' in user ? user.name : 'utilisateur'}!`, timeout: 2000, position: 'top'
+        color  : 'negative', textColor: 'white', icon: 'error',
+        message: response.error, timeout: 2000, position: 'top'
+      });
+      return;
+    }
+
+    const user = response.data as User;
+      $q.notify({
+        color  : 'positive', textColor: 'white', icon: 'check_circle',
+        message: `Bienvenue ${user.name}!`, timeout: 2000, position: 'top'
       });
 
-      if (store.data.authAccess)
+      if (store.data.returnUrl)
       {
-        await router.push(store.data.authAccess);
-        store.data.authAccess = '';
+        await router.push(store.data.returnUrl);
+        store.data.returnUrl = '';
       }
       else
       {
         await router.push('/');
       }
-    }
-    else
-    {
-      $q.notify({
-        color: 'negative', textColor: 'white', icon: 'error',
-        message: 'Identifiants incorrects', timeout: 2000, position: 'top'
-      });
-    }
   }
   catch
   {

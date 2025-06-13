@@ -8,7 +8,7 @@ const dataDefaults = {
   basket: [] as Product[],
   searchTerm: '',
   currentUser: null as User | null,
-  authAccess : ''
+  returnUrl : ''
 };
 //#endregion
 

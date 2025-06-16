@@ -14,6 +14,10 @@ export default defineSsrMiddleware(({ app }) => {
     res.json( db.getProducts());
   });
 
+  app.post('/api/getProductById', (req: Request, res: Response) => {
+    res.json(db.getProductById(req.body.productId));
+  });
+
   app.post('/api/getUserById', (req: Request, res: Response) => {
     res.json( db.getUserById(req.body.userId));
   });

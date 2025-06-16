@@ -44,7 +44,6 @@ export const localStore = defineStore('localStore', {
     logout(): boolean
     {
       this.data.currentUser = null;
-      this.data.basket = [];
       return true;
     },
   },

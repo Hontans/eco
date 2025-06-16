@@ -1,0 +1,13 @@
+[
+    {
+        "userId": 1,
+        "basket":[
+            {
+                "id":2,
+                "name":"souris",
+                "price":49,
+                "category":"périphérique"
+            }
+        ]
+    }
+]

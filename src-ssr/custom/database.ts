@@ -68,6 +68,12 @@ export function userDatabase()
     return Products;
   }
 
+  function getProductById(productId: number)
+  {
+    const product = Products.find(product => product.id === productId);
+    return product;
+  }
+
   function updateUserDatabase() {
     fs.writeFileSync('./src-ssr/custom/mock-data/users.json', JSON.stringify(Users, null, 2));
   }
@@ -81,6 +87,7 @@ export function userDatabase()
 
     // Product management
     getUserById,
-    getProducts
+    getProducts,
+    getProductById
   }
 }

@@ -7,14 +7,17 @@ import { onMounted } from 'vue';
 import { dataStore } from './stores/data-store';
 import { localStore } from './stores/local-store';
 import { useRouter } from 'vue-router';
+import { useApi } from './js/api';
 
 const store  = dataStore();
 const local = localStore();
 const router = useRouter();
+const api   = useApi();
 
 router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
-    if (!local.data.currentUser) {
+    const currentUser = api.getConectedUser();
+    if (!currentUser) {
       store.data.returnUrl = to.fullPath;
       console.log(to.fullPath);
       return '/auth';

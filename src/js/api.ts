@@ -9,6 +9,10 @@ export function useApi()
   //#region User Management
   const getConectedUser = (): User | null =>
   {
+    if (!local.data.currentUser) {
+      return null;
+    }
+
     return local.data.currentUser;
   };
 
@@ -145,12 +149,10 @@ export function useApi()
 
   const getProductById = async (id: number): Promise<Product | undefined> =>
   {
-    const products = await getProducts();
-    const product = products.find((item) => item.id === id);
-    if (!product) {
-      throw new Error('Produit non trouvé');
-    }
-    return product;
+    const product = await fetch(`${baseUrl}/getProductById/${id}`, {
+      method: "GET"
+    }).then((response) => response.json());
+    return product as Product;
   };
   //#endregion
 

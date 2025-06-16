@@ -53,10 +53,12 @@ const product = ref<Product>();
 // #endregion
 
 // #region Functions
-async function loadProduct()
-{
-  if (productId.value) {
-    product.value = await api.getProductById(productId.value);
+async function loadProduct() {
+  try {
+    const fetchedProduct = await api.getProductById(productId.value);
+    product.value = fetchedProduct || undefined;
+  } catch (error) {
+    console.error('Erreur lors du chargement du produit:', error);
   }
 }
 

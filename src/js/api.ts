@@ -40,8 +40,19 @@ export function useApi()
     return obj;
   };
 
-  const logout = (): boolean =>
+  const logout = async (): Promise<boolean> =>
   {
+    const response = await fetch(`${baseUrl}/logout`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result.message);
+    }
     return local.logout();
   };
 
@@ -147,12 +158,19 @@ export function useApi()
     return products as Product[];
   };
 
-  const getProductById = async (id: number): Promise<Product | undefined> =>
-  {
-    const product = await fetch(`${baseUrl}/getProductById/${id}`, {
-      method: "GET"
-    }).then((response) => response.json());
-    return product as Product;
+  const getProductById = async (productId: number): Promise<Product | null> => {
+    const response = await fetch(`${baseUrl}/getProductById`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        productId
+      })
+    });
+
+    const product = await response.json();
+    return product as Product | null;
   };
   //#endregion
 

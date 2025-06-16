@@ -5,15 +5,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { dataStore } from './stores/data-store';
+import { localStore } from './stores/local-store';
 import { useRouter } from 'vue-router';
 
 const store  = dataStore();
+const local = localStore();
 const router = useRouter();
 
 router.beforeEach((to) => {
   if (to.meta.requiresAuth) {
-    if (!store.data.currentUser) {
-      // add last access to localstorage
+    if (!local.data.currentUser) {
       store.data.returnUrl = to.fullPath;
       console.log(to.fullPath);
       return '/auth';
@@ -22,8 +23,8 @@ router.beforeEach((to) => {
 });
 
 function clearData() {
-  if (!store.data.currentUser) {
-    store.logout();
+  if (!local.data.currentUser) {
+    local.logout();
   }
 }
 

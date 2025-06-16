@@ -38,7 +38,7 @@
             <!-- #region Cart Step -->
             <div v-if="step === 1">
               <h5 class="q-my-md text-white">Votre Panier</h5>
-              <template v-for="product in store.data.basket" :key="product.id">
+              <template v-for="product in local.data.basket" :key="product.id">
                 <q-card flat class="glass-card q-mb-md">
                   <q-card-section horizontal>
                     <q-img class="col-auto" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg" style="width: 120px; height: 120px; object-fit: cover" />
@@ -230,7 +230,7 @@
                   <!-- #region Products List -->
                   <div class="q-mb-md">
                     <div class="text-subtitle2 text-grey-3 q-mb-sm">Articles commandés :</div>
-                    <template v-for="product in store.data.basket" :key="product.id">
+                    <template v-for="product in local.data.basket" :key="product.id">
                       <div class="row items-center q-py-sm">
                         <div class="col">
                           <div class="text-white">{{ product.name }}</div>
@@ -265,7 +265,7 @@
                   <q-separator color="rgba(255,255,255,0.2)" class="q-my-md" />
                   <div class="row items-center">
                     <div class="col text-h6 text-white">Total :</div>
-                    <div class="col-auto text-h5 text-white">{{ store.basketPrice }}€</div>
+                    <div class="col-auto text-h5 text-white">{{ local.basketPrice }}€</div>
                   </div>
                   <!-- #endregion Total -->
                 </q-card-section>
@@ -281,7 +281,7 @@
             <q-card flat bordered class="glass-card q-mt-md q-md-mt-none sticky-top-card" style="top: 20px">
               <q-card-section>
                 <div class="text-h6 text-white">Total des prix :</div>
-                <div class="text-h5 q-py-sm text-white">{{ store.basketPrice }}€</div>
+                <div class="text-h5 q-py-sm text-white">{{ local.basketPrice }}€</div>
               </q-card-section>
               <q-separator color="white" />
               <q-card-actions vertical align="center" class="q-pa-md">
@@ -302,13 +302,13 @@
 import { ref, computed, onMounted } from 'vue';
 import type { QStepper } from 'quasar';
 import { useApi } from '../js/api';
-import { dataStore } from '../stores/data-store';
+import { localStore } from '../stores/local-store';
 import type { Adress, BasketCard } from '../js/types';
 import { useQuasar } from 'quasar';
 // #endregion Imports
 
 // #region Variables and Stores
-const store = dataStore();
+const local = localStore();
 const api = useApi();
 const $q = useQuasar();
 const stepperRef = ref<QStepper | null>(null);
@@ -342,7 +342,7 @@ const updateStore = () => {
   if (user) {
     user.adresses = adresses.value;
     user.basketCards = cards.value;
-    dataStore().data.currentUser = user;
+    localStore().data.currentUser = user;
   }
 };
 
@@ -467,7 +467,7 @@ const handleMainAction = () => {
       position: 'top'
     });
     // Rediriger vers la page d'accueil ou vider le panier
-    store.data.basket = [];
+    local.data.basket = [];
     setTimeout(() => {
       api.buyCart();
       window.location.href = '/';

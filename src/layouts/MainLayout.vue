@@ -60,8 +60,8 @@
 
           <!-- #region Cart Button -->
           <q-btn flat rounded icon="shopping_cart" @click="drawerRight = !drawerRight" color="white" class="cart-btn">
-            <q-badge v-if="store.basketCount > 0" color="red" rounded floating class="cart-badge">
-              {{ store.basketCount }}
+            <q-badge v-if="local.basketCount > 0" color="red" rounded floating class="cart-badge">
+              {{ local.basketCount }}
             </q-badge>
           </q-btn>
           <!-- #endregion Cart Button -->
@@ -93,8 +93,8 @@
 
       <!-- #region Cart Total and Checkout -->
       <div class="column items-center q-mt-md q-mb-xl">
-        <div class="text-h6 q-mb-md text-white">Total à payer : {{ store.basketPrice }}€</div>
-        <q-btn color="primary" label="Acheter" @click="handleCheckout" size="lg" style="width: 200px" :disabled="store.basketCount === 0" />
+        <div class="text-h6 q-mb-md text-white">Total à payer : {{ local.basketPrice }}€</div>
+        <q-btn color="primary" label="Acheter" @click="handleCheckout" size="lg" style="width: 200px" :disabled="local.basketCount === 0" />
       </div>
       <!-- #endregion Cart Total and Checkout -->
       </q-scroll-area>
@@ -116,6 +116,7 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useApi } from '../js/api';
 import { dataStore } from 'src/stores/data-store';
+import { localStore } from 'src/stores/local-store';
 import type { Product } from '../js/types';
 // #endregion Imports
 
@@ -129,6 +130,7 @@ const $q = useQuasar();
 const drawerRight = ref(false);
 const api = useApi();
 const store = dataStore();
+const local = localStore();
 // #endregion Variables and Stores
 
 // #region Methods
@@ -147,7 +149,7 @@ const logout = async () =>
 };
 
 const handleCheckout = async () => {
-  if (!store.isLoggedIn) {
+  if (!local.isLoggedIn) {
     $q.notify({
       color: 'warning',
       textColor: 'white',
@@ -158,7 +160,7 @@ const handleCheckout = async () => {
     });
   }
 
-  if (store.basketCount === 0) {
+  if (local.basketCount === 0) {
     $q.notify({
       color: 'warning',
       textColor: 'white',
@@ -175,9 +177,9 @@ const handleCheckout = async () => {
 // #endregion Methods
 
 onMounted(() => {
-  isLoggedIn.value = store.isLoggedIn;
-  userName.value   = store.userName;
-  basket.value     = store.data.basket;
+  isLoggedIn.value = local.isLoggedIn;
+  userName.value   = local.userName;
+  basket.value     = local.data.basket;
 });
 </script>
 

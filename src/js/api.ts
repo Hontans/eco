@@ -1,15 +1,15 @@
 import type { Product, User, ServerResponse, Adress, BasketCard } from './types';
-import { dataStore } from '../stores/data-store';
+import { localStore } from '../stores/local-store';
 
 export function useApi()
 {
   const baseUrl = 'http://localhost:9100/api';
-  const store = dataStore();
+  const local = localStore();
 
   //#region User Management
   const getConectedUser = (): User | null =>
   {
-    return store.data.currentUser;
+    return local.data.currentUser;
   };
 
   const login = async (emailOrName: string, password: string): Promise<ServerResponse> =>
@@ -30,7 +30,7 @@ export function useApi()
     console.log('user from api', obj);
 
     if (obj.data) {
-      store.data.currentUser = obj.data as User;
+      local.data.currentUser = obj.data as User;
     }
 
     return obj;
@@ -38,7 +38,7 @@ export function useApi()
 
   const logout = (): boolean =>
   {
-    return store.logout();
+    return local.logout();
   };
 
   const register = async (name: string, email: string, password: string): Promise<User> => {
@@ -56,7 +56,7 @@ export function useApi()
       password
     };
 
-    store.data.currentUser = newUser;
+    local.data.currentUser = newUser;
 
     return newUser;
   };
@@ -73,7 +73,7 @@ export function useApi()
 
   const updateUserCredentials = async (name: string, email: string, password: string): Promise<boolean | { message: string }> => {
     try {
-      const currentUser = store.data.currentUser;
+      const currentUser = local.data.currentUser;
       if (!currentUser) {
         return { message: 'Aucun utilisateur connecté' };
       }
@@ -87,7 +87,7 @@ export function useApi()
       currentUser.name = name;
       currentUser.email = email;
       currentUser.password = password;
-      store.data.currentUser = currentUser;
+      local.data.currentUser = currentUser;
       return true;
     } catch {
       return { message: 'Erreur lors de la mise à jour des informations utilisateur' };
@@ -96,13 +96,13 @@ export function useApi()
 
   const updateUserAddresses = (addresses: Adress[]): boolean | { message: string } => {
     try {
-      const currentUser = store.data.currentUser;
+      const currentUser = local.data.currentUser;
       if (!currentUser) {
         return { message: 'Aucun utilisateur connecté' };
       }
 
       currentUser.adresses = addresses;
-      store.data.currentUser = currentUser;
+      local.data.currentUser = currentUser;
       return true;
     } catch {
       return { message: 'Erreur lors de la mise à jour des adresses' };
@@ -111,13 +111,13 @@ export function useApi()
 
   const updateUserPaymentCards = (basketCards: BasketCard[]): boolean | { message: string } => {
     try {
-      const currentUser = store.data.currentUser;
+      const currentUser = local.data.currentUser;
       if (!currentUser) {
         return { message: 'Aucun utilisateur connecté' };
       }
 
       currentUser.basketCards = basketCards;
-      store.data.currentUser = currentUser;
+      local.data.currentUser = currentUser;
       return true;
     } catch {
       return { message: 'Erreur lors de la mise à jour des cartes de paiement' };
@@ -156,32 +156,32 @@ export function useApi()
 
   //#region Cart Management
   const getCartByUserId = (userId: number): Product[] => {
-    const currentUser = store.data.currentUser;
+    const currentUser = local.data.currentUser;
     if (!currentUser || currentUser.id !== userId) {
       return [];
     }
-    return store.data.basket || [];
+    return local.data.basket || [];
   };
 
   const addItemToBasket = (item: Product): boolean =>
   {
-    store.addItemToBasket(item);
+    local.addItemToBasket(item);
     return true;
   };
 
   const deleteProductInBasket = (product: Product): boolean =>
   {
-    store.deleteProduct(product);
+    local.deleteProductFromBasket(product);
     return true;
   };
 
   const buyCart = (): boolean => {
     try {
-      const currentUser = store.data.currentUser;
-      if (!currentUser || !store.data.basket || store.data.basket.length === 0) {
+      const currentUser = local.data.currentUser;
+      if (!currentUser || !local.data.basket || local.data.basket.length === 0) {
         return false;
       }
-      store.data.basket = [];
+      local.data.basket = [];
       return true;
     } catch {
       return false;

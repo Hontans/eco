@@ -56,24 +56,29 @@ export function useApi()
     return local.logout();
   };
 
-  const register = async (name: string, email: string, password: string): Promise<User> => {
-    const users = await getUsers();
+  const register = async (name: string, email: string, password: string): Promise<ServerResponse> =>
+  {
+    const response = await fetch(`${baseUrl}/register`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password
+      })
+    });
 
-    const existingUser = users.find(u => u.email === email || u.name === name);
-    if (existingUser) {
-      throw new Error('Un utilisateur avec cet email ou ce nom existe déjà');
+    const obj = await response.json() as ServerResponse;
+
+    console.log('user from register api', obj);
+
+    if (obj.data) {
+      local.data.currentUser = obj.data as User;
     }
 
-    const newUser: User = {
-      id: users.length + 1,
-      name,
-      email,
-      password
-    };
-
-    local.data.currentUser = newUser;
-
-    return newUser;
+    return obj;
   };
 
   const forgotPassword = async (email: string): Promise<boolean> => {

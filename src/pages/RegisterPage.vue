@@ -81,49 +81,21 @@ const loading = ref(false);
 const onSubmit = async () => {
   loading.value = true;
   try {
-    if (!userName.value || !userEmail.value || !password.value || !confirmPassword.value) {
+    const api = useApi();
+    const response = await api.register(userName.value, userEmail.value, password.value);
+
+    if (response) {
       $q.notify({
-        color: 'negative',
-        textColor: 'white',
-        icon: 'error',
-        message: 'Veuillez remplir tous les champs',
-        timeout: 2000,
+        type: 'positive',
+        message: 'Inscription réussie !',
         position: 'top'
       });
-      return;
+      await router.push('/');
     }
-
-    if (password.value !== confirmPassword.value) {
-      $q.notify({
-        color: 'negative',
-        textColor: 'white',
-        icon: 'error',
-        message: 'Les mots de passe ne correspondent pas',
-        timeout: 2000,
-        position: 'top'
-      });
-      return;
-    }
-
-    const newUser = await useApi().register(userName.value, userEmail.value, password.value);
-
+  } catch (error: unknown) {
     $q.notify({
-      color: 'positive',
-      textColor: 'white',
-      icon: 'check_circle',
-      message: `Compte créé avec succès ! Bienvenue ${newUser.name}!`,
-      timeout: 2000,
-      position: 'top'
-    });
-
-    await router.push('/');
-  } catch {
-    $q.notify({
-      color: 'negative',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'Erreur lors de la création du compte. Veuillez réessayer.',
-      timeout: 2000,
+      type: 'negative',
+      message: (error as { response?: { data?: { error?: string } } }).response?.data?.error || 'Erreur lors de l\'inscription',
       position: 'top'
     });
   } finally {

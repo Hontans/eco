@@ -15,6 +15,7 @@ const router = useRouter();
 const api   = useApi();
 
 router.beforeEach((to) => {
+  console.log(to);
   if (to.meta.requiresAuth) {
     const currentUser = api.getConectedUser();
     if (!currentUser) {

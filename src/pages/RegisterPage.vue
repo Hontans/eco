@@ -75,32 +75,39 @@ const confirmPassword = ref('');
 const isPwd = ref(true);
 const isConfirmPwd = ref(true);
 const loading = ref(false);
+const api = useApi();
 //#endregion
 
 //#region Functions
 const onSubmit = async () => {
   loading.value = true;
-  try {
-    const api = useApi();
-    const response = await api.register(userName.value, userEmail.value, password.value);
 
-    if (response) {
-      $q.notify({
-        type: 'positive',
-        message: 'Inscription réussie !',
-        position: 'top'
-      });
-      await router.push('/');
-    }
-  } catch (error: unknown) {
+  const response = await api.register(userName.value, userEmail.value, password.value);
+  console.log(response);
+  loading.value = false;
+
+  if (response.data) {
+    console.log('Inscription réussie:', response.data);
+
     $q.notify({
-      type: 'negative',
-      message: (error as { response?: { data?: { error?: string } } }).response?.data?.error || 'Erreur lors de l\'inscription',
-      position: 'top'
+      color: 'green-4',
+      textColor: 'white',
+      icon: 'check',
+      message: 'Inscription réussie ! Vous êtes maintenant connecté.'
     });
-  } finally {
-    loading.value = false;
+
+    // Redirect to home page after successful registration
+    await router.push('/');
+    return;
   }
+
+  console.log('Inscription error:', response.error);
+  $q.notify({
+    color: 'red-5',
+    textColor: 'white',
+    icon: 'warning',
+    message: response.error || 'Erreur lors de l\'inscription'
+  });
 };
 //#endregion
 </script>

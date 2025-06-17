@@ -31,12 +31,13 @@ export function useApi()
 
     const obj = await response.json() as ServerResponse;
 
-    console.log('user from api', obj);
-
     if (obj.data) {
+      console.log('api.login :: login success', obj);
       local.data.currentUser = obj.data as User;
+      return obj;
     }
 
+    console.log('api.login :: Login failed:', obj.error);
     return obj;
   };
 
@@ -49,10 +50,14 @@ export function useApi()
       }
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log(result.message);
+    const obj = await response.json() as ServerResponse;
+
+    if (obj.data) {
+      console.log('api.logout :: logout success');
+      local.logout();
+      return true;
     }
+    console.log('api.logout :: logout failed:', obj.error);
     return local.logout();
   };
 
@@ -71,24 +76,37 @@ export function useApi()
     });
 
     const obj = await response.json() as ServerResponse;
+    console.log('api.register :: after fetch', obj);
 
-    console.log('user from register api', obj);
-
-    if (obj.data) {
-      local.data.currentUser = obj.data as User;
+    if (obj.error) {
+      console.log('api.register :: Registration failed:', obj.error);
+      return obj;
     }
 
+    await login(email, password);
     return obj;
   };
 
-  const forgotPassword = async (email: string): Promise<boolean> => {
-    const users = await getUsers();
-    const user = users.find(u => u.email === email);
+  const forgotPassword = async (email: string): Promise<ServerResponse> =>
+  {
+    const response = await fetch(`${baseUrl}/forgotPassword`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    });
 
-    if (!user) {
-      throw new Error('Aucun utilisateur trouvé avec cet email');
+    const obj = await response.json() as ServerResponse;
+    console.log('api.forgotPassword :: Forgot password success', obj);
+
+    if (obj.error) {
+      console.log('api.forgotPassword :: Forgot password failed:', obj.error);
+      return obj;
     }
-    return true;
+    return obj;
   };
 
   const updateUserCredentials = async (name: string, email: string, password: string): Promise<boolean | { message: string }> => {
@@ -160,10 +178,11 @@ export function useApi()
       method: "GET"
     }).then((response) => response.json());
 
-    return products as Product[];
+    return products.data as Product[];
   };
 
-  const getProductById = async (productId: number): Promise<Product | null> => {
+  const getProductById = async (productId: number): Promise<Product | null> =>
+  {
     const response = await fetch(`${baseUrl}/getProductById`, {
       method: "POST",
       headers: {
@@ -174,8 +193,13 @@ export function useApi()
       })
     });
 
-    const product = await response.json();
-    return product as Product | null;
+    const obj = await response.json() as ServerResponse;
+
+    if (obj.data) {
+      console.log('api.getProductById :: getProductById failed:', obj.error);
+      return obj.data as Product
+    }
+    return null;
   };
   //#endregion
 

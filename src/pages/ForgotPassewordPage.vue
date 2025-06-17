@@ -60,26 +60,35 @@ const sending = ref(false)
 
 // #region Form Submission
 const onSubmit = async () => {
-  if (!email.value) return
+  if (!email.value) {
+    $q.notify({
+      color: 'negative',
+      message: 'Veuillez saisir votre email',
+      icon: 'warning'
+    })
+    return
+  }
 
   sending.value = true
 
-  try {
-    await api.forgotPassword(email.value)
+  const response = await api.forgotPassword(email.value)
+  console.log('Forgot Password Response:', response)
+  if (!response.error) {
     $q.notify({
-      message: 'Email de réinitialisation envoyé avec succès',
       color: 'positive',
-      position: 'top'
+      message: 'Un email de réinitialisation a été envoyé',
+      icon: 'check'
     })
-  } catch (error) {
+    email.value = ''
+  } else {
     $q.notify({
-      message: error instanceof Error ? error.message : 'Erreur lors de l\'envoi de l\'email',
       color: 'negative',
-      position: 'top'
+      message: response.error,
+      icon: 'error'
     })
-  } finally {
-    sending.value = false
   }
+
+  sending.value = false
 }
 // #endregion
 </script>

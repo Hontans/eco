@@ -17,61 +17,86 @@ export function userDatabase()
 
   function logout()
   {
-    return true;
+    return {
+      data: true,
+      error: null
+    };
   }
 
   function register(name: string, email: string, password: string)
   {
-    if (!name || !email || !password) {
-      throw new Error('Tous les champs sont requis');
+    try {
+      if (!name || !email || !password) {
+        return {
+          data: null,
+          error: 'Tous les champs sont requis'
+        };
+      }
+
+      const existingUser = Users.find(u => u.email === email || u.name === name);
+      if (existingUser) {
+        return {
+          data: null,
+          error: 'Un utilisateur avec cet email ou ce nom existe déjà'
+        };
+      }
+
+      const newUser = {
+        id: Users.length + 1,
+        name,
+        email,
+        password,
+        adresses: [],
+        basketCards: []
+      };
+
+      Users.push(newUser);
+      console.log('Users', Users);
+
+      updateUserDatabase();
+
+      return {
+        data: newUser,
+        error: null
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error
+      };
     }
-
-    const existingUser = Users.find(u => u.email === email || u.name === name);
-    if (existingUser) {
-      throw new Error('Un utilisateur avec cet email ou ce nom existe déjà');
-    }
-
-    const newUser = {
-      id: Users.length + 1,
-      name,
-      email,
-      password,
-      adresses: [],
-      basketCards: []
-    };
-
-    Users.push(newUser);
-    console.log('Users', Users);
-
-    updateUserDatabase();
-
-    return newUser;
   }
 
   function forgotPassword(email: string)
   {
     const user = Users.find(u => u.email === email);
     if (!user) {
-      throw new Error('Aucun utilisateur trouvé avec cet email');
+      return {
+        data: null,
+        error: 'Aucun utilisateur trouvé avec cet email'
+      };
     }
-    return true;
-  }
-
-  function getUserById(userId: number)
-  {
-    const user = Users.find(user => user.id === userId);
-    return user;
+    return {
+      data: true,
+      error: null
+    };
   }
 
   function getProducts()
   {
-    return Products;
+    return {
+      data: Products,
+      error: null
+    };
   }
 
   function getProductById(productId: number)
   {
     const product = Products.find(product => product.id === productId);
-    return product;
+    return {
+      data: product || null,
+      error: product ? null : 'Produit non trouvé'
+    };
   }
 
   function updateUserDatabase() {
@@ -86,7 +111,6 @@ export function userDatabase()
     forgotPassword,
 
     // Product management
-    getUserById,
     getProducts,
     getProductById
   }

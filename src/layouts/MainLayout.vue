@@ -169,7 +169,6 @@ const handleCheckout = async () => {
       timeout: 3000,
       position: 'top'
     });
-    return;
   }
 
   await router.push('/checkout');

@@ -22,5 +22,5 @@ Definir toutes les appels necessaire:
 ###### Cart/Basket
 - [ ] addItemToBasket(item: Product) : bool
 - [ ] deleteProductInBasket(product: Product) : bool
-- [ ] getCartByUserId(userId: number) : items[]
+- [ ] getBasketByUserId(userId: number) : items[]
 - [ ] buyCart() : bool

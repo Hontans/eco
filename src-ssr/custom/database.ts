@@ -1,12 +1,16 @@
+//#region Imports
 import Users from './mock-data/users.json';
 import Products from './mock-data/products.json';
-import  userBasket  from './mock-data/user-basket.json';
+import userBasket from './mock-data/user-basket.json';
 
 import fs from 'fs';
+//#endregion
+
 
 export function userDatabase()
 {
 
+  //#region User Authentication
   function login (emailOrName: string, password: string)
   {
     const user = Users.find(user => (user.email === emailOrName || user.name === emailOrName) && user.password === password);
@@ -82,7 +86,9 @@ export function userDatabase()
       error: null
     };
   }
+  //#endregion
 
+  //#region Product Management
   function getProducts()
   {
     return {
@@ -99,7 +105,9 @@ export function userDatabase()
       error: product ? null : 'Produit non trouvé'
     };
   }
+  //#endregion
 
+  //#region Basket Management
   function addItemToBasket(userId: number, productId: number) {
     try {
       const product = Products.find(p => p.id === productId);
@@ -182,21 +190,45 @@ export function userDatabase()
     }
   }
 
+  function getBasketByUserId(userId: number) {
+    try {
+      const userBasketData = userBasket.find(ub => ub.userId === userId);
+      if (!userBasketData) {
+        return {
+          data: [],
+          error: null
+        };
+      }
+
+      return {
+        data: userBasketData.basket,
+        error: null
+      };
+    } catch {
+      return {
+        data: null,
+        error: 'Erreur lors de la récupération du panier'
+      };
+    }
+  }
+  //#endregion
+
+  //#region Database Utils
   function updateUserDatabase() {
     fs.writeFileSync('./src-ssr/custom/mock-data/users.json', JSON.stringify(Users, null, 2));
   }
+  //#endregion
 
   return {
-    // User management
     login,
     logout,
     register,
     forgotPassword,
 
-    // Product management
     getProducts,
     getProductById,
     addItemToBasket,
-    deleteProductInBasket
+    deleteProductInBasket,
+    getBasketByUserId,
   }
 }

@@ -1,33 +1,41 @@
+//#region Imports
 import { type Request, type Response } from 'express';
 import { defineSsrMiddleware } from '#q-app/wrappers';
 import { userDatabase } from '../custom/database';
+//#endregion
 
 export default defineSsrMiddleware(({ app }) => {
   const db = userDatabase();
+
+  //#region Products
   app.get('/api/getProducts', (req: Request, res: Response) => {
-    res.json( db.getProducts());
+    res.json(db.getProducts());
   });
 
   app.post('/api/getProductById', (req: Request, res: Response) => {
     res.json(db.getProductById(req.body.productId));
   });
+  //#endregion
 
+  //#region Authentication
   app.post('/api/login', (req: Request, res: Response) => {
     res.json(db.login(req.body.emailOrName, req.body.password));
   });
 
   app.post('/api/logout', (req: Request, res: Response) => {
-    res.json(db.logout())
+    res.json(db.logout());
   });
 
   app.post('/api/register', (req: Request, res: Response) => {
-    res.json(db.register(req.body.name, req.body.email, req.body.password))
+    res.json(db.register(req.body.name, req.body.email, req.body.password));
   });
 
   app.post('/api/forgotPassword', (req: Request, res: Response) => {
     res.json(db.forgotPassword(req.body.email));
   });
+  //#endregion
 
+  //#region Basket
   app.post('/api/addItemToBasket', (req: Request, res: Response) => {
     res.json(db.addItemToBasket(req.body.userId, req.body.productId));
   });
@@ -35,4 +43,9 @@ export default defineSsrMiddleware(({ app }) => {
   app.post('/api/deleteProductInBasket', (req: Request, res: Response) => {
     res.json(db.deleteProductInBasket(req.body.userId, req.body.productId));
   });
+
+  app.post('/api/getBasketByUserId', (req: Request, res: Response) => {
+    res.json(db.getBasketByUserId(req.body.userId));
+  });
+  //#endregion
 });

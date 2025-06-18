@@ -1,5 +1,6 @@
 import Users from './mock-data/users.json';
 import Products from './mock-data/products.json';
+import  userBasket  from './mock-data/user-basket.json';
 
 import fs from 'fs';
 
@@ -99,6 +100,54 @@ export function userDatabase()
     };
   }
 
+  function addItemToBasket(userId: number, productId: number) {
+    try {
+      const product = Products.find(p => p.id === productId);
+      if (!product) {
+        return {
+          data: null,
+          error: 'Produit non trouvé'
+        };
+      }
+
+      let userBasketData = userBasket.find(ub => ub.userId === userId);
+      if (!userBasketData) {
+        userBasketData = {
+          userId: userId,
+          basket: []
+        };
+        userBasket.push(userBasketData);
+      }
+
+      const existingItem = userBasketData.basket.find(item => item.id === productId);
+      if (existingItem) {
+        return {
+          data: null,
+          error: 'Produit déjà dans le panier'
+        };
+      }
+
+      userBasketData.basket.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category
+      });
+
+      fs.writeFileSync('./src-ssr/custom/mock-data/user-basket.json', JSON.stringify(userBasket, null, 2));
+
+      return {
+        data: userBasketData.basket,
+        error: null
+      };
+    } catch {
+      return {
+        data: null,
+        error: 'Erreur lors de l\'ajout au panier'
+      };
+    }
+  }
+
   function updateUserDatabase() {
     fs.writeFileSync('./src-ssr/custom/mock-data/users.json', JSON.stringify(Users, null, 2));
   }
@@ -112,6 +161,7 @@ export function userDatabase()
 
     // Product management
     getProducts,
-    getProductById
+    getProductById,
+    addItemToBasket
   }
 }

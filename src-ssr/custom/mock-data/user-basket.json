@@ -1,13 +1,25 @@
 [
-    {
-        "userId": 1,
-        "basket":[
-            {
-                "id":2,
-                "name":"souris",
-                "price":49,
-                "category":"périphérique"
-            }
-        ]
-    }
+  {
+    "userId": 1,
+    "basket": [
+      {
+        "id": 2,
+        "name": "souris",
+        "price": 49,
+        "category": "périphérique"
+      },
+      {
+        "id": 3,
+        "name": "écran",
+        "price": 320,
+        "category": "affichage"
+      },
+      {
+        "id": 15,
+        "name": "hdd externe",
+        "price": 140,
+        "category": "stockage"
+      }
+    ]
+  }
 ]

@@ -27,4 +27,8 @@ export default defineSsrMiddleware(({ app }) => {
   app.post('/api/forgotPassword', (req: Request, res: Response) => {
     res.json(db.forgotPassword(req.body.email));
   });
+
+  app.post('/api/addItemToBasket', (req: Request, res: Response) => {
+    res.json(db.addItemToBasket(req.body.userId, req.body.productId));
+  });
 });

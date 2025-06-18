@@ -14,6 +14,11 @@ export interface User {
   adresses?: Adress[] | null;
 }
 
+export interface userBasket {
+  userId: number;
+  products: Product[];
+}
+
 export interface Adress {
   country?: string | null;
   city?: string | null;

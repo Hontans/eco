@@ -31,4 +31,8 @@ export default defineSsrMiddleware(({ app }) => {
   app.post('/api/addItemToBasket', (req: Request, res: Response) => {
     res.json(db.addItemToBasket(req.body.userId, req.body.productId));
   });
+
+  app.post('/api/deleteProductInBasket', (req: Request, res: Response) => {
+    res.json(db.deleteProductInBasket(req.body.userId, req.body.productId));
+  });
 });

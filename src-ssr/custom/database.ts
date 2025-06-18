@@ -148,6 +148,40 @@ export function userDatabase()
     }
   }
 
+  function deleteProductInBasket(userId: number, productId: number) {
+    try {
+      const userBasketData = userBasket.find(ub => ub.userId === userId);
+      if (!userBasketData) {
+        return {
+          data: null,
+          error: 'Panier utilisateur non trouvé'
+        };
+      }
+
+      const itemIndex = userBasketData.basket.findIndex(item => item.id === productId);
+      if (itemIndex === -1) {
+        return {
+          data: null,
+          error: 'Produit non trouvé dans le panier'
+        };
+      }
+
+      userBasketData.basket.splice(itemIndex, 1);
+
+      fs.writeFileSync('./src-ssr/custom/mock-data/user-basket.json', JSON.stringify(userBasket, null, 2));
+
+      return {
+        data: userBasketData.basket,
+        error: null
+      };
+    } catch {
+      return {
+        data: null,
+        error: 'Erreur lors de la suppression du produit du panier'
+      };
+    }
+  }
+
   function updateUserDatabase() {
     fs.writeFileSync('./src-ssr/custom/mock-data/users.json', JSON.stringify(Users, null, 2));
   }
@@ -162,6 +196,7 @@ export function userDatabase()
     // Product management
     getProducts,
     getProductById,
-    addItemToBasket
+    addItemToBasket,
+    deleteProductInBasket
   }
 }

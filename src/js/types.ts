@@ -14,7 +14,7 @@ export interface User {
   adresses?: Adress[] | null;
 }
 
-export interface userBasket {
+export interface UserBasket {
   userId: number;
   products: Product[];
 }

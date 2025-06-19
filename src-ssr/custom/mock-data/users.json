@@ -48,20 +48,6 @@
     "id": 3,
     "name": "marie",
     "email": "marie@gmail.com",
-    "password": "marie123",
-    "adresses": [
-      {
-        "country": "France",
-        "city": "Lyon",
-        "postalCode": "69001"
-      }
-    ],
-    "basketCards": [
-      {
-        "cardNumber": "2345678901234567",
-        "expirationDate": "03/26",
-        "cryptogram": "456"
-      }
-    ]
+    "password": "marie123"
   }
 ]

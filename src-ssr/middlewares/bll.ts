@@ -35,6 +35,20 @@ export default defineSsrMiddleware(({ app }) => {
   });
   //#endregion
 
+  //#region User Management
+  app.post('/api/updateUserCredentials', (req: Request, res: Response) => {
+    res.json(db.updateUserCredentials(req.body.userId, req.body.credentials));
+  });
+
+  app.post('/api/updateUserAddresses', (req: Request, res: Response) => {
+    res.json(db.updateUserAddresses(req.body.userId, req.body.addresses));
+  });
+
+  app.post('/api/updateUserPaymentCards', (req: Request, res: Response) => {
+    res.json(db.updateUserPaymentCards(req.body.userId, req.body.paymentCards));
+  });
+  //#endregion
+
   //#region Basket
   app.post('/api/addItemToBasket', (req: Request, res: Response) => {
     res.json(db.addItemToBasket(req.body.userId, req.body.productId));

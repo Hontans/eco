@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "country": "France",
+        "city": "Paris",
+        "postalCode": "75001"
+    },
+    {
+        "id": 2,
+        "userId": 1,        
+        "country": "France",
+        "city": "Toulouse",
+        "postalCode": "75002"
+    }
+]

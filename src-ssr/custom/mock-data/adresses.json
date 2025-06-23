@@ -8,9 +8,23 @@
     },
     {
         "id": 2,
-        "userId": 1,        
+        "userId": 1,
         "country": "France",
         "city": "Toulouse",
         "postalCode": "75002"
+    },
+    {
+        "id": 2,
+        "userId": 2,        
+        "country": "France",
+        "city": "Toulouse",
+        "postalCode": "75002"
+    },
+    {
+        "id": 3,
+        "userId": 3,
+        "country": "France",
+        "city": "Lyon",
+        "postalCode": "69001"
     }
 ]

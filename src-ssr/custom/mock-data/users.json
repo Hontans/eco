@@ -3,46 +3,13 @@
     "id": 1,
     "name": "test",
     "email": "test@gmail.com",
-    "password": "123",
-    "adresses": [
-      {
-        "country": "France",
-        "city": "Paris",
-        "postalCode": "75001"
-      },
-      {
-        "country": "France",
-        "city": "Toulouse",
-        "postalCode": "75002"
-      }
-    ],
-    "basketCards": [
-      {
-        "cardNumber": "1234567890123456",
-        "expirationDate": "12/25",
-        "cryptogram": "123"
-      }
-    ]
+    "password": "123"
   },
   {
     "id": 2,
     "name": "sylvain",
     "email": "sylvain@gmail.com",
-    "password": "sylvain",
-    "adresses": [
-      {
-        "country": "France",
-        "city": "Paris",
-        "postalCode": "75001"
-      }
-    ],
-    "basketCards": [
-      {
-        "cardNumber": "1234567890123456",
-        "expirationDate": "12/25",
-        "cryptogram": "123"
-      }
-    ]
+    "password": "sylvain"
   },
   {
     "id": 3,

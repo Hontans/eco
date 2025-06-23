@@ -15,9 +15,16 @@
     },
     {
       "id": 15,
-      "userId": 4,
+      "userId": 2,
       "name": "hdd externe",
       "price": 140,
       "category": "stockage"
+    },
+    {
+      "id": 16,
+      "userId": 3,
+      "name": "clavier",
+      "price": 60,
+      "category": "périphérique"
     }
 ]
